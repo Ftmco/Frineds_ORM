@@ -1,23 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\project\\FTEAM\\FORM\\DataBaseConnection\\DataBaseConnection.csproj": {}
+    "E:\\project\\FTEAM\\Frineds_ORM\\DataBaseConnection\\DataBaseConnection.csproj": {}
   },
   "projects": {
-    "D:\\project\\FTEAM\\FORM\\DataBaseConnection\\DataBaseConnection.csproj": {
+    "E:\\project\\FTEAM\\Frineds_ORM\\DataBaseConnection\\DataBaseConnection.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\project\\FTEAM\\FORM\\DataBaseConnection\\DataBaseConnection.csproj",
+        "projectUniqueName": "E:\\project\\FTEAM\\Frineds_ORM\\DataBaseConnection\\DataBaseConnection.csproj",
         "projectName": "DataBaseConnection",
-        "projectPath": "D:\\project\\FTEAM\\FORM\\DataBaseConnection\\DataBaseConnection.csproj",
-        "packagesPath": "C:\\Users\\Amir Hossin\\.nuget\\packages\\",
-        "outputPath": "D:\\project\\FTEAM\\FORM\\DataBaseConnection\\obj\\",
+        "projectPath": "E:\\project\\FTEAM\\Frineds_ORM\\DataBaseConnection\\DataBaseConnection.csproj",
+        "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
+        "outputPath": "E:\\project\\FTEAM\\Frineds_ORM\\DataBaseConnection\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Amir Hossin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -64,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.2.20479.15\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.2.21155.3\\RuntimeIdentifierGraph.json"
         }
       }
     }
