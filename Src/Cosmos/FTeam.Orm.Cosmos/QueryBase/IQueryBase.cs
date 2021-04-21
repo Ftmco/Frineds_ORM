@@ -8,6 +8,6 @@ namespace FTeam.Orm.Cosmos.QueryBase
 {
     public interface IQueryBase
     {
-        
+
     }
 }

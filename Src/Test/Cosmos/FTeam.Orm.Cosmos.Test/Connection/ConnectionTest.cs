@@ -1,10 +1,13 @@
 ﻿using FTeam.Orm.Cosmos.ConnectionBase;
+using FTeam.Orm.Results.Connection;
 using NUnit.Framework;
 
 namespace FTeam.Orm.Cosmos.Test.Connection
 {
     public class ConnectionTest
     {
+        private readonly string connectionString = "Server=185.83.208.175;Database=Charity_DB2;User Id = motilogin; Password=Motahar@347;MultipleActiveResultSets=true";
+
         private readonly IConnectionBase _connectionBase;
 
         public ConnectionTest()
@@ -19,10 +22,10 @@ namespace FTeam.Orm.Cosmos.Test.Connection
         }
 
         [Test]
-        public void TestConnection()
+        public void TestOpenConnection()
         {
 
-            var connectionResult = _connectionBase.OpenConnectionAsync("Server=185.83.208.175;Database=Charity_DB2;User Id=motilogin;Password=Motahar@347;MultipleActiveResultSets=true").Result;
+            OpenConnectionResult connectionResult = _connectionBase.OpenConnectionAsync(connectionString).Result;
 
             switch (connectionResult)
             {
@@ -36,6 +39,28 @@ namespace FTeam.Orm.Cosmos.Test.Connection
                     Assert.Fail("InvalidOperationException");
                     break;
                 case Results.Connection.OpenConnectionResult.SqlException:
+                    Assert.Fail("SqlException");
+                    break;
+                default:
+                    Assert.Fail("Default");
+                    break;
+            }
+        }
+
+        [Test]
+        public void TestCloseConnection()
+        {
+            CloseConnectionResult closeResult = _connectionBase.CloseConnectionAsync(connectionString).Result;
+
+            switch (closeResult)
+            {
+                case CloseConnectionResult.Success:
+                    Assert.Pass("Success");
+                    break;
+                case CloseConnectionResult.Exception:
+                    Assert.Fail("Exception");
+                    break;
+                case CloseConnectionResult.SqlException:
                     Assert.Fail("SqlException");
                     break;
                 default:
