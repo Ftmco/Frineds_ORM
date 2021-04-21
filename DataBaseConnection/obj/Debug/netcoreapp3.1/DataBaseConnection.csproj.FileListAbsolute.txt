@@ -1,9 +1,0 @@
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\bin\Debug\netcoreapp3.1\DataBaseConnection.deps.json
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\bin\Debug\netcoreapp3.1\DataBaseConnection.dll
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\bin\Debug\netcoreapp3.1\DataBaseConnection.pdb
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\obj\Debug\netcoreapp3.1\DataBaseConnection.csprojAssemblyReference.cache
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\obj\Debug\netcoreapp3.1\DataBaseConnection.AssemblyInfoInputs.cache
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\obj\Debug\netcoreapp3.1\DataBaseConnection.AssemblyInfo.cs
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\obj\Debug\netcoreapp3.1\DataBaseConnection.csproj.CoreCompileInputs.cache
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\obj\Debug\netcoreapp3.1\DataBaseConnection.dll
-C:\Users\Amir Hossin\source\repos\FORM\DataBaseConnection\obj\Debug\netcoreapp3.1\DataBaseConnection.pdb
