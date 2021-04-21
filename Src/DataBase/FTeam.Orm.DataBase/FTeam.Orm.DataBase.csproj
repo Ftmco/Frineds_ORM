@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="DataBase\" />
-    <Folder Include="Table\" />
   </ItemGroup>
 
 </Project>
