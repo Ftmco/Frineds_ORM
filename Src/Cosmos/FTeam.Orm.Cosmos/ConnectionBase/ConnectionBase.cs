@@ -9,6 +9,11 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
     {
         private readonly SqlConnection _connection;
 
+        public ConnectionBase()
+        {
+            _connection = new();
+        }
+
         public async Task<CloseConnectionResult> CloseConnectionAsync(string connectionString)
             => await Task.Run(async () =>
             {
