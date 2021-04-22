@@ -36,23 +36,30 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
         public async Task<OpenConnectionResult> OpenConnectionAsync(string connectionString)
             => await Task.Run(async () =>
             {
+                OpenConnectionResult result = new();
                 try
                 {
                     _connection.ConnectionString = connectionString;
                     await _connection.OpenAsync();
-                    return OpenConnectionResult.Success;
+
+                    result.SqlConnection = _connection;
+                    result.ConnectionStatus = OpenConnectionStatus.Success;
+                    return result;
                 }
                 catch (InvalidOperationException)
                 {
-                    return OpenConnectionResult.InvalidOperationException;
+                    result.ConnectionStatus = OpenConnectionStatus.InvalidOperationException;
+                    return result;
                 }
                 catch (SqlException)
                 {
-                    return OpenConnectionResult.SqlException;
+                    result.ConnectionStatus = OpenConnectionStatus.SqlException;
+                    return result;
                 }
                 catch (Exception)
                 {
-                    return OpenConnectionResult.Exception;
+                    result.ConnectionStatus = OpenConnectionStatus.Exception;
+                    return result;
                 }
             });
 
