@@ -1,17 +1,12 @@
 ﻿using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.Results.QueryBase;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FTeam.Orm.Cosmos.Test.Query
 {
     public class QueryBaseTest
     {
-        private readonly string connectionString = "Server=185.83.208.175;Database=Mcoin2_db;User Id = motilogin; Password=Motahar@347;MultipleActiveResultSets=true";
+        private readonly string connectionString = "";
 
         private IQueryBase _queryBase;
 

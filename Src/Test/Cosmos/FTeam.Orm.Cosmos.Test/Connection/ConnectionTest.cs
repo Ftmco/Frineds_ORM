@@ -6,7 +6,7 @@ namespace FTeam.Orm.Cosmos.Test.Connection
 {
     public class ConnectionTest
     {
-        private readonly string connectionString = "Server=185.83.208.175;Database=Charity_DB2;User Id = motilogin; Password=Motahar@347;MultipleActiveResultSets=true";
+        private readonly string connectionString = "";
 
         private IConnectionBase _connectionBase;
 

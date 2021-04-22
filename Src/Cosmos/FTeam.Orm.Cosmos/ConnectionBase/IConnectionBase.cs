@@ -1,4 +1,5 @@
 ﻿using FTeam.Orm.Results.Connection;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.Cosmos.ConnectionBase
@@ -7,6 +8,10 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
     {
         Task<OpenConnectionResult> OpenConnectionAsync(string connectionString);
 
+        Task<OpenConnectionResult> OpenConnectionAsync(SqlConnection sqlConnection);
+
         Task<CloseConnectionResult> CloseConnectionAsync(string connectionString);
+
+        Task<CloseConnectionResult> CloseConnectionAsync(SqlConnection sqlConnection);
     }
 }

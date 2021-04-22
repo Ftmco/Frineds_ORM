@@ -33,6 +33,9 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
                 }
             });
 
+        public async Task<CloseConnectionResult> CloseConnectionAsync(SqlConnection sqlConnection)
+            => await Task.FromResult(await CloseConnectionAsync(sqlConnection.ConnectionString));
+
         public async Task<OpenConnectionResult> OpenConnectionAsync(string connectionString)
             => await Task.Run(async () =>
             {
@@ -63,5 +66,7 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
                 }
             });
 
+        public async Task<OpenConnectionResult> OpenConnectionAsync(SqlConnection sqlConnection)
+            => await Task.FromResult(await OpenConnectionAsync(sqlConnection.ConnectionString));
     }
 }

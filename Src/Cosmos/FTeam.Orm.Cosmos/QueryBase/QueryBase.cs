@@ -35,7 +35,8 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 {
                     case OpenConnectionStatus.Success:
                         {
-                            return await RunVoidQueryAsync(openConnection.SqlConnection, query);
+                            VoidQueryStatus result = await RunVoidQueryAsync(openConnection.SqlConnection, query);
+                            return result;
                         }
                     case OpenConnectionStatus.Exception:
                         return VoidQueryStatus.Exception;
@@ -60,13 +61,17 @@ namespace FTeam.Orm.Cosmos.QueryBase
                     await cmd.ExecuteNonQueryAsync();
                     return VoidQueryStatus.Success;
                 }
-                catch (DbException ex)
+                catch (DbException)
                 {
                     return VoidQueryStatus.DbException;
                 }
                 catch (Exception)
                 {
                     return VoidQueryStatus.Exception;
+                }
+                finally
+                {
+                    await _connectionBase.CloseConnectionAsync(sqlConnection);
                 }
             });
 
