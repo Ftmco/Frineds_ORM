@@ -22,6 +22,11 @@ namespace FTeam.Orm.DataBase.Table.Services
             _queryBase = _kernel.Get<IQueryBase>();
         }
 
+        public Task<InformationSchema> GetInformationSchemaAsync(TableInfo tableInfo)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<TableInfo> GetTableInfoAsync(DbConnectionInfo dbConnection, string tableName)
             => await Task.Run(async () =>
             {
@@ -51,8 +56,9 @@ namespace FTeam.Orm.DataBase.Table.Services
         public async Task<TableInfo> GetTableInfoAsync(RunQueryResult runQueryResult)
             => await Task.Run(() =>
             {
-               
-                TableInfo tableInfo = new()
+
+                TableInfo tableInfo = new();
+                return tableInfo;
             });
 
         private void RegisterDependency()
