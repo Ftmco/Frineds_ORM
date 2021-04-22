@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using FTeam.Orm.Results.QueryBase;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.Cosmos.QueryBase
 {
     public interface IQueryBase
     {
+        Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query);
 
+        Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, string query);
+
+        Task<RunQueryResult> RunQueryAsync(string connectionString, string query);
+
+        Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query);
     }
 }

@@ -7,27 +7,27 @@ namespace FTeam.Orm.DataBase.Table
 {
     public static class TableExtentions
     {
-        public static DataTable Table(this ConnectionStringModel connectionString, string tableName)
+        public static DataTable Table(this DbConnectionInfo connectionString, string tableName)
         {
             throw new Exception();
         }
 
-        public static IEnumerable<TEntity> GetAll<TEntity>(this DataTable dataTable)
+        public static IEnumerable<TEntity> GetAll<TEntity>(this TableInfo dataTable)
         {
             throw new Exception();
         }
 
-        public static IEnumerable<TEntity> GetAll<TEntity>(this DataTable dataTable, string query)
+        public static IEnumerable<TEntity> GetAll<TEntity>(this TableInfo dataTable, string query)
         {
             throw new Exception();
         }
 
-        public static TEntity Get<TEntity>(this DataTable dataTable)
+        public static TEntity Get<TEntity>(this TableInfo dataTable)
         {
             throw new Exception();
         }
 
-        public static TEntity Get<TEntity>(this DataTable dataTable, string query)
+        public static TEntity Get<TEntity>(this TableInfo dataTable, string query)
         {
             throw new Exception();
         }

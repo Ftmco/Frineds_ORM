@@ -6,19 +6,14 @@ namespace FTeam.Orm.Cosmos.Test.Connection
 {
     public class ConnectionTest
     {
-        private readonly string connectionString = "Server=185.83.208.175;Database=Charity_DB2;User Id = motilogin; Password=Motahar@347;MultipleActiveResultSets=true";
+        private readonly string connectionString = "";
 
-        private readonly IConnectionBase _connectionBase;
-
-        public ConnectionTest()
-        {
-            _connectionBase = new ConnectionBase.ConnectionBase();
-        }
+        private IConnectionBase _connectionBase;
 
         [SetUp]
         public void Setup()
         {
-
+            _connectionBase = new ConnectionBase.ConnectionBase();
         }
 
         [Test]
@@ -27,18 +22,18 @@ namespace FTeam.Orm.Cosmos.Test.Connection
 
             OpenConnectionResult connectionResult = _connectionBase.OpenConnectionAsync(connectionString).Result;
 
-            switch (connectionResult)
+            switch (connectionResult.ConnectionStatus)
             {
-                case Results.Connection.OpenConnectionResult.Success:
+                case Results.Connection.OpenConnectionStatus.Success:
                     Assert.Pass("Success");
                     break;
-                case Results.Connection.OpenConnectionResult.Exception:
+                case Results.Connection.OpenConnectionStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.Connection.OpenConnectionResult.InvalidOperationException:
+                case Results.Connection.OpenConnectionStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.Connection.OpenConnectionResult.SqlException:
+                case Results.Connection.OpenConnectionStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
                 default:
