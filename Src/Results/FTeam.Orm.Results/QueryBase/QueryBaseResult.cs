@@ -1,12 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 namespace FTeam.Orm.Results.QueryBase
 {
-    public enum VoidQueryStatus
+
+    /// <summary>
+    /// Run Query Result
+    /// </summary>
+    public record RunQueryResult
+    {
+        /// <summary>
+        /// Data Table Result
+        /// </summary>
+        public DataTable DataTable { get; set; }
+
+        /// <summary>
+        /// Status
+        /// </summary>
+        public QueryStatus QueryStatus { get; set; }
+    }
+
+    public enum QueryStatus
     {
         Success,
         Exception,

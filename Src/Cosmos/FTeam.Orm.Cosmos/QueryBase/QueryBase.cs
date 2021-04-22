@@ -3,6 +3,7 @@ using FTeam.Orm.Cosmos.ConnectionBase;
 using FTeam.Orm.Results.Connection;
 using FTeam.Orm.Results.QueryBase;
 using System;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -21,53 +22,80 @@ namespace FTeam.Orm.Cosmos.QueryBase
             _connectionBase = _kernel.Get<IConnectionBase>();
         }
 
-        public Task RunQueryAsync(string connectionString, string query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<VoidQueryStatus> RunVoidQueryAsync(string connectionString, string query)
+        public async Task<RunQueryResult> RunQueryAsync(string connectionString, string query)
             => await Task.Run(async () =>
             {
                 OpenConnectionResult openConnection = await _connectionBase.OpenConnectionAsync(connectionString);
 
-                switch (openConnection.ConnectionStatus)
+                return openConnection.ConnectionStatus switch
                 {
-                    case OpenConnectionStatus.Success:
-                        {
-                            VoidQueryStatus result = await RunVoidQueryAsync(openConnection.SqlConnection, query);
-                            return result;
-                        }
-                    case OpenConnectionStatus.Exception:
-                        return VoidQueryStatus.Exception;
+                    OpenConnectionStatus.Success => await RunQueryAsync(openConnection.SqlConnection, query),
 
-                    case OpenConnectionStatus.InvalidOperationException:
-                        return VoidQueryStatus.InvalidOperationException;
+                    OpenConnectionStatus.Exception => new RunQueryResult { QueryStatus = QueryStatus.Exception },
 
-                    case OpenConnectionStatus.SqlException:
-                        return VoidQueryStatus.SqlException;
+                    OpenConnectionStatus.InvalidOperationException => new RunQueryResult { QueryStatus = QueryStatus.InvalidOperationException },
 
-                    default:
-                        return VoidQueryStatus.Exception;
+                    OpenConnectionStatus.SqlException => new RunQueryResult { QueryStatus = QueryStatus.SqlException },
+
+                    _ => new RunQueryResult { QueryStatus = QueryStatus.Exception }
+                };
+            });
+
+        public async Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query)
+            => await Task.Run(() =>
+            {
+                try
+                {
+                    SqlDataAdapter sqlDataAdapter = new(query, sqlConnection);
+                    DataTable dataTable = new();
+                    sqlDataAdapter.Fill(dataTable);
+                    return new RunQueryResult { DataTable = dataTable, QueryStatus = QueryStatus.Success };
+                }
+                catch (InvalidOperationException)
+                {
+                    return new RunQueryResult { QueryStatus = QueryStatus.InvalidOperationException };
+                }
+                catch (Exception)
+                {
+                    return new RunQueryResult { QueryStatus = QueryStatus.Exception };
                 }
             });
 
-        public async Task<VoidQueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, string query)
+        public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)
+            => await Task.Run(async () =>
+            {
+                OpenConnectionResult openConnection = await _connectionBase.OpenConnectionAsync(connectionString);
+
+                return openConnection.ConnectionStatus switch
+                {
+                    OpenConnectionStatus.Success => await RunVoidQueryAsync(openConnection.SqlConnection, query),
+
+                    OpenConnectionStatus.Exception => QueryStatus.Exception,
+
+                    OpenConnectionStatus.InvalidOperationException => QueryStatus.InvalidOperationException,
+
+                    OpenConnectionStatus.SqlException => QueryStatus.SqlException,
+
+                    _ => QueryStatus.Exception
+                };
+            });
+
+        public async Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, string query)
             => await Task.Run(async () =>
             {
                 try
                 {
                     SqlCommand cmd = new(query, sqlConnection);
                     await cmd.ExecuteNonQueryAsync();
-                    return VoidQueryStatus.Success;
+                    return QueryStatus.Success;
                 }
                 catch (DbException)
                 {
-                    return VoidQueryStatus.DbException;
+                    return QueryStatus.DbException;
                 }
                 catch (Exception)
                 {
-                    return VoidQueryStatus.Exception;
+                    return QueryStatus.Exception;
                 }
                 finally
                 {
