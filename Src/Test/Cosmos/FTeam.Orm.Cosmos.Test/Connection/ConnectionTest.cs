@@ -22,18 +22,18 @@ namespace FTeam.Orm.Cosmos.Test.Connection
 
             OpenConnectionResult connectionResult = _connectionBase.OpenConnectionAsync(connectionString).Result;
 
-            switch (connectionResult)
+            switch (connectionResult.ConnectionStatus)
             {
-                case Results.Connection.OpenConnectionResult.Success:
+                case Results.Connection.OpenConnectionStatus.Success:
                     Assert.Pass("Success");
                     break;
-                case Results.Connection.OpenConnectionResult.Exception:
+                case Results.Connection.OpenConnectionStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.Connection.OpenConnectionResult.InvalidOperationException:
+                case Results.Connection.OpenConnectionStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.Connection.OpenConnectionResult.SqlException:
+                case Results.Connection.OpenConnectionStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
                 default:

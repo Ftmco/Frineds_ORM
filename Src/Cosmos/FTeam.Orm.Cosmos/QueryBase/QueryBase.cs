@@ -60,7 +60,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                     await cmd.ExecuteNonQueryAsync();
                     return VoidQueryStatus.Success;
                 }
-                catch (DbException)
+                catch (DbException ex)
                 {
                     return VoidQueryStatus.DbException;
                 }
