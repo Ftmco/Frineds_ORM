@@ -1,4 +1,4 @@
-﻿using FTeam.Orm.Results.Connection;
+﻿using FTeam.Orm.Results.QueryBase;
 
 namespace FTeam.Orm.DataBase.Models.Tables
 {
@@ -6,6 +6,6 @@ namespace FTeam.Orm.DataBase.Models.Tables
     {
         public InformationSchema InformationSchema { get; set; }
 
-        public OpenConnectionStatus Status { get; set; }
+        public QueryStatus Status { get; set; }
     }
 }

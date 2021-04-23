@@ -25,34 +25,32 @@ namespace FTeam.Orm.DataBase.Table.Services
         public async Task<TableInfo> GetTableInfoAsync(DbConnectionInfo dbConnection, string tableName)
             => await Task.Run(async () =>
             {
-                string connectionString = await dbConnection.GetConnectionStringAsync();
+                RunQueryResult result = await _queryBase.RunQueryAsync(await dbConnection.GetConnectionStringAsync(),
+                    $"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'");
 
-                RunQueryResult result = await _queryBase.RunQueryAsync(connectionString, $"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'");
-
-                switch (result.QueryStatus)
+                return result.QueryStatus switch
                 {
-                    case QueryStatus.Success:
-                        break;
-                    case QueryStatus.Exception:
-                        break;
-                    case QueryStatus.InvalidOperationException:
-                        break;
-                    case QueryStatus.SqlException:
-                        break;
-                    case QueryStatus.DbException:
-                        break;
-                    default:
-                        break;
-                }
-
-                return new TableInfo();
+                    QueryStatus.Success => await GetTableInfoAsync(result),
+                    QueryStatus.Exception => new TableInfo { Status = QueryStatus.Exception },
+                    QueryStatus.InvalidOperationException => new TableInfo { Status = QueryStatus.InvalidOperationException },
+                    QueryStatus.SqlException => new TableInfo { Status = QueryStatus.SqlException },
+                    QueryStatus.DbException => new TableInfo { Status = QueryStatus.DbException },
+                    _ => new TableInfo { Status = QueryStatus.Exception },
+                };
             });
 
         public async Task<TableInfo> GetTableInfoAsync(RunQueryResult runQueryResult)
             => await Task.Run(() =>
             {
+<<<<<<< Updated upstream
                
                 TableInfo tableInfo = new()
+=======
+                DataTable dataTable = runQueryResult.DataTable;
+
+                TableInfo tableInfo = new();
+                return tableInfo;
+>>>>>>> Stashed changes
             });
 
         private void RegisterDependency()
