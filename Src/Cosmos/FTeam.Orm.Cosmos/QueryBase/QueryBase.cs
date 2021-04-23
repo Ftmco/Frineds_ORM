@@ -42,7 +42,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
             });
 
         public async Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query)
-            => await Task.Run(() =>
+            => await Task.Run(async() =>
             {
                 try
                 {
@@ -58,6 +58,10 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 catch (Exception)
                 {
                     return new RunQueryResult { QueryStatus = QueryStatus.Exception };
+                }
+                finally
+                {
+                    await _connectionBase.CloseConnectionAsync(sqlConnection);
                 }
             });
 

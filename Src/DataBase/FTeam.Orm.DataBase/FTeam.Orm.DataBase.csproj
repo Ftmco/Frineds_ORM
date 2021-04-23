@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <Folder Include="DataBase\" />
+    <Folder Include="Table\Extentions\" />
+    <Folder Include="Table\Services\Implements\" />
+    <Folder Include="Table\Services\Rules\" />
   </ItemGroup>
 
   <ItemGroup>
