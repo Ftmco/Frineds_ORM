@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cosmos", "Cosmos", "{E5E04B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTeam.Orm.Cosmos", "Src\Cosmos\FTeam.Orm.Cosmos\FTeam.Orm.Cosmos.csproj", "{2E370EC8-066E-4C16-8124-840BD5E6634B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Results", "Results", "{D5B48A66-5C6F-44FD-B75D-D61476DBC733}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{D5B48A66-5C6F-44FD-B75D-D61476DBC733}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTeam.Orm.Results", "Src\Results\FTeam.Orm.Results\FTeam.Orm.Results.csproj", "{47B1515C-A9C3-482A-907F-CD6B6B7E771D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTeam.Orm.Models", "Src\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj", "{47B1515C-A9C3-482A-907F-CD6B6B7E771D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{DC5D7224-AAA1-42F8-8595-DC24E0B70B83}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTeam.Orm.Mapper", "Src\Map
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orm", "Orm", "{AE80A9C1-3CF8-4F81-B504-45C187CA0E3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTeam.Orm", "Src\Orm\FTeam.Orm\FTeam.Orm.csproj", "{DA2507B9-E48E-440E-8775-0968266E1E5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTeam.Orm", "Src\Orm\FTeam.Orm\FTeam.Orm.csproj", "{DA2507B9-E48E-440E-8775-0968266E1E5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

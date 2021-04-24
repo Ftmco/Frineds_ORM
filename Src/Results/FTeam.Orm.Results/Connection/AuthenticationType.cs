@@ -1,4 +1,4 @@
-﻿namespace FTeam.Orm.DataBase.Models
+﻿namespace FTeam.Orm.Models
 {
     public enum Authentication
     {
