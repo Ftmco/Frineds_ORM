@@ -8,7 +8,7 @@ namespace FTeam.Orm.Extentions
     {
         public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName)
         {
-
+            return new TableInfoResult();
         }
 
         public static async Task<TableInfoResult> TableAsync(this DbConnectionInfo dbConnectionInfo, string tableName)

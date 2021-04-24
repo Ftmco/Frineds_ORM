@@ -1,6 +1,6 @@
 ﻿using FTeam.DependencyController.Kernel;
 using FTeam.Orm.Cosmos.ConnectionBase;
-using FTeam.Orm.Results.Connection;
+using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
 using System;
 using System.Data;
@@ -20,6 +20,16 @@ namespace FTeam.Orm.Cosmos.QueryBase
         {
             RegisterDependency();
             _connectionBase = _kernel.Get<IConnectionBase>();
+        }
+
+        public RunQueryResult RunQuery(string connectionString, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RunQueryResult RunQuery(SqlConnection sqlConnection, string query)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<RunQueryResult> RunQueryAsync(string connectionString, string query)
@@ -64,6 +74,16 @@ namespace FTeam.Orm.Cosmos.QueryBase
                     await _connectionBase.CloseConnectionAsync(sqlConnection);
                 }
             });
+
+        public QueryStatus RunVoidQuery(string connectionString, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public QueryStatus RunVoidQuery(SqlConnection sqlConnection, string query)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)
             => await Task.Run(async () =>

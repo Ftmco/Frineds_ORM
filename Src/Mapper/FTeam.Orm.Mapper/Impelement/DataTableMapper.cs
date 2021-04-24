@@ -10,7 +10,17 @@ namespace FTeam.Orm.Mapper.Impelement
 {
     public class DataTableMapper : IDataTableMapper
     {
-        public IEnumerable<T> Map<T>(DataTable dataTable)
+        public T Map<T>(DataTable dataTable)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> MapAsync<T>(DataTable dataTable)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> MapList<T>(DataTable dataTable)
         {
             IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
 
@@ -37,7 +47,8 @@ namespace FTeam.Orm.Mapper.Impelement
             }).ToList();
         }
 
-        public async Task<IEnumerable<T>> MapAsync<T>(DataTable dataTable)
-            => await Task.Run(() => Map<T>(dataTable));
+        public async Task<IEnumerable<T>> MapListAsync<T>(DataTable dataTable)
+            => await Task.Run(() => MapList<T>(dataTable));
+
     }
 }

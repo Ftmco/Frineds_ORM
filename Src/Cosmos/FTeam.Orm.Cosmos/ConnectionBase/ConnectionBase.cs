@@ -1,4 +1,4 @@
-﻿using FTeam.Orm.Results.Connection;
+﻿using FTeam.Orm.Models;
 using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
