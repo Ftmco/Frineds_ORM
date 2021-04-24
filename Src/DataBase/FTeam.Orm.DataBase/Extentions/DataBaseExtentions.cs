@@ -7,12 +7,12 @@ namespace FTeam.Orm.DataBase.Extentions
     {
         public static string GetConnectionString(this DbConnectionInfo dbConnectionInfo)
         {
-            string connectionString = $"Server={dbConnectionInfo.Server};Initial Catalog={dbConnectionInfo.DataBaseName}";
+            string connectionString = $"Server={dbConnectionInfo.Server};Initial Catalog={dbConnectionInfo.DataBaseName};";
 
             connectionString += dbConnectionInfo.Authentication switch
             {
-                Authentication.WindowsAuthentication => "Integrated Security=True",
-                _ => $"User Id={dbConnectionInfo.UserId};Password={dbConnectionInfo.Password}"
+                Authentication.WindowsAuthentication => "Integrated Security=True;",
+                _ => $"User Id={dbConnectionInfo.UserId};Password={dbConnectionInfo.Password};"
             };
 
             return connectionString;
