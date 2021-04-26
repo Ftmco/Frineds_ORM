@@ -40,6 +40,7 @@ namespace FTeam.Orm.Cosmos.Test.Connection
                     Assert.Fail("Default");
                     break;
             }
+            _ = _connectionBase.CloseConnectionAsync(connectionString).Result;
         }
 
         [Test]

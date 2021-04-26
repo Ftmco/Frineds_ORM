@@ -1,38 +1,32 @@
-﻿using FTeam.Orm.Extentions;
+﻿using FTeam.Orm.DataBase.Tables;
 using FTeam.Orm.Models;
 using NUnit.Framework;
 
-namespace FTeam.Orm.OrmTest.Extentions
+namespace FTeam.Orm.DataBase.Test.Tables
 {
-    public class OrmExtentionTest
+    public class TestTableServices
     {
-        [SetUp]
+        private ITableRules _tableRules;
+
+        DbConnectionInfo _dbConnectionInfo = new(".", "test", Authentication.WindowsAuthentication);
+
+
+        [Test]
         public void Setup()
         {
-
+            _tableRules = new TableServices();
         }
 
         [Test]
-        public void TestExtentions()
+        public void TestTableInfo()
         {
-            DbConnectionInfo _dbConnectionInfo = new(".", "test_rb", Authentication.SqlServerAuthentication, "sa", "1H15asdj@3");
+            var result = _tableRules.GetTableInfo(_dbConnectionInfo, "Users");
 
-            TableInfoResult tableInfo = _dbConnectionInfo.Table("Users");
-
-            switch (tableInfo.Status)
+            switch (result.Status)
             {
                 case Results.QueryBase.QueryStatus.Success:
-                    {
-                        if (tableInfo.TableInfo != null)
-                        {
-                            Assert.Pass(tableInfo.TableInfo.ToString());
-                        }
-                        else
-                        {
-                            Assert.Fail("Null Refrence");
-                        }
-                        break;
-                    }
+                    Assert.Pass(result.TableInfo.TableName);
+                    break;
                 case Results.QueryBase.QueryStatus.Exception:
                     Assert.Fail("Exception");
                     break;
@@ -49,7 +43,6 @@ namespace FTeam.Orm.OrmTest.Extentions
                     Assert.Fail("Exception");
                     break;
             }
-
         }
     }
 }
