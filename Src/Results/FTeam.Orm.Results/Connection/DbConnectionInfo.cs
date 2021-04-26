@@ -1,6 +1,6 @@
 ﻿//Friends Sql Orm
 
-namespace FTeam.Orm.DataBase.Models
+namespace FTeam.Orm.Models
 {
     /// <summary>
     /// Connection String Data Base Model

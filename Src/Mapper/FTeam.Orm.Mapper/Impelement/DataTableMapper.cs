@@ -10,7 +10,37 @@ namespace FTeam.Orm.Mapper.Impelement
 {
     public class DataTableMapper : IDataTableMapper
     {
-        public IEnumerable<T> Map<T>(DataTable dataTable)
+        public T Map<T>(DataTable dataTable)
+        {
+            IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
+
+            PropertyInfo[] properties = typeof(T).GetProperties();
+
+            return dataTable.AsEnumerable().Select(row =>
+            {
+                T objT = Activator.CreateInstance<T>();
+                foreach (var item in properties)
+                {
+                    if (columnNames.Contains(item.Name.ToLower()))
+                    {
+                        try
+                        {
+                            item.SetValue(objT, row[item.Name]);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                }
+                return objT;
+            }).FirstOrDefault();
+        }
+
+        public async Task<T> MapAsync<T>(DataTable dataTable)
+            => await Task.Run(() => Map<T>(dataTable));
+
+        public IEnumerable<T> MapList<T>(DataTable dataTable)
         {
             IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
 
@@ -37,7 +67,8 @@ namespace FTeam.Orm.Mapper.Impelement
             }).ToList();
         }
 
-        public async Task<IEnumerable<T>> MapAsync<T>(DataTable dataTable)
-            => await Task.Run(() => Map<T>(dataTable));
+        public async Task<IEnumerable<T>> MapListAsync<T>(DataTable dataTable)
+            => await Task.Run(() => MapList<T>(dataTable));
+
     }
 }

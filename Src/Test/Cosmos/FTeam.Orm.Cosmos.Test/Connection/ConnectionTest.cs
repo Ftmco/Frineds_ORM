@@ -1,5 +1,5 @@
 ﻿using FTeam.Orm.Cosmos.ConnectionBase;
-using FTeam.Orm.Results.Connection;
+using FTeam.Orm.Models;
 using NUnit.Framework;
 
 namespace FTeam.Orm.Cosmos.Test.Connection
@@ -24,22 +24,23 @@ namespace FTeam.Orm.Cosmos.Test.Connection
 
             switch (connectionResult.ConnectionStatus)
             {
-                case Results.Connection.OpenConnectionStatus.Success:
+                case OpenConnectionStatus.Success:
                     Assert.Pass("Success");
                     break;
-                case Results.Connection.OpenConnectionStatus.Exception:
+                case OpenConnectionStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.Connection.OpenConnectionStatus.InvalidOperationException:
+                case OpenConnectionStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.Connection.OpenConnectionStatus.SqlException:
+                case OpenConnectionStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
                 default:
                     Assert.Fail("Default");
                     break;
             }
+            _ = _connectionBase.CloseConnectionAsync(connectionString).Result;
         }
 
         [Test]

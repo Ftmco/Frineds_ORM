@@ -1,6 +1,6 @@
 ﻿using System.Data.SqlClient;
 
-namespace FTeam.Orm.Results.Connection
+namespace FTeam.Orm.Models
 {
 
     /// <summary>

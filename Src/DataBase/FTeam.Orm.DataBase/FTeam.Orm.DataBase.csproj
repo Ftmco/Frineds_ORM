@@ -1,14 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Table\**" />
+    <EmbeddedResource Remove="Table\**" />
+    <None Remove="Table\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DataBase\" />
-    <Folder Include="Table\Extentions\" />
-    <Folder Include="Table\Services\Implements\" />
-    <Folder Include="Table\Services\Rules\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Results\FTeam.Orm.Results\FTeam.Orm.Results.csproj" />
+    <ProjectReference Include="..\..\Cosmos\FTeam.Orm.Cosmos\FTeam.Orm.Cosmos.csproj" />
+    <ProjectReference Include="..\..\Mapper\FTeam.Orm.Mapper\FTeam.Orm.Mapper.csproj" />
+    <ProjectReference Include="..\..\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj" />
   </ItemGroup>
 
 </Project>
