@@ -30,52 +30,52 @@ namespace FTeam.Orm.Extentions
 
         public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo, string query)
         {
-
+            throw new System.Exception();
         }
 
         public static T Get<T>(this TableInfoResult tableInfo, string query)
         {
-
+            throw new System.Exception();
         }
 
         public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo)
         {
-
+            throw new System.Exception();
         }
 
         public static T Get<T>(this TableInfoResult tableInfo)
         {
-
+            throw new System.Exception();
         }
 
         public static QueryStatus Insert<T>(this TableInfoResult tableInfo, T instance)
         {
-
+            throw new System.Exception();
         }
 
         public static QueryStatus Update<T>(this TableInfoResult tableInfo, T instance)
         {
-
+            throw new System.Exception();
         }
 
         public static QueryStatus Delete<T>(this TableInfoResult tableInfo, T instance)
         {
-
+            throw new System.Exception();
         }
 
         public static Task<QueryStatus> InsertAsync<T>(this TableInfoResult tableInfo, T instance)
         {
-
+            throw new System.Exception();
         }
 
         public static Task<QueryStatus> UpdateAsync<T>(this TableInfoResult tableInfo, T instance)
         {
-
+            throw new System.Exception();
         }
 
         public static Task<QueryStatus> DeleteAsync<T>(this TableInfoResult tableInfo, T instance)
         {
-
+            throw new System.Exception();
         }
     }
 }

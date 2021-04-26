@@ -12,13 +12,33 @@ namespace FTeam.Orm.Mapper.Impelement
     {
         public T Map<T>(DataTable dataTable)
         {
-            throw new NotImplementedException();
+            IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
+
+            PropertyInfo[] properties = typeof(T).GetProperties();
+
+            return dataTable.AsEnumerable().Select(row =>
+            {
+                T objT = Activator.CreateInstance<T>();
+                foreach (var item in properties)
+                {
+                    if (columnNames.Contains(item.Name.ToLower()))
+                    {
+                        try
+                        {
+                            item.SetValue(objT, row[item.Name]);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                }
+                return objT;
+            }).FirstOrDefault();
         }
 
-        public Task<T> MapAsync<T>(DataTable dataTable)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<T> MapAsync<T>(DataTable dataTable)
+            => await Task.Run(() => Map<T>(dataTable));
 
         public IEnumerable<T> MapList<T>(DataTable dataTable)
         {

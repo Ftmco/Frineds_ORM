@@ -1,5 +1,6 @@
 ﻿using FTeam.Orm.Models;
 using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -63,6 +64,11 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
             OpenConnectionResult result = new();
             try
             {
+                if (_connection.State == ConnectionState.Open)
+                {
+                    result.SqlConnection = _connection;
+                    return result;
+                }
                 _connection.ConnectionString = connectionString;
                 _connection.Open();
 

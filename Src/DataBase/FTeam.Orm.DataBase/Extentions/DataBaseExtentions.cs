@@ -7,7 +7,7 @@ namespace FTeam.Orm.DataBase.Extentions
     {
         public static string GetConnectionString(this DbConnectionInfo dbConnectionInfo)
         {
-            string connectionString = $"Server={dbConnectionInfo.Server};Initial Catalog={dbConnectionInfo.DataBaseName};";
+            string connectionString = $"Data Source={dbConnectionInfo.Server};Initial Catalog={dbConnectionInfo.DataBaseName};";
 
             connectionString += dbConnectionInfo.Authentication switch
             {

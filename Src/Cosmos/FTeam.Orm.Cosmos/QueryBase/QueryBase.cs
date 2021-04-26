@@ -24,12 +24,43 @@ namespace FTeam.Orm.Cosmos.QueryBase
 
         public RunQueryResult RunQuery(string connectionString, string query)
         {
-            throw new NotImplementedException();
+            OpenConnectionResult openConnection = _connectionBase.OpenConnection(connectionString);
+
+            return openConnection.ConnectionStatus switch
+            {
+                OpenConnectionStatus.Success => RunQuery(openConnection.SqlConnection, query),
+
+                OpenConnectionStatus.Exception => new RunQueryResult { QueryStatus = QueryStatus.Exception },
+
+                OpenConnectionStatus.InvalidOperationException => new RunQueryResult { QueryStatus = QueryStatus.InvalidOperationException },
+
+                OpenConnectionStatus.SqlException => new RunQueryResult { QueryStatus = QueryStatus.SqlException },
+
+                _ => new RunQueryResult { QueryStatus = QueryStatus.Exception }
+            };
         }
 
         public RunQueryResult RunQuery(SqlConnection sqlConnection, string query)
         {
-            throw new NotImplementedException();
+            try
+            {
+                SqlDataAdapter sqlDataAdapter = new(query, sqlConnection);
+                DataTable dataTable = new();
+                sqlDataAdapter.Fill(dataTable);
+                return new RunQueryResult { DataTable = dataTable, QueryStatus = QueryStatus.Success };
+            }
+            catch (InvalidOperationException ex)
+            {
+                return new RunQueryResult { QueryStatus = QueryStatus.InvalidOperationException };
+            }
+            catch (Exception ex)
+            {
+                return new RunQueryResult { QueryStatus = QueryStatus.Exception };
+            }
+            finally
+            {
+                _connectionBase.CloseConnection(sqlConnection);
+            }
         }
 
         public async Task<RunQueryResult> RunQueryAsync(string connectionString, string query)
@@ -52,7 +83,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
             });
 
         public async Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query)
-            => await Task.Run(async() =>
+            => await Task.Run(async () =>
             {
                 try
                 {
@@ -77,12 +108,42 @@ namespace FTeam.Orm.Cosmos.QueryBase
 
         public QueryStatus RunVoidQuery(string connectionString, string query)
         {
-            throw new NotImplementedException();
+            OpenConnectionResult openConnection = _connectionBase.OpenConnection(connectionString);
+
+            return openConnection.ConnectionStatus switch
+            {
+                OpenConnectionStatus.Success => RunVoidQuery(openConnection.SqlConnection, query),
+
+                OpenConnectionStatus.Exception => QueryStatus.Exception,
+
+                OpenConnectionStatus.InvalidOperationException => QueryStatus.InvalidOperationException,
+
+                OpenConnectionStatus.SqlException => QueryStatus.SqlException,
+
+                _ => QueryStatus.Exception
+            };
         }
 
         public QueryStatus RunVoidQuery(SqlConnection sqlConnection, string query)
         {
-            throw new NotImplementedException();
+            try
+            {
+                SqlCommand cmd = new(query, sqlConnection);
+                cmd.ExecuteNonQuery();
+                return QueryStatus.Success;
+            }
+            catch (DbException)
+            {
+                return QueryStatus.DbException;
+            }
+            catch (Exception)
+            {
+                return QueryStatus.Exception;
+            }
+            finally
+            {
+                _connectionBase.CloseConnection(sqlConnection);
+            }
         }
 
         public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)

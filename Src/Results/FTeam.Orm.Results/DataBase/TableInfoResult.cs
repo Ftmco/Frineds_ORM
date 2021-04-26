@@ -7,5 +7,6 @@ namespace FTeam.Orm.Models
         public QueryStatus Status { get; set; }
 
         public TableInfo TableInfo { get; set; }
+
     }
 }

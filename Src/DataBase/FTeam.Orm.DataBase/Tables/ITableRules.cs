@@ -6,7 +6,7 @@ namespace FTeam.Orm.DataBase.Tables
 {
     public interface ITableRules
     {
-        Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo,string tableName);
+        Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName);
 
         TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName);
 
@@ -16,6 +16,10 @@ namespace FTeam.Orm.DataBase.Tables
 
         Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult);
 
-        Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult,string query);
+        Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult, string query);
+
+        Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo);
+
+        IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo);
     }
 }
