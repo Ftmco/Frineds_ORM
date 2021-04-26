@@ -13,5 +13,13 @@ namespace FTeam.Orm.Cosmos.QueryBase
         Task<RunQueryResult> RunQueryAsync(string connectionString, string query);
 
         Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query);
+
+        RunQueryResult RunQuery(string connectionString, string query);
+
+        RunQueryResult RunQuery(SqlConnection sqlConnection, string query);
+
+        QueryStatus RunVoidQuery(string connectionString, string query);
+
+        QueryStatus RunVoidQuery(SqlConnection sqlConnection, string query);
     }
 }

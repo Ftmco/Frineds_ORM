@@ -6,8 +6,12 @@ namespace FTeam.Orm.Mapper.Rules
 {
     public interface IDataTableMapper
     {
-        Task<IEnumerable<T>> MapAsync<T>(DataTable dataTable);
+        Task<IEnumerable<T>> MapListAsync<T>(DataTable dataTable);
 
-        IEnumerable<T> Map<T>(DataTable dataTable);
+        Task<T> MapAsync<T>(DataTable dataTable);
+
+        IEnumerable<T> MapList<T>(DataTable dataTable);
+
+        T Map<T>(DataTable dataTable);
     }
 }
