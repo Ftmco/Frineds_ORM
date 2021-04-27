@@ -7,7 +7,7 @@ namespace FTeam.Orm.Cosmos.Test.Query
 {
     public class QueryBaseTest
     {
-        private readonly string connectionString = "";
+        private readonly string connectionString = "Data Source=.;Initial Catalog=MCoin2_db;Integrated Security=True";
 
         private IQueryBase _queryBase;
 
