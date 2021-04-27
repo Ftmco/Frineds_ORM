@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="DataBase\" />
+    <Folder Include="Tools\" />
   </ItemGroup>
 
   <ItemGroup>
