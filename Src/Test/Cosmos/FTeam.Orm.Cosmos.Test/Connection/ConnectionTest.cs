@@ -6,7 +6,7 @@ namespace FTeam.Orm.Cosmos.Test.Connection
 {
     public class ConnectionTest
     {
-        private readonly string connectionString = "";
+        private readonly string connectionString = "Data Source=.;Initial Catalog=MCoin2_db;Integrated Security=True";
 
         private IConnectionBase _connectionBase;
 

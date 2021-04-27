@@ -8,7 +8,7 @@ namespace FTeam.Orm.DataBase.Test.Tables
     {
         private ITableRules _tableRules;
 
-        DbConnectionInfo _dbConnectionInfo = new(".", "test", Authentication.WindowsAuthentication);
+        DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
 
         [Test]

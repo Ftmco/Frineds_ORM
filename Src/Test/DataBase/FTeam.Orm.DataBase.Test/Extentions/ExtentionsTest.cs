@@ -6,6 +6,8 @@ namespace FTeam.Orm.DataBase.Test.Extentions
 {
     public class ExtentionsTest
     {
+        private readonly DbConnectionInfo connectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
+
         [SetUp]
         public void Setup()
         {
@@ -16,12 +18,14 @@ namespace FTeam.Orm.DataBase.Test.Extentions
         [Test]
         public void ConnectionInfoExtentionsTest()
         {
-            DbConnectionInfo connectionInfo = new("LocalHost", "Test_DB", Authentication.SqlServerAuthentication, "Sa", "ASDWweadf@#@#$");
+            //DbConnectionInfo connectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
             string connectionString = connectionInfo.GetConnectionString();
 
             Assert.Pass(connectionString);
 
         }
+
+      
     }
 }
