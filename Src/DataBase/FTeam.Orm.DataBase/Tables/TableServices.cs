@@ -4,7 +4,6 @@ using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
