@@ -61,7 +61,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         public void GetOnjectTest()
         {
             IEnumerable<Users> users = _dbConnectionInfo.Table("Users").GetAll<Users>("Users.[PhoneNumber] = '09012421080'");
-                      
+
             if (users != null)
             {
                 Assert.Pass(users.FirstOrDefault().UserName);

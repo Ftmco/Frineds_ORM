@@ -29,24 +29,16 @@ namespace FTeam.Orm.Extentions
             => _table.GetAll<T>(tableInfo, query);
 
         public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo, string query)
-        {
-            throw new System.Exception();
-        }
+         => await Task.FromResult(await _table.GetAsync<T>(tableInfo, query));
 
         public static T Get<T>(this TableInfoResult tableInfo, string query)
-        {
-            throw new System.Exception();
-        }
+            => Get<T>(tableInfo, query);
 
         public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo)
-        {
-            throw new System.Exception();
-        }
+            => await Task.FromResult(await _table.GetAsync<T>(tableInfo));
 
         public static T Get<T>(this TableInfoResult tableInfo)
-        {
-            throw new System.Exception();
-        }
+            => _table.Get<T>(tableInfo);
 
         public static QueryStatus Insert<T>(this TableInfoResult tableInfo, T instance)
         {

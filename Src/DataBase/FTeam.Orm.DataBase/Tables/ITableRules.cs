@@ -21,5 +21,13 @@ namespace FTeam.Orm.DataBase.Tables
         Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo);
 
         IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo);
+
+        Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query);
+
+        Task<T> GetAsync<T>(TableInfoResult tableInfoResult);
+
+        T Get<T>(TableInfoResult tableInfoResult, string query);
+
+        T Get<T>(TableInfoResult tableInfoResult);
     }
 }
