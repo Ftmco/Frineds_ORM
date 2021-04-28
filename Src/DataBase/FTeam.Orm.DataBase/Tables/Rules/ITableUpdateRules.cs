@@ -2,7 +2,7 @@
 using FTeam.Orm.Results.QueryBase;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables.Rules
+namespace FTeam.Orm.DataBase.Tables
 {
     public interface ITableUpdateRules
     {

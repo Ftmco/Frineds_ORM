@@ -1,5 +1,7 @@
-﻿using FTeam.Orm.Cosmos.QueryBase;
+﻿using FTeam.DependencyController.Kernel;
+using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Extentions;
+using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
@@ -13,14 +15,32 @@ namespace FTeam.Orm.DataBase.Tables
     {
         #region __Dependency__
 
+        /// <summary>
+        /// Friends Dependency Injector Kernel
+        /// </summary>
+        public static readonly IFkernel _fkernel = new Fkernel();
+
+        /// <summary>
+        /// Query Base Services
+        /// </summary>
         private readonly IQueryBase _queryBase;
 
+        /// <summary>
+        /// Data Table Mapper
+        /// </summary>
         private readonly IDataTableMapper _dataTableMapper;
+
+        /// <summary>
+        /// Crud Base Services
+        /// </summary>
+        private readonly ITableCrudBase _crudBase;
 
         public TableGetServices()
         {
-            _queryBase = new QueryBase();
-            _dataTableMapper = new DataTableMapper();
+            RegisterDependency();
+            _dataTableMapper = _fkernel.Get<IDataTableMapper>();
+            _crudBase = _fkernel.Get<ITableCrudBase>();
+            _queryBase = _fkernel.Get<IQueryBase>();
         }
 
 
@@ -68,79 +88,54 @@ namespace FTeam.Orm.DataBase.Tables
 
                 RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
 
-                TableInfoResult result = new();
-                if (queryResult.QueryStatus == QueryStatus.Success)
+                switch (queryResult.QueryStatus)
                 {
-                    result = new()
-                    {
-                        TableInfo = await _dataTableMapper.MapAsync<TableInfo>(queryResult.DataTable),
-                        Status = QueryStatus.Success,
-                        DbConnectionInfo = dbConnectionInfo
-                    };
-
-                    result.TableInfo.TableColumns = await GetTableColumnsAsync(tableName, dbConnectionInfo);
+                    case QueryStatus.Success:
+                        return await GetTableInfoResultAsync(dbConnectionInfo, tableName, queryResult);
+                    case QueryStatus.Exception:
+                        return new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception };
+                    case QueryStatus.InvalidOperationException:
+                        return new TableInfoResult { TableInfo = null, Status = QueryStatus.InvalidOperationException };
+                    case QueryStatus.SqlException:
+                        return new TableInfoResult() { TableInfo = null, Status = QueryStatus.SqlException };
+                    case QueryStatus.DbException:
+                        return new TableInfoResult() { TableInfo = null, Status = QueryStatus.DbException };
+                    default:
+                        goto case QueryStatus.Exception;
                 }
 
-                return queryResult.QueryStatus switch
+            });
+
+        private async Task<TableInfoResult> GetTableInfoResultAsync(DbConnectionInfo dbConnectionInfo, string tableName, RunQueryResult queryResult)
+            => await Task.Run(async () =>
+            {
+                TableInfoResult tableInfoResult = new()
                 {
-                    QueryStatus.Success => result,
-
-                    QueryStatus.Exception => new() { TableInfo = null, Status = QueryStatus.Exception },
-
-                    QueryStatus.InvalidOperationException => new() { TableInfo = null, Status = QueryStatus.InvalidOperationException },
-
-                    QueryStatus.SqlException => new() { TableInfo = null, Status = QueryStatus.SqlException },
-
-                    QueryStatus.DbException => new() { TableInfo = null, Status = QueryStatus.DbException },
-
-                    _ => new() { TableInfo = null, Status = QueryStatus.Exception }
+                    TableInfo = await _dataTableMapper.MapAsync<TableInfo>(queryResult.DataTable),
+                    Status = QueryStatus.Success,
+                    DbConnectionInfo = dbConnectionInfo
                 };
+                tableInfoResult.TableInfo.TableColumns = await GetTableColumnsAsync(tableName, dbConnectionInfo);
+                return tableInfoResult;
             });
 
         public IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult)
-            => GetEnumerable<T>(tableInfoResult,
+            => _crudBase.GetAllBase<T>(tableInfoResult,
                 $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}]");
 
         public IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult, string query)
-            => GetEnumerable<T>(tableInfoResult,
+            => _crudBase.GetAllBase<T>(tableInfoResult,
                 $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
-
-        private IEnumerable<T> GetEnumerable<T>(TableInfoResult tableInfoResult, string query)
-        {
-            string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-            RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
-
-            return runQuery.QueryStatus switch
-            {
-                QueryStatus.Success => _dataTableMapper.MapList<T>(runQuery.DataTable),
-
-                _ => null
-            };
-        }
 
         public async Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult)
             => await Task.FromResult(await
-                GetEnumerableAsync<T>(tableInfoResult,
+                _crudBase.GetAllBaseAsync<T>(tableInfoResult,
                     $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}]"));
 
         public async Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult, string query)
             => await Task.FromResult(await
-                GetEnumerableAsync<T>(tableInfoResult,
+                _crudBase.GetAllBaseAsync<T>(tableInfoResult,
                      $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}"));
-
-        private async Task<IEnumerable<T>> GetEnumerableAsync<T>(TableInfoResult tableInfoResult, string query)
-            => await Task.Run(async () =>
-            {
-                string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-                RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
-
-                return runQuery.QueryStatus switch
-                {
-                    QueryStatus.Success => await _dataTableMapper.MapListAsync<T>(runQuery.DataTable),
-
-                    _ => null
-                };
-            });
 
         public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
             => await Task.Run(async () =>
@@ -177,39 +172,22 @@ namespace FTeam.Orm.DataBase.Tables
         }
 
         public async Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query)
-            => await Task.FromResult(await GetSingleObjectAsync<T>(tableInfoResult,
+            => await Task.FromResult(await _crudBase.GetBaseAsync<T>(tableInfoResult,
                 $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}"));
 
-        private async Task<T> GetSingleObjectAsync<T>(TableInfoResult tableInfoResult, string query)
-            => await Task.Run(async () =>
-            {
-                string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-                RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
-
-                return runQuery.QueryStatus switch
-                {
-                    QueryStatus.Success => await _dataTableMapper.MapAsync<T>(runQuery.DataTable),
-
-                    _ => default
-                };
-            });
 
         public T Get<T>(TableInfoResult tableInfoResult, string query)
-            => GetSingleObject<T>(tableInfoResult,
+            => _crudBase.GetBase<T>(tableInfoResult,
                  $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
 
-        public T GetSingleObject<T>(TableInfoResult tableInfoResult, string query)
+        /// <summary>
+        /// Register Dependency In FKernel
+        /// </summary>
+        private static void RegisterDependency()
         {
-            string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-            RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
-
-            return runQuery.QueryStatus switch
-            {
-                QueryStatus.Success => _dataTableMapper.Map<T>(runQuery.DataTable),
-
-                _ => default
-            };
+            _fkernel.Inject<IQueryBase, QueryBase>();
+            _fkernel.Inject<IDataTableMapper, DataTableMapper>();
+            _fkernel.Inject<ITableCrudBase, TableCrudBaseServices>();
         }
-
     }
 }
