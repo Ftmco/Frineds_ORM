@@ -140,7 +140,6 @@ namespace FTeam.Orm.DataBase.Tables
 
                     _ => null
                 };
-
             });
 
         public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
@@ -176,5 +175,41 @@ namespace FTeam.Orm.DataBase.Tables
                 _ => null
             };
         }
+
+        public async Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query)
+            => await Task.FromResult(await GetSingleObjectAsync<T>(tableInfoResult,
+                $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}"));
+
+        private async Task<T> GetSingleObjectAsync<T>(TableInfoResult tableInfoResult, string query)
+            => await Task.Run(async () =>
+            {
+                string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
+
+                return runQuery.QueryStatus switch
+                {
+                    QueryStatus.Success => await _dataTableMapper.MapAsync<T>(runQuery.DataTable),
+
+                    _ => default
+                };
+            });
+
+        public T Get<T>(TableInfoResult tableInfoResult, string query)
+            => GetSingleObject<T>(tableInfoResult,
+                 $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
+
+        public T GetSingleObject<T>(TableInfoResult tableInfoResult, string query)
+        {
+            string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+            RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
+
+            return runQuery.QueryStatus switch
+            {
+                QueryStatus.Success => _dataTableMapper.Map<T>(runQuery.DataTable),
+
+                _ => default
+            };
+        }
+
     }
 }

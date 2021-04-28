@@ -24,10 +24,7 @@ namespace FTeam.Orm.DataBase.Tables
 
         Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query);
 
-        Task<T> GetAsync<T>(TableInfoResult tableInfoResult);
-
         T Get<T>(TableInfoResult tableInfoResult, string query);
 
-        T Get<T>(TableInfoResult tableInfoResult);
     }
 }
