@@ -1,12 +1,11 @@
-﻿using FTeam.Orm.Cosmos.QueryBase;
+﻿using FTeam.DependencyController.Kernel;
+using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Extentions;
+using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables.Services
@@ -15,9 +14,27 @@ namespace FTeam.Orm.DataBase.Tables.Services
     {
         #region :: Dependency ::
 
+        /// <summary>
+        /// Friends Dependency Injector Kernel
+        /// </summary>
+        public static readonly IFkernel _fkernel = new Fkernel();
+
+        /// <summary>
+        /// Query Base Services
+        /// </summary>
         private readonly IQueryBase _queryBase;
 
+        /// <summary>
+        /// Data Table Mapper
+        /// </summary>
         private readonly IDataTableMapper _dataTableMapper;
+
+        public TableCrudBaseServices()
+        {
+            RegisterDependency();
+            _queryBase = _fkernel.Get<IQueryBase>();
+            _dataTableMapper = _fkernel.Get<IDataTableMapper>();
+        }
 
         #endregion
 
@@ -74,5 +91,14 @@ namespace FTeam.Orm.DataBase.Tables.Services
                      _ => default
                  };
              });
+
+        /// <summary>
+        /// Register Dependency In FKernel
+        /// </summary>
+        private static void RegisterDependency()
+        {
+            _fkernel.Inject<IQueryBase, QueryBase>();
+            _fkernel.Inject<IDataTableMapper, DataTableMapper>();
+        }
     }
 }
