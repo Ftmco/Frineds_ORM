@@ -88,23 +88,33 @@ namespace FTeam.Orm.DataBase.Tables
 
                 RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
 
-                switch (queryResult.QueryStatus)
-                {
-                    case QueryStatus.Success:
-                        return await GetTableInfoResultAsync(dbConnectionInfo, tableName, queryResult);
-                    case QueryStatus.Exception:
-                        return new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception };
-                    case QueryStatus.InvalidOperationException:
-                        return new TableInfoResult { TableInfo = null, Status = QueryStatus.InvalidOperationException };
-                    case QueryStatus.SqlException:
-                        return new TableInfoResult() { TableInfo = null, Status = QueryStatus.SqlException };
-                    case QueryStatus.DbException:
-                        return new TableInfoResult() { TableInfo = null, Status = QueryStatus.DbException };
-                    default:
-                        goto case QueryStatus.Exception;
-                }
-
+                //Return Result
+                return await ReturnResultAsync(queryResult, dbConnectionInfo, tableName);
             });
+
+        private async Task<TableInfoResult> ReturnResultAsync(RunQueryResult runQueryResult, DbConnectionInfo dbConnectionInfo, string tableName)
+            => await Task.Run(async () =>
+             runQueryResult.QueryStatus switch
+             {
+                 //Success Status
+                 //Return Table Info
+                 QueryStatus.Success => await GetTableInfoResultAsync(dbConnectionInfo, tableName, runQueryResult),
+
+                 //System Exceptions
+                 QueryStatus.Exception => new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception },
+
+                 //InvalidOperationException Ado.Net Exceptions
+                 QueryStatus.InvalidOperationException => new TableInfoResult { TableInfo = null, Status = QueryStatus.InvalidOperationException },
+
+                 //Connection Or Query Execute Exceptions
+                 QueryStatus.SqlException => new TableInfoResult() { TableInfo = null, Status = QueryStatus.SqlException },
+
+                 //Data Base Exceptions
+                 QueryStatus.DbException => new TableInfoResult() { TableInfo = null, Status = QueryStatus.DbException },
+
+                 //default
+                 _ => new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception }
+             });
 
         private async Task<TableInfoResult> GetTableInfoResultAsync(DbConnectionInfo dbConnectionInfo, string tableName, RunQueryResult queryResult)
             => await Task.Run(async () =>
@@ -174,7 +184,6 @@ namespace FTeam.Orm.DataBase.Tables
         public async Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query)
             => await Task.FromResult(await _crudBase.GetBaseAsync<T>(tableInfoResult,
                 $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}"));
-
 
         public T Get<T>(TableInfoResult tableInfoResult, string query)
             => _crudBase.GetBase<T>(tableInfoResult,
