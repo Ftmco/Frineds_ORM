@@ -6,7 +6,7 @@ namespace FTeam.Orm.DataBase.Test.Tables
 {
     public class TestTableServices
     {
-        private ITableRules _tableRules;
+        private ITableGetRules _tableRules;
 
         DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
@@ -14,7 +14,7 @@ namespace FTeam.Orm.DataBase.Test.Tables
         [Test]
         public void Setup()
         {
-            _tableRules = new TableServices();
+            _tableRules = new TableGetServices();
         }
 
         [Test]

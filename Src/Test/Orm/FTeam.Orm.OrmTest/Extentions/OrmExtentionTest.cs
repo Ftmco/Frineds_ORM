@@ -58,13 +58,28 @@ namespace FTeam.Orm.OrmTest.Extentions
         }
 
         [Test]
-        public void GetOnjectTest()
+        public void GetObjectTest()
         {
             IEnumerable<Users> users = _dbConnectionInfo.Table("Users").GetAll<Users>("Users.[PhoneNumber] = '09012421080'");
 
             if (users != null)
             {
                 Assert.Pass(users.FirstOrDefault().UserName);
+            }
+            else
+            {
+                Assert.Fail("Null Refrence");
+            }
+        }
+
+        [Test]
+        public void GetSingleObjectTest()
+        {
+            Users users = _dbConnectionInfo.Table("Users").Get<Users>("Users.[PhoneNumber] = '09012421080'");
+
+            if (users != null)
+            {
+                Assert.Pass($"User Name = {users.UserName};Phone Number = {users.PhoneNumber};User Id = {users.UserId};Password = {users.Password}");
             }
             else
             {

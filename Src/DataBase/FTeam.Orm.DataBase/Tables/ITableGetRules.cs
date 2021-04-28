@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables
 {
-    public interface ITableRules
+    public interface ITableGetRules
     {
         Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName);
 

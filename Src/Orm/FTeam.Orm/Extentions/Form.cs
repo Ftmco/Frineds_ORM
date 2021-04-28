@@ -8,7 +8,7 @@ namespace FTeam.Orm.Extentions
 {
     public static class Form
     {
-        private static readonly ITableRules _table = new TableServices();
+        private static readonly ITableGetRules _table = new TableGetServices();
 
         public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName)
             => _table.GetTableInfo(dbConnectionInfo, tableName);
@@ -29,16 +29,10 @@ namespace FTeam.Orm.Extentions
             => _table.GetAll<T>(tableInfo, query);
 
         public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo, string query)
-         => await Task.FromResult(await _table.GetAsync<T>(tableInfo, query));
+            => await Task.FromResult(await _table.GetAsync<T>(tableInfo, query));
 
         public static T Get<T>(this TableInfoResult tableInfo, string query)
-            => Get<T>(tableInfo, query);
-
-        public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo)
-            => await Task.FromResult(await _table.GetAsync<T>(tableInfo));
-
-        public static T Get<T>(this TableInfoResult tableInfo)
-            => _table.Get<T>(tableInfo);
+            => _table.Get<T>(tableInfo, query);
 
         public static QueryStatus Insert<T>(this TableInfoResult tableInfo, T instance)
         {

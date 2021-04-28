@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables
 {
-    public class TableServices : ITableRules
+    public class TableGetServices : ITableGetRules
     {
         #region __Dependency__
 
@@ -17,7 +17,7 @@ namespace FTeam.Orm.DataBase.Tables
 
         private readonly IDataTableMapper _dataTableMapper;
 
-        public TableServices()
+        public TableGetServices()
         {
             _queryBase = new QueryBase();
             _dataTableMapper = new DataTableMapper();
