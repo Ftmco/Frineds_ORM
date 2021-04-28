@@ -174,7 +174,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                     await cmd.ExecuteNonQueryAsync();
                     return QueryStatus.Success;
                 }
-                catch (DbException)
+                catch (DbException ex)
                 {
                     return QueryStatus.DbException;
                 }

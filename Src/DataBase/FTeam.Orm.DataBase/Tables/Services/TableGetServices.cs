@@ -16,11 +16,6 @@ namespace FTeam.Orm.DataBase.Tables
         #region __Dependency__
 
         /// <summary>
-        /// Friends Dependency Injector Kernel
-        /// </summary>
-        public static readonly IFkernel _fkernel = new Fkernel();
-
-        /// <summary>
         /// Query Base Services
         /// </summary>
         private readonly IQueryBase _queryBase;
@@ -37,10 +32,9 @@ namespace FTeam.Orm.DataBase.Tables
 
         public TableGetServices()
         {
-            RegisterDependency();
-            _dataTableMapper = _fkernel.Get<IDataTableMapper>();
-            _crudBase = _fkernel.Get<ITableCrudBase>();
-            _queryBase = _fkernel.Get<IQueryBase>();
+            _dataTableMapper = new DataTableMapper();
+            _crudBase = new TableCrudBaseServices();
+            _queryBase = new QueryBase();
         }
 
 
@@ -189,14 +183,5 @@ namespace FTeam.Orm.DataBase.Tables
             => _crudBase.GetBase<T>(tableInfoResult,
                  $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
 
-        /// <summary>
-        /// Register Dependency In FKernel
-        /// </summary>
-        private static void RegisterDependency()
-        {
-            _fkernel.Inject<IQueryBase, QueryBase>();
-            _fkernel.Inject<IDataTableMapper, DataTableMapper>();
-            _fkernel.Inject<ITableCrudBase, TableCrudBaseServices>();
-        }
     }
 }

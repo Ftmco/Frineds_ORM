@@ -15,22 +15,22 @@ namespace FTeam.Orm.Extentions
         /// <summary>
         /// Table Get Services
         /// </summary>
-        private static readonly ITableGetRules _tableGet = new TableGetServices();
+        private static ITableGetRules _tableGet = new TableGetServices();
 
         /// <summary>
         /// Table Delete Services
         /// </summary>
-        private static readonly ITableDeleteRules _tableDelete = new TableCrudServices();
+        private static ITableDeleteRules _tableDelete = new TableDeleteServices();
 
         /// <summary>
         /// Table Update Services
         /// </summary>
-        private static readonly ITableUpdateRules _tableUpdate = new TableCrudServices();
+        private static ITableUpdateRules _tableUpdate = new TableUpdateServices();
 
         /// <summary>
         /// Table Insert Services
         /// </summary>
-        private static readonly ITableInsertRules _tableInsert = new TableCrudServices();
+        private static ITableInsertRules _tableInsert = new TableInsertServices();
 
         #endregion
 

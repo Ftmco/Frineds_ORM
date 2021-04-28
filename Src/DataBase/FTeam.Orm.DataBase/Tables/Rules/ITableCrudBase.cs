@@ -1,8 +1,6 @@
 ﻿using FTeam.Orm.Models;
-using System;
+using FTeam.Orm.Results.QueryBase;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables
@@ -18,6 +16,12 @@ namespace FTeam.Orm.DataBase.Tables
         Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query);
 
         T GetBase<T>(TableInfoResult tableInfoResult, string query);
+
+        #endregion
+
+        #region --:: Insert ::--
+
+        Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, string query);
 
         #endregion
     }

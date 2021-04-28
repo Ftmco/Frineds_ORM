@@ -15,11 +15,6 @@ namespace FTeam.Orm.DataBase.Tables.Services
         #region :: Dependency ::
 
         /// <summary>
-        /// Friends Dependency Injector Kernel
-        /// </summary>
-        public static readonly IFkernel _fkernel = new Fkernel();
-
-        /// <summary>
         /// Query Base Services
         /// </summary>
         private readonly IQueryBase _queryBase;
@@ -31,9 +26,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public TableCrudBaseServices()
         {
-            RegisterDependency();
-            _queryBase = _fkernel.Get<IQueryBase>();
-            _dataTableMapper = _fkernel.Get<IDataTableMapper>();
+            _queryBase = new QueryBase();
+            _dataTableMapper = new DataTableMapper();
         }
 
         #endregion
@@ -92,13 +86,12 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        /// <summary>
-        /// Register Dependency In FKernel
-        /// </summary>
-        private static void RegisterDependency()
-        {
-            _fkernel.Inject<IQueryBase, QueryBase>();
-            _fkernel.Inject<IDataTableMapper, DataTableMapper>();
-        }
+        public async Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, string query)
+            => await Task.Run(async () =>
+            {
+                string connectionString = dbConnectionInfo.GetConnectionString();
+
+                return await _queryBase.RunVoidQueryAsync(connectionString, query);
+            });
     }
 }
