@@ -49,7 +49,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 sqlDataAdapter.Fill(dataTable);
                 return new RunQueryResult { DataTable = dataTable, QueryStatus = QueryStatus.Success };
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 return new RunQueryResult { QueryStatus = QueryStatus.InvalidOperationException };
             }
