@@ -8,7 +8,15 @@ namespace FTeam.Orm.Extentions
 {
     public static class Form
     {
+
+        #region --:: Dependencies ::--
+
+        /// <summary>
+        /// Table Get Services
+        /// </summary>
         private static readonly ITableGetRules _table = new TableGetServices();
+
+        #endregion
 
         public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName)
             => _table.GetTableInfo(dbConnectionInfo, tableName);
