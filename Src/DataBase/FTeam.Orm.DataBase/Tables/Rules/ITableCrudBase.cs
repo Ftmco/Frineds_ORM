@@ -24,6 +24,8 @@ namespace FTeam.Orm.DataBase.Tables
 
         Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo,SqlCommand sqlCommand);
 
+        QueryStatus Insert(DbConnectionInfo dbConnectionInfo,SqlCommand sqlCommand);
+
         #endregion
     }
 }
