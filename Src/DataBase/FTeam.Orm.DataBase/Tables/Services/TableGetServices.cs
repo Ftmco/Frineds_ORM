@@ -1,5 +1,4 @@
-﻿using FTeam.DependencyController.Kernel;
-using FTeam.Orm.Cosmos.QueryBase;
+﻿using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Extentions;
 using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Mapper.Impelement;
@@ -124,21 +123,21 @@ namespace FTeam.Orm.DataBase.Tables
             });
 
         public IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult)
-            => _crudBase.GetAllBase<T>(tableInfoResult,
+            => _crudBase.TryGetAllBase<T>(tableInfoResult,
                 $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}]");
 
         public IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult, string query)
-            => _crudBase.GetAllBase<T>(tableInfoResult,
+            => _crudBase.TryGetAllBase<T>(tableInfoResult,
                 $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
 
         public async Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult)
             => await Task.FromResult(await
-                _crudBase.GetAllBaseAsync<T>(tableInfoResult,
+                _crudBase.TryGetAllBaseAsync<T>(tableInfoResult,
                     $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}]"));
 
         public async Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult, string query)
             => await Task.FromResult(await
-                _crudBase.GetAllBaseAsync<T>(tableInfoResult,
+                _crudBase.TryGetAllBaseAsync<T>(tableInfoResult,
                      $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}"));
 
         public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
@@ -176,11 +175,11 @@ namespace FTeam.Orm.DataBase.Tables
         }
 
         public async Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query)
-            => await Task.FromResult(await _crudBase.GetBaseAsync<T>(tableInfoResult,
+            => await Task.FromResult(await _crudBase.TryGetBaseAsync<T>(tableInfoResult,
                 $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}"));
 
         public T Get<T>(TableInfoResult tableInfoResult, string query)
-            => _crudBase.GetBase<T>(tableInfoResult,
+            => _crudBase.TryGetBase<T>(tableInfoResult,
                  $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
 
     }

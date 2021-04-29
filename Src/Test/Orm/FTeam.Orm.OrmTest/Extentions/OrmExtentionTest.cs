@@ -22,8 +22,6 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void TestExtentions()
         {
-
-
             TableInfoResult tableInfo = _dbConnectionInfo.TryTable("Users");
 
             switch (tableInfo.Status)
@@ -102,7 +100,7 @@ namespace FTeam.Orm.OrmTest.Extentions
                 Email = "Gmail",
                 FirstName = "Test",
                 LastName = "Test",
-                ImageName ="Null.jpg",
+                ImageName = "Null.jpg",
                 IsActive = true,
                 Password = "Password",
                 PhoneNumber = "09012523240",
@@ -110,7 +108,7 @@ namespace FTeam.Orm.OrmTest.Extentions
                 UserId = Guid.NewGuid(),
                 UserName = "USer Name",
                 UserType = 1
-                
+
             }).Result;
 
             switch (insertStatus)
@@ -134,6 +132,7 @@ namespace FTeam.Orm.OrmTest.Extentions
                     Assert.Fail("Exception");
                     break;
             }
+
         }
     }
 }

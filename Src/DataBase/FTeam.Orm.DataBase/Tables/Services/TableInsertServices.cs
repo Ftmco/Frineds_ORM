@@ -23,14 +23,14 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public QueryStatus Insert<T>(TableInfoResult tableInfo, T instance)
         {
             SqlCommand command = GenerateCmd(tableInfo, instance);
-            return _tableCrudBase.Insert(tableInfo.DbConnectionInfo, command);
+            return _tableCrudBase.TryInsert(tableInfo.DbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance)
             => await Task.Run(async () =>
             {
                 SqlCommand command = GenerateCmd(tableInfo, instance);
-                return await _tableCrudBase.InsertAsync(tableInfo.DbConnectionInfo, command);
+                return await _tableCrudBase.TryInsertAsync(tableInfo.DbConnectionInfo, command);
             });
 
         private static SqlCommand GenerateCmd<T>(TableInfoResult tableInfo, T instance)
@@ -51,6 +51,5 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
             return cmd;
         }
-
     }
 }

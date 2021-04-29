@@ -32,7 +32,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query)
+        public IEnumerable<T> TryGetAllBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
@@ -45,7 +45,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public async Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<IEnumerable<T>> TryGetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
@@ -59,7 +59,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public T GetBase<T>(TableInfoResult tableInfoResult, string query)
+        public T TryGetBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
@@ -72,7 +72,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public async Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<T> TryGetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
@@ -86,14 +86,14 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public QueryStatus Insert(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus TryInsert(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
         {
             string connectionString = dbConnectionInfo.GetConnectionString();
 
             return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
         }
 
-        public async Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> TryInsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
                 string connectionString = dbConnectionInfo.GetConnectionString();
