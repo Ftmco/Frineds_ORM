@@ -30,14 +30,14 @@ namespace FTeam.Orm.DataBase.Tables
         /// </summary>
         private readonly ITableCrudBase _crudBase;
 
-        private readonly ITablePrimaryKeyRules _tablePrimaryKey;
+        private readonly ITableColumnsRules _tablePrimaryKey;
 
         public TableGetServices()
         {
             _dataTableMapper = new DataTableMapper();
             _crudBase = new TableCrudBaseServices();
             _queryBase = new QueryBase();
-            _tablePrimaryKey = new TablePrimaryKeyServices();
+            _tablePrimaryKey = new TableColumnsServices();
         }
 
 
@@ -112,7 +112,7 @@ namespace FTeam.Orm.DataBase.Tables
                     Status = QueryStatus.Success,
                     DbConnectionInfo = dbConnectionInfo
                 };
-                tableInfoResult.TableInfo.TableColumns = await GetTableColumnsAsync(tableName, dbConnectionInfo);
+                tableInfoResult.TableInfo.TableColumns = await _tablePrimaryKey.GetTableColumnsAsync(tableName, dbConnectionInfo);
                 tableInfoResult.TableInfo.PrimaryKey = await _tablePrimaryKey.TryGetTablePrimaryKeyAsync(dbConnectionInfo, tableInfoResult);
                 tableInfoResult.TableInfo.PrimaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(c => c.Column ==
                 tableInfoResult.TableInfo.PrimaryKey.Column).Type;
@@ -127,12 +127,10 @@ namespace FTeam.Orm.DataBase.Tables
                 Status = QueryStatus.Success,
                 DbConnectionInfo = dbConnectionInfo
             };
-            tableInfoResult.TableInfo.TableColumns = GetTableColumns(tableName, dbConnectionInfo);
+            tableInfoResult.TableInfo.TableColumns = _tablePrimaryKey.GetTableColumns(tableName, dbConnectionInfo);
             tableInfoResult.TableInfo.PrimaryKey = _tablePrimaryKey.TryGetTablePrimaryKey(dbConnectionInfo, tableInfoResult);
             return tableInfoResult;
         }
-
-
 
         public IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult)
             => _crudBase.TryGetAllBase<T>(tableInfoResult,
@@ -152,38 +150,7 @@ namespace FTeam.Orm.DataBase.Tables
                 _crudBase.TryGetAllBaseAsync<T>(tableInfoResult,
                      $"SELECT * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}"));
 
-        public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
-            => await Task.Run(async () =>
-            {
-                string query = $"SELECT ISNULLABLE as Nullable,DATATYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
-
-                RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
-
-                QueryStatus status = queryResult.QueryStatus;
-
-                return status switch
-                {
-                    QueryStatus.Success => await _dataTableMapper.MapListAsync<TableColumns>(queryResult.DataTable),
-
-                    _ => null
-                };
-            });
-
-        public IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
-        {
-            string query = $"SELECT IS_NULLABLE as [Nullable],DATA_TYPE as [Type],COLUMN_NAME as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =  '{tableName}'";
-
-            RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
-
-            QueryStatus status = queryResult.QueryStatus;
-
-            return status switch
-            {
-                QueryStatus.Success => _dataTableMapper.MapList<TableColumns>(queryResult.DataTable),
-
-                _ => null
-            };
-        }
+        
 
         public async Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query)
             => await Task.FromResult(await _crudBase.TryGetBaseAsync<T>(tableInfoResult,

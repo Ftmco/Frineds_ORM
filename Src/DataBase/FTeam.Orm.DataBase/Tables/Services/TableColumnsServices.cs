@@ -4,12 +4,13 @@ using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables.Services
 {
-    public class TablePrimaryKeyServices : ITablePrimaryKeyRules
+    public class TableColumnsServices : ITableColumnsRules
     {
         #region --:: Dependency ::--
 
@@ -28,7 +29,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         /// </summary>
         private readonly ITableCrudBase _crudBase;
 
-        public TablePrimaryKeyServices()
+        public TableColumnsServices()
         {
             _dataTableMapper = new DataTableMapper();
             _crudBase = new TableCrudBaseServices();
@@ -104,6 +105,39 @@ namespace FTeam.Orm.DataBase.Tables.Services
                          return primaryKey;
                  }
              });
+
+        public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
+            => await Task.Run(async () =>
+            {
+                string query = $"SELECT ISNULLABLE as Nullable,DATATYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+                RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
+
+                QueryStatus status = queryResult.QueryStatus;
+
+                return status switch
+                {
+                    QueryStatus.Success => await _dataTableMapper.MapListAsync<TableColumns>(queryResult.DataTable),
+
+                    _ => null
+                };
+            });
+
+        public IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
+        {
+            string query = $"SELECT IS_NULLABLE as [Nullable],DATA_TYPE as [Type],COLUMN_NAME as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =  '{tableName}'";
+
+            RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
+
+            QueryStatus status = queryResult.QueryStatus;
+
+            return status switch
+            {
+                QueryStatus.Success => _dataTableMapper.MapList<TableColumns>(queryResult.DataTable),
+
+                _ => null
+            };
+        }
 
     }
 }
