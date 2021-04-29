@@ -174,7 +174,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                     await cmd.ExecuteNonQueryAsync();
                     return QueryStatus.Success;
                 }
-                catch (DbException ex)
+                catch (DbException)
                 {
                     return QueryStatus.DbException;
                 }
@@ -187,6 +187,48 @@ namespace FTeam.Orm.Cosmos.QueryBase
                     await _connectionBase.CloseConnectionAsync(sqlConnection);
                 }
             });
+
+        public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, SqlCommand sqlCommand)
+             => await Task.Run(async () =>
+             {
+                 OpenConnectionResult openConnection = await _connectionBase.OpenConnectionAsync(connectionString);
+
+                 return openConnection.ConnectionStatus switch
+                 {
+                     OpenConnectionStatus.Success => await RunVoidQueryAsync(openConnection.SqlConnection, sqlCommand),
+
+                     OpenConnectionStatus.Exception => QueryStatus.Exception,
+
+                     OpenConnectionStatus.InvalidOperationException => QueryStatus.InvalidOperationException,
+
+                     OpenConnectionStatus.SqlException => QueryStatus.SqlException,
+
+                     _ => QueryStatus.Exception
+                 };
+             });
+
+        public async Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, SqlCommand sqlCommand)
+             => await Task.Run(async () =>
+             {
+                 try
+                 {
+                     sqlCommand.Connection = sqlConnection;
+                     await sqlCommand.ExecuteNonQueryAsync();
+                     return QueryStatus.Success;
+                 }
+                 catch (DbException)
+                 {
+                     return QueryStatus.DbException;
+                 }
+                 catch (Exception)
+                 {
+                     return QueryStatus.Exception;
+                 }
+                 finally
+                 {
+                     await _connectionBase.CloseConnectionAsync(sqlConnection);
+                 }
+             });
 
         private void RegisterDependency()
         {

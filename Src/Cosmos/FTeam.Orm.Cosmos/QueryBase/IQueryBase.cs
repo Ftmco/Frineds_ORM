@@ -8,6 +8,10 @@ namespace FTeam.Orm.Cosmos.QueryBase
     {
         Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query);
 
+        Task<QueryStatus> RunVoidQueryAsync(string connectionString,SqlCommand sqlCommand);
+
+        Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, SqlCommand sqlCommand);
+
         Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, string query);
 
         Task<RunQueryResult> RunQueryAsync(string connectionString, string query);
