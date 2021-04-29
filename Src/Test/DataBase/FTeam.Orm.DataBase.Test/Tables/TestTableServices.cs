@@ -11,7 +11,7 @@ namespace FTeam.Orm.DataBase.Test.Tables
         DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
 
-        [Test]
+        [SetUp]
         public void Setup()
         {
             _tableRules = new TableGetServices();
@@ -25,7 +25,7 @@ namespace FTeam.Orm.DataBase.Test.Tables
             switch (result.Status)
             {
                 case Results.QueryBase.QueryStatus.Success:
-                    Assert.Pass(result.TableInfo.TableName);
+                    Assert.Pass(result.TableInfo.PrimaryKey.Column + "" + result.TableInfo.PrimaryKey.Type);
                     break;
                 case Results.QueryBase.QueryStatus.Exception:
                     Assert.Fail("Exception");

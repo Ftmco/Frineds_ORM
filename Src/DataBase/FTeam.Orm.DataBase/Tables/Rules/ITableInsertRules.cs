@@ -6,8 +6,8 @@ namespace FTeam.Orm.DataBase.Tables
 {
     public interface ITableInsertRules
     {
-        Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, T instance);
 
-        QueryStatus Insert<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus TryInsert<T>(TableInfoResult tableInfo, T instance);
     }
 }

@@ -9,7 +9,6 @@ namespace FTeam.Orm.Extentions
 {
     public static class Form
     {
-
         #region --:: Dependencies ::--
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="instance">Instance Object</param>
         /// <returns><see cref="QueryStatus"/></returns>
         public static QueryStatus TryInsert<T>(this TableInfoResult tableInfo, T instance)
-           => _tableInsert.Insert<T>(tableInfo, instance);
+           => _tableInsert.TryInsert<T>(tableInfo, instance);
 
         /// <summary>
         /// Try For Insert New Instance To Data Base 
@@ -55,7 +54,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="instance">Instance Object</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
         public static async Task<QueryStatus> TryInsertAsync<T>(this TableInfoResult tableInfo, T instance)
-           => await Task.FromResult(await _tableInsert.InsertAsync<T>(tableInfo, instance));
+           => await Task.FromResult(await _tableInsert.TryInsertAsync<T>(tableInfo, instance));
 
         #endregion
 

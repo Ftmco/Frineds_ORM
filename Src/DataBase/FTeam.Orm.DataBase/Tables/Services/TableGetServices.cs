@@ -6,6 +6,7 @@ using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables
@@ -45,22 +46,13 @@ namespace FTeam.Orm.DataBase.Tables
 
             RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
 
-            TableInfoResult result = new();
-            if (queryResult.QueryStatus == QueryStatus.Success)
-            {
-                result = new()
-                {
-                    TableInfo = _dataTableMapper.Map<TableInfo>(queryResult.DataTable),
-                    Status = QueryStatus.Success,
-                    DbConnectionInfo = dbConnectionInfo
-                };
+            return ReturnResult(queryResult, dbConnectionInfo, tableName);
+        }
 
-                result.TableInfo.TableColumns = GetTableColumns(tableName, dbConnectionInfo);
-            }
-
-            return queryResult.QueryStatus switch
+        private TableInfoResult ReturnResult(RunQueryResult runQueryResult, DbConnectionInfo dbConnectionInfo, string tableName)
+            => runQueryResult.QueryStatus switch
             {
-                QueryStatus.Success => result,
+                QueryStatus.Success => GetTableInfoResult(dbConnectionInfo, tableName, runQueryResult),
 
                 QueryStatus.Exception => new() { TableInfo = null, Status = QueryStatus.Exception },
 
@@ -72,7 +64,6 @@ namespace FTeam.Orm.DataBase.Tables
 
                 _ => new() { TableInfo = null, Status = QueryStatus.Exception }
             };
-        }
 
         public async Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName)
             => await Task.Run(async () =>
@@ -119,8 +110,91 @@ namespace FTeam.Orm.DataBase.Tables
                     DbConnectionInfo = dbConnectionInfo
                 };
                 tableInfoResult.TableInfo.TableColumns = await GetTableColumnsAsync(tableName, dbConnectionInfo);
+                tableInfoResult.TableInfo.PrimaryKey = await TryGetTablePrimaryKeyAsync(dbConnectionInfo, tableInfoResult);
+                tableInfoResult.TableInfo.PrimaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(c => c.Column ==
+                tableInfoResult.TableInfo.PrimaryKey.Column).Type;
                 return tableInfoResult;
             });
+
+        private TableInfoResult GetTableInfoResult(DbConnectionInfo dbConnectionInfo, string tableName, RunQueryResult queryResult)
+        {
+            TableInfoResult tableInfoResult = new()
+            {
+                TableInfo = _dataTableMapper.Map<TableInfo>(queryResult.DataTable),
+                Status = QueryStatus.Success,
+                DbConnectionInfo = dbConnectionInfo
+            };
+            tableInfoResult.TableInfo.TableColumns = GetTableColumns(tableName, dbConnectionInfo);
+            tableInfoResult.TableInfo.PrimaryKey = TryGetTablePrimaryKey(dbConnectionInfo, tableInfoResult);
+            return tableInfoResult;
+        }
+
+        private async Task<PrimaryKey> TryGetTablePrimaryKeyAsync(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
+            => await Task.Run(async () =>
+            {
+                string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
+
+                RunQueryResult queryResult = await _queryBase.TryRunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+
+                PrimaryKey primaryKey = new();
+
+                switch (queryResult.QueryStatus)
+                {
+                    case QueryStatus.Success:
+                        {
+                            primaryKey = await _dataTableMapper.MapAsync<PrimaryKey>(queryResult.DataTable);
+                            primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
+                            return primaryKey;
+                        }
+                    case QueryStatus.Exception:
+                        return primaryKey;
+
+                    case QueryStatus.InvalidOperationException:
+                        return primaryKey;
+
+                    case QueryStatus.SqlException:
+                        return primaryKey;
+
+                    case QueryStatus.DbException:
+                        return primaryKey;
+
+                    default:
+                        return primaryKey;
+                }
+            });
+
+        private PrimaryKey TryGetTablePrimaryKey(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
+        {
+            string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
+
+            RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
+
+            PrimaryKey primaryKey = new();
+
+            switch (queryResult.QueryStatus)
+            {
+                case QueryStatus.Success:
+                    {
+                        primaryKey = _dataTableMapper.Map<PrimaryKey>(queryResult.DataTable);
+                        primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
+                        return primaryKey;
+                    }
+                case QueryStatus.Exception:
+                    return primaryKey;
+
+                case QueryStatus.InvalidOperationException:
+                    return primaryKey;
+
+                case QueryStatus.SqlException:
+                    return primaryKey;
+
+                case QueryStatus.DbException:
+                    return primaryKey;
+
+                default:
+                    return primaryKey;
+            }
+        }
 
         public IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult)
             => _crudBase.TryGetAllBase<T>(tableInfoResult,
@@ -155,7 +229,6 @@ namespace FTeam.Orm.DataBase.Tables
 
                     _ => null
                 };
-
             });
 
         public IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
