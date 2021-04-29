@@ -24,7 +24,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         {
 
 
-            TableInfoResult tableInfo = _dbConnectionInfo.Table("Users");
+            TableInfoResult tableInfo = _dbConnectionInfo.TryTable("Users");
 
             switch (tableInfo.Status)
             {
@@ -62,7 +62,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetObjectTest()
         {
-            IEnumerable<Users> users = _dbConnectionInfo.Table("Users").GetAll<Users>("Users.[PhoneNumber] = '09012523240'");
+            IEnumerable<Users> users = _dbConnectionInfo.TryTable("Users").TryGetAll<Users>("Users.[PhoneNumber] = '09012523240'");
 
             if (users != null)
             {
@@ -77,7 +77,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetSingleObjectTest()
         {
-            Users users = _dbConnectionInfo.Table("Users").Get<Users>("Users.[PhoneNumber] = '09012421080'");
+            Users users = _dbConnectionInfo.TryTable("Users").TryGet<Users>("Users.[PhoneNumber] = '09012421080'");
 
             if (users != null)
             {
@@ -92,7 +92,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void InsertRow()
         {
-            QueryStatus insertStatus = _dbConnectionInfo.Table("Users").InsertAsync<Users>(new()
+            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Users").TryInsertAsync<Users>(new()
             {
                 ActiveCode = "234562",
                 ActiveDate = DateTime.Now,

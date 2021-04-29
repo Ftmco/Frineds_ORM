@@ -86,6 +86,13 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
+        public QueryStatus Insert(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        {
+            string connectionString = dbConnectionInfo.GetConnectionString();
+
+            return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
+        }
+
         public async Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
