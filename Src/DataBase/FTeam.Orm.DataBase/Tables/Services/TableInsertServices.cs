@@ -1,5 +1,4 @@
-﻿using FTeam.DependencyController.Kernel;
-using FTeam.Orm.Models;
+﻿using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
 using System;
 using System.Data.SqlClient;

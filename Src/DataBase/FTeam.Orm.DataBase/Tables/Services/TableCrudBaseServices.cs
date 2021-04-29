@@ -35,7 +35,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-            RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
+            RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
 
             return runQuery.QueryStatus switch
             {
@@ -49,7 +49,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-                 RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
+                 RunQueryResult runQuery = await _queryBase.TryRunQueryAsync(connectionString, query);
 
                  return runQuery.QueryStatus switch
                  {
@@ -62,7 +62,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public T GetBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-            RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
+            RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
 
             return runQuery.QueryStatus switch
             {
@@ -76,7 +76,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-                 RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
+                 RunQueryResult runQuery = await _queryBase.TryRunQueryAsync(connectionString, query);
 
                  return runQuery.QueryStatus switch
                  {
@@ -91,7 +91,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             {
                 string connectionString = dbConnectionInfo.GetConnectionString();
 
-                return await _queryBase.RunVoidQueryAsync(connectionString, sqlCommand);
+                return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommand);
             });
     }
 }
