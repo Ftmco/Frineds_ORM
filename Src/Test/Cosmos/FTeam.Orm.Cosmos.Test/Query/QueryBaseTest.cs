@@ -20,7 +20,7 @@ namespace FTeam.Orm.Cosmos.Test.Query
         [Test]
         public void VoidQueryTest()
         {
-            QueryStatus result = _queryBase.RunVoidQueryAsync(connectionString, "Select * from Users").Result;
+            QueryStatus result = _queryBase.TryRunVoidQueryAsync(connectionString, "Select * from Users").Result;
 
             switch (result)
             {
@@ -48,7 +48,7 @@ namespace FTeam.Orm.Cosmos.Test.Query
         [Test]
         public void NoneVoidQueryTest()
         {
-            RunQueryResult result = _queryBase.RunQueryAsync(connectionString, "SELECT * FROM USERS").Result;
+            RunQueryResult result = _queryBase.TryRunQueryAsync(connectionString, "SELECT * FROM USERS").Result;
 
             switch (result.QueryStatus)
             {

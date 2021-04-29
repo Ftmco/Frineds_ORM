@@ -16,11 +16,6 @@ namespace FTeam.Orm.DataBase.Tables
         #region __Dependency__
 
         /// <summary>
-        /// Friends Dependency Injector Kernel
-        /// </summary>
-        public static readonly IFkernel _fkernel = new Fkernel();
-
-        /// <summary>
         /// Query Base Services
         /// </summary>
         private readonly IQueryBase _queryBase;
@@ -37,10 +32,9 @@ namespace FTeam.Orm.DataBase.Tables
 
         public TableGetServices()
         {
-            RegisterDependency();
-            _dataTableMapper = _fkernel.Get<IDataTableMapper>();
-            _crudBase = _fkernel.Get<ITableCrudBase>();
-            _queryBase = _fkernel.Get<IQueryBase>();
+            _dataTableMapper = new DataTableMapper();
+            _crudBase = new TableCrudBaseServices();
+            _queryBase = new QueryBase();
         }
 
 
@@ -50,7 +44,7 @@ namespace FTeam.Orm.DataBase.Tables
         {
             string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
-            RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+            RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
 
             TableInfoResult result = new();
             if (queryResult.QueryStatus == QueryStatus.Success)
@@ -86,7 +80,7 @@ namespace FTeam.Orm.DataBase.Tables
             {
                 string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
-                RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+                RunQueryResult queryResult = await _queryBase.TryRunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
 
                 //Return Result
                 return await ReturnResultAsync(queryResult, dbConnectionInfo, tableName);
@@ -152,7 +146,7 @@ namespace FTeam.Orm.DataBase.Tables
             {
                 string query = $"SELECT ISNULLABLE as Nullable,DATATYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
-                RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+                RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
 
                 QueryStatus status = queryResult.QueryStatus;
 
@@ -169,7 +163,7 @@ namespace FTeam.Orm.DataBase.Tables
         {
             string query = $"SELECT IS_NULLABLE as [Nullable],DATA_TYPE as [Type],COLUMN_NAME as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =  '{tableName}'";
 
-            RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+            RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
 
             QueryStatus status = queryResult.QueryStatus;
 
@@ -189,14 +183,5 @@ namespace FTeam.Orm.DataBase.Tables
             => _crudBase.GetBase<T>(tableInfoResult,
                  $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
 
-        /// <summary>
-        /// Register Dependency In FKernel
-        /// </summary>
-        private static void RegisterDependency()
-        {
-            _fkernel.Inject<IQueryBase, QueryBase>();
-            _fkernel.Inject<IDataTableMapper, DataTableMapper>();
-            _fkernel.Inject<ITableCrudBase, TableCrudBaseServices>();
-        }
     }
 }

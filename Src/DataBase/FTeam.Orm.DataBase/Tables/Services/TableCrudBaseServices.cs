@@ -1,11 +1,11 @@
-﻿using FTeam.DependencyController.Kernel;
-using FTeam.Orm.Cosmos.QueryBase;
+﻿using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Extentions;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables.Services
@@ -13,11 +13,6 @@ namespace FTeam.Orm.DataBase.Tables.Services
     public class TableCrudBaseServices : ITableCrudBase
     {
         #region :: Dependency ::
-
-        /// <summary>
-        /// Friends Dependency Injector Kernel
-        /// </summary>
-        public static readonly IFkernel _fkernel = new Fkernel();
 
         /// <summary>
         /// Query Base Services
@@ -31,9 +26,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public TableCrudBaseServices()
         {
-            RegisterDependency();
-            _queryBase = _fkernel.Get<IQueryBase>();
-            _dataTableMapper = _fkernel.Get<IDataTableMapper>();
+            _queryBase = new QueryBase();
+            _dataTableMapper = new DataTableMapper();
         }
 
         #endregion
@@ -41,7 +35,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-            RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
+            RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
 
             return runQuery.QueryStatus switch
             {
@@ -55,7 +49,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-                 RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
+                 RunQueryResult runQuery = await _queryBase.TryRunQueryAsync(connectionString, query);
 
                  return runQuery.QueryStatus switch
                  {
@@ -68,7 +62,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public T GetBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-            RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
+            RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
 
             return runQuery.QueryStatus switch
             {
@@ -82,7 +76,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
-                 RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
+                 RunQueryResult runQuery = await _queryBase.TryRunQueryAsync(connectionString, query);
 
                  return runQuery.QueryStatus switch
                  {
@@ -92,13 +86,12 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        /// <summary>
-        /// Register Dependency In FKernel
-        /// </summary>
-        private static void RegisterDependency()
-        {
-            _fkernel.Inject<IQueryBase, QueryBase>();
-            _fkernel.Inject<IDataTableMapper, DataTableMapper>();
-        }
+        public async Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+            => await Task.Run(async () =>
+            {
+                string connectionString = dbConnectionInfo.GetConnectionString();
+
+                return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommand);
+            });
     }
 }
