@@ -31,6 +31,11 @@ namespace FTeam.Orm.Extentions
         /// </summary>
         private static readonly ITableInsertRules _tableInsert = new TableInsertServices();
 
+        /// <summary>
+        /// Table Information Schema Services
+        /// </summary>
+        private static readonly ITableInfoRules _tableInfo = new TableInfoServices();
+
         #endregion
 
         #region :: Insert ::
@@ -127,10 +132,10 @@ namespace FTeam.Orm.Extentions
         #region :: Table :: 
 
         public static TableInfoResult TryTable(this DbConnectionInfo dbConnectionInfo, string tableName)
-           => _tableGet.GetTableInfo(dbConnectionInfo, tableName);
+           => _tableInfo.TryGetTableInfo(dbConnectionInfo, tableName);
 
         public static async Task<TableInfoResult> TryTableAsync(this DbConnectionInfo dbConnectionInfo, string tableName)
-            => await Task.FromResult(await _tableGet.GetTableInfoAsync(dbConnectionInfo, tableName));
+            => await Task.FromResult(await _tableInfo.TryGetTableInfoAsync(dbConnectionInfo, tableName));
 
         #endregion
 

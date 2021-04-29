@@ -1,4 +1,5 @@
 ﻿using FTeam.Orm.DataBase.Tables;
+using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Models;
 using NUnit.Framework;
 
@@ -6,7 +7,7 @@ namespace FTeam.Orm.DataBase.Test.Tables
 {
     public class TestTableServices
     {
-        private ITableGetRules _tableRules;
+        private ITableInfoRules _tableRules;
 
         DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
@@ -14,13 +15,13 @@ namespace FTeam.Orm.DataBase.Test.Tables
         [SetUp]
         public void Setup()
         {
-            _tableRules = new TableGetServices();
+            _tableRules = new TableInfoServices();
         }
 
         [Test]
         public void TestTableInfo()
         {
-            var result = _tableRules.GetTableInfo(_dbConnectionInfo, "Users");
+            var result = _tableRules.TryGetTableInfo(_dbConnectionInfo, "Users");
 
             switch (result.Status)
             {
