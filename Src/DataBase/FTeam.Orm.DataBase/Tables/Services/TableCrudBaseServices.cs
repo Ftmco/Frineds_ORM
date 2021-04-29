@@ -6,6 +6,7 @@ using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables.Services
@@ -86,12 +87,12 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public async Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, string query)
+        public async Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
                 string connectionString = dbConnectionInfo.GetConnectionString();
 
-                return await _queryBase.RunVoidQueryAsync(connectionString, query);
+                return await _queryBase.RunVoidQueryAsync(connectionString, sqlCommand);
             });
     }
 }

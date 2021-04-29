@@ -1,6 +1,7 @@
 ﻿using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables
@@ -21,7 +22,7 @@ namespace FTeam.Orm.DataBase.Tables
 
         #region --:: Insert ::--
 
-        Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, string query);
+        Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo,SqlCommand sqlCommand);
 
         #endregion
     }

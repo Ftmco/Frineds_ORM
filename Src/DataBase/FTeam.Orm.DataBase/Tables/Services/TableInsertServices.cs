@@ -2,6 +2,7 @@
 using FTeam.Orm.Models;
 using FTeam.Orm.Results.QueryBase;
 using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -34,11 +35,16 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
 
                 string values = string.Join(",",
-                    instanceProperties.Select(ip => $"CAST('{ip.GetValue(instance)}' AS {tableInfo.TableInfo.TableColumns.FirstOrDefault(tc => tc.Column == ip.Name).Type})"));
+                    tableInfo.TableInfo.TableColumns.Select(ip => $"@{ip.Column}"));
 
                 string query = $"INSERT INTO [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] ({columns})VALUES({values})";
 
-                return await _tableCrudBase.InsertAsync(tableInfo.DbConnectionInfo, query);
+                SqlCommand cmd = new(query);
+
+                foreach (var item in tableInfo.TableInfo.TableColumns)
+                    cmd.Parameters.AddWithValue($"@{item.Column}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
+
+                return await _tableCrudBase.InsertAsync(tableInfo.DbConnectionInfo, cmd);
             });
 
     }
