@@ -172,7 +172,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 sqlCommand.ExecuteNonQuery();
                 return QueryStatus.Success;
             }
-            catch (DbException)
+            catch (DbException ex)
             {
                 return QueryStatus.DbException;
             }

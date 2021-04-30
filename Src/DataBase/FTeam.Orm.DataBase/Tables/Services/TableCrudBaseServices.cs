@@ -86,19 +86,20 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public QueryStatus TryInsert(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
         {
             string connectionString = dbConnectionInfo.GetConnectionString();
 
             return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
         }
 
-        public async Task<QueryStatus> TryInsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
                 string connectionString = dbConnectionInfo.GetConnectionString();
 
                 return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommand);
             });
+
     }
 }
