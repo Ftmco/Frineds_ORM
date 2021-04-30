@@ -8,10 +8,13 @@
     <PackageIcon>F.ORM.png</PackageIcon>
     <PackageIconUrl />
     <PackageTags>Friends Orm Asp.Net dotnet ftmco</PackageTags>
+    <Authors>Friends</Authors>
+    <Company>Friends</Company>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\DataBase\FTeam.Orm.DataBase\FTeam.Orm.DataBase.csproj" />
+    <ProjectReference Include="..\..\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,23 +1,53 @@
-﻿using FTeam.Orm.Models;
+﻿using FTeam.Orm.DataBase.Commands;
+using FTeam.Orm.Models;
+using FTeam.Orm.Models.DataBase;
 using FTeam.Orm.Models.QueryBase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables.Services
 {
     public class TableUpdateServices : ITableUpdateRules
     {
-        public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
+        #region --:: Dependency ::--
+
+        /// <summary>
+        /// Table Crud Base Services
+        /// </summary>
+        private readonly ITableCrudBase _tableCrudBase;
+
+        /// <summary>
+        /// Sql Command Servcices
+        /// </summary>
+        private readonly ICommandRules _cmd;
+
+        public TableUpdateServices()
         {
-            throw new NotImplementedException();
+            _tableCrudBase = new TableCrudBaseServices();
+            _cmd = new CommandServices();
         }
 
-        public Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
+        #endregion
+
+        public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
         {
-            throw new NotImplementedException();
+            SqlCommand command = new();
+
+            CreateCommandStatus status = _cmd.TryGenerateUpdateCommand(tableInfo, instance, out command);
+
+            return status != CreateCommandStatus.Success ? QueryStatus.Exception :
+           _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
+
+        public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
+          => await Task.Run(async () =>
+          {
+              SqlCommand command = new();
+
+              CreateCommandStatus status = _cmd.TryGenerateUpdateCommand(tableInfo, instance, out command);
+
+              return status != CreateCommandStatus.Success ? QueryStatus.Exception :
+              await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
+          });
     }
 }

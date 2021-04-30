@@ -36,7 +36,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             CreateCommandStatus status = _cmd.TryGenerateInsertCommand(tableInfo, instance, out command);
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-           _tableCrudBase.TryInsert(tableInfo.DbConnectionInfo, command);
+           _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, T instance)
@@ -47,7 +47,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 CreateCommandStatus status = _cmd.TryGenerateInsertCommand(tableInfo, instance, out command);
 
                 return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-                await _tableCrudBase.TryInsertAsync(tableInfo.DbConnectionInfo, command);
+                await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
             });
     }
 }
