@@ -1,5 +1,5 @@
 ﻿using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -10,19 +10,21 @@ namespace FTeam.Orm.DataBase.Tables
     {
         #region --:: Get Base Services ::--
 
-        IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query);
+        IEnumerable<T> TryGetAllBase<T>(TableInfoResult tableInfoResult, string query);
 
-        Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query);
+        Task<IEnumerable<T>> TryGetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query);
 
-        Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query);
+        Task<T> TryGetBaseAsync<T>(TableInfoResult tableInfoResult, string query);
 
-        T GetBase<T>(TableInfoResult tableInfoResult, string query);
+        T TryGetBase<T>(TableInfoResult tableInfoResult, string query);
 
         #endregion
 
         #region --:: Insert ::--
 
-        Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo,SqlCommand sqlCommand);
+        Task<QueryStatus> TryInsertAsync(DbConnectionInfo dbConnectionInfo,SqlCommand sqlCommand);
+
+        QueryStatus TryInsert(DbConnectionInfo dbConnectionInfo,SqlCommand sqlCommand);
 
         #endregion
     }

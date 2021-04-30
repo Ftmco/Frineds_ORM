@@ -11,11 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataBase\" />
-    <Folder Include="Tools\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Fdi" Version="1.0.0" />
   </ItemGroup>
 

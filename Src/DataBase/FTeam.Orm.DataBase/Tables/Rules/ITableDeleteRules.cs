@@ -1,17 +1,13 @@
 ﻿using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using FTeam.Orm.Models.QueryBase;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables
 {
     public interface ITableDeleteRules
     {
-        Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> TryDeleteAsync<T>(TableInfoResult tableInfo, T instance);
 
-        QueryStatus Delete<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus TryDelete<T>(TableInfoResult tableInfo, T instance);
     }
 }

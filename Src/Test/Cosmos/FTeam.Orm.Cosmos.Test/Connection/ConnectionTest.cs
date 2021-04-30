@@ -20,7 +20,7 @@ namespace FTeam.Orm.Cosmos.Test.Connection
         public void TestOpenConnection()
         {
 
-            OpenConnectionResult connectionResult = _connectionBase.OpenConnectionAsync(connectionString).Result;
+            OpenConnectionResult connectionResult = _connectionBase.TryOpenConnectionAsync(connectionString).Result;
 
             switch (connectionResult.ConnectionStatus)
             {
@@ -40,13 +40,13 @@ namespace FTeam.Orm.Cosmos.Test.Connection
                     Assert.Fail("Default");
                     break;
             }
-            _ = _connectionBase.CloseConnectionAsync(connectionString).Result;
+            _ = _connectionBase.TryCloseConnectionAsync(connectionString).Result;
         }
 
         [Test]
         public void TestCloseConnection()
         {
-            CloseConnectionResult closeResult = _connectionBase.CloseConnectionAsync(connectionString).Result;
+            CloseConnectionResult closeResult = _connectionBase.TryCloseConnectionAsync(connectionString).Result;
 
             switch (closeResult)
             {

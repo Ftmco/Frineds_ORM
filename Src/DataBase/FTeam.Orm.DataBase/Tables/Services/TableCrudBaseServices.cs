@@ -3,7 +3,7 @@ using FTeam.Orm.DataBase.Extentions;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query)
+        public IEnumerable<T> TryGetAllBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
@@ -45,7 +45,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public async Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<IEnumerable<T>> TryGetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
@@ -59,7 +59,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public T GetBase<T>(TableInfoResult tableInfoResult, string query)
+        public T TryGetBase<T>(TableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
@@ -72,7 +72,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public async Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<T> TryGetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
@@ -86,7 +86,14 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public async Task<QueryStatus> InsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus TryInsert(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        {
+            string connectionString = dbConnectionInfo.GetConnectionString();
+
+            return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
+        }
+
+        public async Task<QueryStatus> TryInsertAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
                 string connectionString = dbConnectionInfo.GetConnectionString();

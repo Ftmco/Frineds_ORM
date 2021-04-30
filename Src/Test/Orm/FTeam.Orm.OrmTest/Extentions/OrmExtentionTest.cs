@@ -1,6 +1,6 @@
 ﻿using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
@@ -22,13 +22,11 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void TestExtentions()
         {
-
-
-            TableInfoResult tableInfo = _dbConnectionInfo.Table("Users");
+            TableInfoResult tableInfo = _dbConnectionInfo.TryTable("Users");
 
             switch (tableInfo.Status)
             {
-                case Results.QueryBase.QueryStatus.Success:
+                case QueryStatus.Success:
                     {
                         if (tableInfo.TableInfo != null)
                         {
@@ -40,16 +38,16 @@ namespace FTeam.Orm.OrmTest.Extentions
                         }
                         break;
                     }
-                case Results.QueryBase.QueryStatus.Exception:
+                case QueryStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.QueryBase.QueryStatus.InvalidOperationException:
+                case QueryStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.QueryBase.QueryStatus.SqlException:
+                case QueryStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
-                case Results.QueryBase.QueryStatus.DbException:
+                case QueryStatus.DbException:
                     Assert.Fail("DbException");
                     break;
                 default:
@@ -62,7 +60,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetObjectTest()
         {
-            IEnumerable<Users> users = _dbConnectionInfo.Table("Users").GetAll<Users>("Users.[PhoneNumber] = '09012523240'");
+            IEnumerable<Users> users = _dbConnectionInfo.TryTable("Users").TryGetAll<Users>("Users.[PhoneNumber] = '09012523240'");
 
             if (users != null)
             {
@@ -77,7 +75,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetSingleObjectTest()
         {
-            Users users = _dbConnectionInfo.Table("Users").Get<Users>("Users.[PhoneNumber] = '09012421080'");
+            Users users = _dbConnectionInfo.TryTable("Users").TryGet<Users>("Users.[PhoneNumber] = '09012421080'");
 
             if (users != null)
             {
@@ -92,7 +90,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void InsertRow()
         {
-            QueryStatus insertStatus = _dbConnectionInfo.Table("Users").InsertAsync<Users>(new()
+            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Users").TryInsertAsync<Users>(new()
             {
                 ActiveCode = "234562",
                 ActiveDate = DateTime.Now,
@@ -102,7 +100,7 @@ namespace FTeam.Orm.OrmTest.Extentions
                 Email = "Gmail",
                 FirstName = "Test",
                 LastName = "Test",
-                ImageName ="Null.jpg",
+                ImageName = "Null.jpg",
                 IsActive = true,
                 Password = "Password",
                 PhoneNumber = "09012523240",
@@ -110,30 +108,31 @@ namespace FTeam.Orm.OrmTest.Extentions
                 UserId = Guid.NewGuid(),
                 UserName = "USer Name",
                 UserType = 1
-                
+
             }).Result;
 
             switch (insertStatus)
             {
-                case Results.QueryBase.QueryStatus.Success:
+                case QueryStatus.Success:
                     Assert.Pass("Success");
                     break;
-                case Results.QueryBase.QueryStatus.Exception:
+                case QueryStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.QueryBase.QueryStatus.InvalidOperationException:
+                case QueryStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.QueryBase.QueryStatus.SqlException:
+                case QueryStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
-                case Results.QueryBase.QueryStatus.DbException:
+                case QueryStatus.DbException:
                     Assert.Fail("DbException");
                     break;
                 default:
                     Assert.Fail("Exception");
                     break;
             }
+
         }
     }
 }

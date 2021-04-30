@@ -1,4 +1,4 @@
-﻿using FTeam.Orm.Results.QueryBase;
+﻿using FTeam.Orm.Models.QueryBase;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
     {
         Task<QueryStatus> TryRunVoidQueryAsync(string connectionString, string query);
 
-        Task<QueryStatus> TryRunVoidQueryAsync(string connectionString,SqlCommand sqlCommand);
+        Task<QueryStatus> TryRunVoidQueryAsync(string connectionString, SqlCommand sqlCommand);
 
         Task<QueryStatus> TryRunVoidQueryAsync(SqlConnection sqlConnection, SqlCommand sqlCommand);
 
@@ -25,5 +25,9 @@ namespace FTeam.Orm.Cosmos.QueryBase
         QueryStatus TryRunVoidQuery(string connectionString, string query);
 
         QueryStatus TryRunVoidQuery(SqlConnection sqlConnection, string query);
+
+        QueryStatus TryRunVoidQuery(string connectionString, SqlCommand sqlCommand);
+
+        QueryStatus TryRunVoidQuery(SqlConnection sqlConnection, SqlCommand sqlCommand);
     }
 }

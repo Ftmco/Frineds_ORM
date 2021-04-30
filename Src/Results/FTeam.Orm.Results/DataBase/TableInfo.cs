@@ -10,7 +10,16 @@ namespace FTeam.Orm.Models
 
         public string TableName { get; set; }
 
+        public PrimaryKey PrimaryKey { get; set; }
+
         public IEnumerable<TableColumns> TableColumns { get; set; }
+    }
+
+    public record PrimaryKey
+    {
+        public string Column { get; set; }
+
+        public string Type { get; set; }
     }
 
     public record TableColumns
