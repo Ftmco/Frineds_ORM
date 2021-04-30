@@ -1,4 +1,4 @@
-﻿using FTeam.Orm.Results.QueryBase;
+﻿using FTeam.Orm.Models.QueryBase;
 
 namespace FTeam.Orm.Models
 {

@@ -1,5 +1,5 @@
 ﻿using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using System;
 using System.Threading.Tasks;
 

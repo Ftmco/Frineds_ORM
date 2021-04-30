@@ -1,6 +1,7 @@
 ﻿using FTeam.Orm.DataBase.Tables;
 using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Models;
+using FTeam.Orm.Models.QueryBase;
 using NUnit.Framework;
 
 namespace FTeam.Orm.DataBase.Test.Tables
@@ -25,19 +26,19 @@ namespace FTeam.Orm.DataBase.Test.Tables
 
             switch (result.Status)
             {
-                case Results.QueryBase.QueryStatus.Success:
+                case QueryStatus.Success:
                     Assert.Pass(result.TableInfo.PrimaryKey.Column + "" + result.TableInfo.PrimaryKey.Type);
                     break;
-                case Results.QueryBase.QueryStatus.Exception:
+                case QueryStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.QueryBase.QueryStatus.InvalidOperationException:
+                case QueryStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.QueryBase.QueryStatus.SqlException:
+                case QueryStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
-                case Results.QueryBase.QueryStatus.DbException:
+                case QueryStatus.DbException:
                     Assert.Fail("DbException");
                     break;
                 default:

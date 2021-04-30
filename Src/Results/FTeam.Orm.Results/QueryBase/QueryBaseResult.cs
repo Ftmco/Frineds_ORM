@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace FTeam.Orm.Results.QueryBase
+namespace FTeam.Orm.Models.QueryBase
 {
 
     /// <summary>

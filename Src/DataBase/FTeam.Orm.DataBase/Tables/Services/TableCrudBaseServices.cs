@@ -3,7 +3,7 @@ using FTeam.Orm.DataBase.Extentions;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;

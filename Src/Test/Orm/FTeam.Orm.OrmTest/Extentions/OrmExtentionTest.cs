@@ -1,6 +1,6 @@
 ﻿using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
@@ -26,7 +26,7 @@ namespace FTeam.Orm.OrmTest.Extentions
 
             switch (tableInfo.Status)
             {
-                case Results.QueryBase.QueryStatus.Success:
+                case QueryStatus.Success:
                     {
                         if (tableInfo.TableInfo != null)
                         {
@@ -38,16 +38,16 @@ namespace FTeam.Orm.OrmTest.Extentions
                         }
                         break;
                     }
-                case Results.QueryBase.QueryStatus.Exception:
+                case QueryStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.QueryBase.QueryStatus.InvalidOperationException:
+                case QueryStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.QueryBase.QueryStatus.SqlException:
+                case QueryStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
-                case Results.QueryBase.QueryStatus.DbException:
+                case QueryStatus.DbException:
                     Assert.Fail("DbException");
                     break;
                 default:
@@ -113,19 +113,19 @@ namespace FTeam.Orm.OrmTest.Extentions
 
             switch (insertStatus)
             {
-                case Results.QueryBase.QueryStatus.Success:
+                case QueryStatus.Success:
                     Assert.Pass("Success");
                     break;
-                case Results.QueryBase.QueryStatus.Exception:
+                case QueryStatus.Exception:
                     Assert.Fail("Exception");
                     break;
-                case Results.QueryBase.QueryStatus.InvalidOperationException:
+                case QueryStatus.InvalidOperationException:
                     Assert.Fail("InvalidOperationException");
                     break;
-                case Results.QueryBase.QueryStatus.SqlException:
+                case QueryStatus.SqlException:
                     Assert.Fail("SqlException");
                     break;
-                case Results.QueryBase.QueryStatus.DbException:
+                case QueryStatus.DbException:
                     Assert.Fail("DbException");
                     break;
                 default:

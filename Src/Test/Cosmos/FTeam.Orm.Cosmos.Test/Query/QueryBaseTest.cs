@@ -1,5 +1,5 @@
 ﻿using FTeam.Orm.Cosmos.QueryBase;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using NUnit.Framework;
 using System.Diagnostics;
 

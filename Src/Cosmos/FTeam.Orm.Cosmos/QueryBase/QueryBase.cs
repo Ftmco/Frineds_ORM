@@ -1,7 +1,7 @@
 ﻿using FTeam.DependencyController.Kernel;
 using FTeam.Orm.Cosmos.ConnectionBase;
 using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using System;
 using System.Data;
 using System.Data.Common;

@@ -1,7 +1,7 @@
 ﻿using FTeam.Orm.DataBase.Tables;
 using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Models;
-using FTeam.Orm.Results.QueryBase;
+using FTeam.Orm.Models.QueryBase;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
