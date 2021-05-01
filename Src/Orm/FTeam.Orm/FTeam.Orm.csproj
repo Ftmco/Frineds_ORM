@@ -10,6 +10,7 @@
     <PackageTags>Friends Orm Asp.Net dotnet ftmco</PackageTags>
     <Authors>Friends</Authors>
     <Company>Friends</Company>
+    <Version>1.5.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

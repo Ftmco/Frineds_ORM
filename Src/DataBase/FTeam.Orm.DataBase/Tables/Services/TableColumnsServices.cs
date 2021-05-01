@@ -52,7 +52,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 case QueryStatus.Success:
                     {
                         primaryKey = _dataTableMapper.Map<PrimaryKey>(queryResult.DataTable);
-                        primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
+                        if (primaryKey != null)
+                            primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
                         return primaryKey;
                     }
                 case QueryStatus.Exception:
@@ -86,7 +87,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
                      case QueryStatus.Success:
                          {
                              primaryKey = await _dataTableMapper.MapAsync<PrimaryKey>(queryResult.DataTable);
-                             primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
+                             if (primaryKey != null)
+                                 primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
                              return primaryKey;
                          }
                      case QueryStatus.Exception:
