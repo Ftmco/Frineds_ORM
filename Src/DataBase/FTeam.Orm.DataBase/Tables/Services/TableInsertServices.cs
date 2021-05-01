@@ -29,13 +29,24 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public QueryStatus Insert<T>(TableInfoResult tableInfo, T instance)
         {
-            throw new System.NotImplementedException();
+            SqlCommand command = new();
+
+            CreateCommandStatus status = _cmd.GenerateInsertCommand(tableInfo, instance, out command);
+
+            return status != CreateCommandStatus.Success ? QueryStatus.Exception :
+           _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
-        public Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance)
+         => await Task.Run(async () =>
+         {
+             SqlCommand command = new();
+
+             CreateCommandStatus status = _cmd.GenerateInsertCommand(tableInfo, instance, out command);
+
+             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
+             await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
+         });
 
         #endregion
 

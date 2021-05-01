@@ -48,12 +48,23 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public QueryStatus Delete<T>(TableInfoResult tableInfo, T instance)
         {
-            throw new System.NotImplementedException();
+            SqlCommand command = new();
+
+            CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
+
+            return status == CreateCommandStatus.Success ? _crudBase.CrudBase(tableInfo.DbConnectionInfo, command)
+                : QueryStatus.Exception;
         }
 
-        public Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, T instance)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, T instance)
+          => await Task.Run(async () =>
+          {
+              SqlCommand command = new();
+
+              CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
+
+              return status == CreateCommandStatus.Success ? await _crudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command)
+              : QueryStatus.Exception;
+          });
     }
 }
