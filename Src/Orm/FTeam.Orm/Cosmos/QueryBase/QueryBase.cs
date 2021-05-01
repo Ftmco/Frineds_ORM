@@ -19,9 +19,8 @@ namespace FTeam.Orm.Cosmos.QueryBase
         }
 
         public RunQueryResult RunQuery(string connectionString, string query)
-        {
-            throw new NotImplementedException();
-        }
+            => RunQuery(_connectionBase.OpenConnection(connectionString).SqlConnection, query);
+
 
         public RunQueryResult RunQuery(SqlConnection sqlConnection, string query)
         {
@@ -32,13 +31,13 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 sqlDataAdapter.Fill(dataTable);
                 return new RunQueryResult { DataTable = dataTable, QueryStatus = QueryStatus.Success };
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return new RunQueryResult { QueryStatus = QueryStatus.InvalidOperationException };
+                throw ex;
             }
             catch (Exception)
             {
-                return new RunQueryResult { QueryStatus = QueryStatus.Exception };
+                throw;
             }
             finally
             {
@@ -46,10 +45,8 @@ namespace FTeam.Orm.Cosmos.QueryBase
             }
         }
 
-        public Task<RunQueryResult> RunQueryAsync(string connectionString, string query)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<RunQueryResult> RunQueryAsync(string connectionString, string query)
+            => await Task.FromResult(await RunQueryAsync(_connectionBase.OpenConnectionAsync(connectionString).Result.SqlConnection, query));
 
         public async Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query)
         => await Task.Run(async () =>
@@ -76,9 +73,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
         });
 
         public QueryStatus RunVoidQuery(string connectionString, string query)
-        {
-            throw new NotImplementedException();
-        }
+            => RunVoidQuery(_connectionBase.OpenConnection(connectionString).SqlConnection, query);
 
         public QueryStatus RunVoidQuery(SqlConnection sqlConnection, string query)
         {
@@ -103,9 +98,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
         }
 
         public QueryStatus RunVoidQuery(string connectionString, SqlCommand sqlCommand)
-        {
-            throw new NotImplementedException();
-        }
+            => RunVoidQuery(connectionString, sqlCommand.CommandText);
 
         public QueryStatus RunVoidQuery(SqlConnection sqlConnection, SqlCommand sqlCommand)
         {
@@ -129,10 +122,8 @@ namespace FTeam.Orm.Cosmos.QueryBase
             }
         }
 
-        public Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)
+            => await Task.FromResult(await RunVoidQueryAsync(_connectionBase.OpenConnectionAsync(connectionString).Result.SqlConnection, query));
 
         public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, SqlCommand sqlCommand)
              => await Task.Run(async () =>
@@ -416,6 +407,5 @@ namespace FTeam.Orm.Cosmos.QueryBase
                      await _connectionBase.TryCloseConnectionAsync(sqlConnection);
                  }
              });
-
     }
 }
