@@ -1,5 +1,4 @@
-﻿using FTeam.DependencyController.Kernel;
-using FTeam.Orm.Cosmos.ConnectionBase;
+﻿using FTeam.Orm.Cosmos.ConnectionBase;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using System;
@@ -12,14 +11,71 @@ namespace FTeam.Orm.Cosmos.QueryBase
 {
     public class QueryBase : IQueryBase
     {
-        private readonly IFkernel _kernel = new Fkernel();
-
         private readonly IConnectionBase _connectionBase;
 
         public QueryBase()
         {
-            RegisterDependency();
-            _connectionBase = _kernel.Get<IConnectionBase>();
+            _connectionBase = new ConnectionBase.ConnectionBase();
+        }
+
+        public RunQueryResult RunQuery(string connectionString, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RunQueryResult RunQuery(SqlConnection sqlConnection, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RunQueryResult> RunQueryAsync(string connectionString, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public QueryStatus RunVoidQuery(string connectionString, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public QueryStatus RunVoidQuery(SqlConnection sqlConnection, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public QueryStatus RunVoidQuery(string connectionString, SqlCommand sqlCommand)
+        {
+            throw new NotImplementedException();
+        }
+
+        public QueryStatus RunVoidQuery(SqlConnection sqlConnection, SqlCommand sqlCommand)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<QueryStatus> RunVoidQueryAsync(string connectionString, SqlCommand sqlCommand)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, SqlCommand sqlCommand)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, string query)
+        {
+            throw new NotImplementedException();
         }
 
         public RunQueryResult TryRunQuery(string connectionString, string query)
@@ -270,9 +326,5 @@ namespace FTeam.Orm.Cosmos.QueryBase
                  }
              });
 
-        private void RegisterDependency()
-        {
-            _kernel.Inject<IConnectionBase, ConnectionBase.ConnectionBase>();
-        }
     }
 }

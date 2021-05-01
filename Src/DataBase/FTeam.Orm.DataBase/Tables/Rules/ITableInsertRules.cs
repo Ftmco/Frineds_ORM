@@ -15,6 +15,7 @@ namespace FTeam.Orm.DataBase.Tables
         /// <param name="instance">Model Instance</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
         Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance);
 
         /// <summary>
         /// Try Insert Model To Table 
@@ -24,5 +25,6 @@ namespace FTeam.Orm.DataBase.Tables
         /// <param name="instance">Model Instance</param>
         /// <returns><see cref="QueryStatus"/></returns>
         QueryStatus TryInsert<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus Insert<T>(TableInfoResult tableInfo, T instance);
     }
 }

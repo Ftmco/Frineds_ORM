@@ -122,5 +122,15 @@ namespace FTeam.Orm.DataBase.Tables.Services
             tableInfoResult.TableInfo.PrimaryKey = _tableColumns.TryGetTablePrimaryKey(dbConnectionInfo, tableInfoResult);
             return tableInfoResult;
         }
+
+        public TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

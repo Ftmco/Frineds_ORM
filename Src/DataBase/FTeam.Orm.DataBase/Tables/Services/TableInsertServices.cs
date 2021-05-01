@@ -27,6 +27,16 @@ namespace FTeam.Orm.DataBase.Tables.Services
             _cmd = new CommandServices();
         }
 
+        public QueryStatus Insert<T>(TableInfoResult tableInfo, T instance)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
         public QueryStatus TryInsert<T>(TableInfoResult tableInfo, T instance)
