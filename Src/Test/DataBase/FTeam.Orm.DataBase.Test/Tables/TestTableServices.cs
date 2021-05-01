@@ -1,8 +1,4 @@
-﻿using FTeam.Orm.DataBase.Tables;
-using FTeam.Orm.DataBase.Tables.Services;
-using FTeam.Orm.Models;
-using FTeam.Orm.Models.QueryBase;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace FTeam.Orm.DataBase.Test.Tables
 {
