@@ -141,24 +141,80 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public Task<PrimaryKey> GetTablePrimaryKeyAsync(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<PrimaryKey> GetTablePrimaryKeyAsync(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
+         => await Task.Run(async () =>
+         {
+             try
+             {
+                 string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
+
+                 RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+
+                 PrimaryKey primaryKey = new();
+
+                 primaryKey = await _dataTableMapper.MapAsync<PrimaryKey>(queryResult.DataTable);
+                 if (primaryKey != null)
+                     primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
+                 return primaryKey;
+             }
+             catch
+             {
+                 throw;
+             }
+         });
 
         public PrimaryKey GetTablePrimaryKey(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
+
+                RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+
+                PrimaryKey primaryKey = new();
+
+                primaryKey = _dataTableMapper.Map<PrimaryKey>(queryResult.DataTable);
+                if (primaryKey != null)
+                    primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
+                return primaryKey;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                string query = $"SELECT ISNULLABLE as Nullable,DATATYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+                RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+
+                return _dataTableMapper.MapList<TableColumns>(queryResult.DataTable);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
-        public Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
+        public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
+        => await Task.Run(async () =>
         {
-            throw new System.NotImplementedException();
-        }
+            try
+            {
+                string query = $"SELECT ISNULLABLE as Nullable,DATATYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+                RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+
+                return await _dataTableMapper.MapListAsync<TableColumns>(queryResult.DataTable);
+            }
+            catch
+            {
+                throw;
+            }
+        });
     }
 }

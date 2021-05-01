@@ -125,12 +125,22 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName)
         {
-            throw new System.NotImplementedException();
+            string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+            RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+
+            return TryReturnResult(queryResult, dbConnectionInfo, tableName);
         }
 
-        public Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName)
+         => await Task.Run(async () =>
+         {
+             string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+             RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+
+             //Return Result
+             return await TryReturnResultAsync(queryResult, dbConnectionInfo, tableName);
+         });
     }
 }
