@@ -87,5 +87,20 @@ namespace FTeam.Orm.DataBase.Commands
             PropertyInfo property = properties.FirstOrDefault(pi => pi.Name == primaryKey.Column);
             return property.GetValue(instance);
         }
+
+        public CreateCommandStatus GenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public CreateCommandStatus GenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public CreateCommandStatus GenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

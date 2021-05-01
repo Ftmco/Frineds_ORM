@@ -101,5 +101,34 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommand);
             });
 
+        public IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public T GetBase<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

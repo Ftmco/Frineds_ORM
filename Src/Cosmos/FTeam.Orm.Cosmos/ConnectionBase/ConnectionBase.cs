@@ -142,6 +142,46 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
         public async Task<CloseConnectionResult> TryCloseConnectionAsync(SqlConnection sqlConnection)
             => await Task.FromResult(await TryCloseConnectionAsync(sqlConnection.ConnectionString));
 
+        public Task<OpenConnectionResult> OpenConnectionAsync(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OpenConnectionResult OpenConnection(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OpenConnectionResult> OpenConnectionAsync(SqlConnection sqlConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OpenConnectionResult OpenConnection(SqlConnection sqlConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CloseConnectionResult> CloseConnectionAsync(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CloseConnectionResult CloseConnection(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CloseConnectionResult> CloseConnectionAsync(SqlConnection sqlConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CloseConnectionResult CloseConnection(SqlConnection sqlConnection)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

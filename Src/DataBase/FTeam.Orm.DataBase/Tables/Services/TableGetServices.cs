@@ -69,5 +69,34 @@ namespace FTeam.Orm.DataBase.Tables
             => _crudBase.TryGetBase<T>(tableInfoResult,
                  $"SELECT TOP 1 * FROM [{tableInfoResult.TableInfo.Catalog}].[{tableInfoResult.TableInfo.Schema}].[{tableInfoResult.TableInfo.TableName}] WHERE {query}");
 
+        public IEnumerable<T> TryGetAll<T>(TableInfoResult tableInfoResult)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<T> TryGetAll<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> TryGetAllAsync<T>(TableInfoResult tableInfoResult)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> TryGetAllAsync<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<T> TryGetAsync<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public T TryGet<T>(TableInfoResult tableInfoResult, string query)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

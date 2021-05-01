@@ -141,5 +141,24 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
+        public Task<PrimaryKey> GetTablePrimaryKeyAsync(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public PrimaryKey GetTablePrimaryKey(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
