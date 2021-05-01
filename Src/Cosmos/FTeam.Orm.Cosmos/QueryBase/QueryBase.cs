@@ -1,5 +1,4 @@
-﻿using FTeam.DependencyController.Kernel;
-using FTeam.Orm.Cosmos.ConnectionBase;
+﻿using FTeam.Orm.Cosmos.ConnectionBase;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using System;
@@ -12,14 +11,11 @@ namespace FTeam.Orm.Cosmos.QueryBase
 {
     public class QueryBase : IQueryBase
     {
-        private readonly IFkernel _kernel = new Fkernel();
-
         private readonly IConnectionBase _connectionBase;
 
         public QueryBase()
         {
-            RegisterDependency();
-            _connectionBase = _kernel.Get<IConnectionBase>();
+            _connectionBase = new ConnectionBase.ConnectionBase();
         }
 
         public RunQueryResult TryRunQuery(string connectionString, string query)
