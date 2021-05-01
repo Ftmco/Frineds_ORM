@@ -103,32 +103,92 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
+                return _dataTableMapper.MapList<T>(runQuery.DataTable);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
-        public Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+         => await Task.Run(async () =>
+         {
+             try
+             {
+                 string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                 RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
 
-        public Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
-        {
-            throw new System.NotImplementedException();
-        }
+                 return await _dataTableMapper.MapListAsync<T>(runQuery.DataTable);
+             }
+             catch
+             {
+                 throw;
+             }
+         });
+
+        public async Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+         => await Task.Run(async () =>
+         {
+             try
+             {
+                 string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                 RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
+
+                 return await _dataTableMapper.MapAsync<T>(runQuery.DataTable);
+             }
+             catch
+             {
+                 throw;
+             }
+         });
 
         public T GetBase<T>(TableInfoResult tableInfoResult, string query)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
+
+                return _dataTableMapper.Map<T>(runQuery.DataTable);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
-        public Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        => await Task.Run(async () =>
         {
-            throw new System.NotImplementedException();
-        }
+            try
+            {
+                string connectionString = dbConnectionInfo.GetConnectionString();
+
+                return await _queryBase.RunVoidQueryAsync(connectionString, sqlCommand);
+            }
+            catch
+            {
+                throw;
+            }
+        });
 
         public QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                string connectionString = dbConnectionInfo.GetConnectionString();
+
+                return _queryBase.RunVoidQuery(connectionString, sqlCommand);
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }
