@@ -50,6 +50,9 @@ namespace FTeam.Orm.Extentions
         public static QueryStatus TryInsert<T>(this TableInfoResult tableInfo, T instance)
            => _tableInsert.TryInsert<T>(tableInfo, instance);
 
+        public static QueryStatus Insert<T>(this TableInfoResult tableInfo, T instance)
+          => _tableInsert.Insert<T>(tableInfo, instance);
+
         /// <summary>
         /// Try For Insert New Instance To Data Base 
         /// Use 'await'
@@ -60,6 +63,9 @@ namespace FTeam.Orm.Extentions
         /// <returns>Task <see cref="QueryStatus"/></returns>
         public static async Task<QueryStatus> TryInsertAsync<T>(this TableInfoResult tableInfo, T instance)
            => await Task.FromResult(await _tableInsert.TryInsertAsync<T>(tableInfo, instance));
+
+        public static async Task<QueryStatus> InsertAsync<T>(this TableInfoResult tableInfo, T instance)
+          => await Task.FromResult(await _tableInsert.InsertAsync<T>(tableInfo, instance));
 
         #endregion
 
@@ -75,6 +81,9 @@ namespace FTeam.Orm.Extentions
         public static QueryStatus TryDelete<T>(this TableInfoResult tableInfo, T instance)
           => _tableDelete.TryDelete<T>(tableInfo, instance);
 
+        public static QueryStatus Delete<T>(this TableInfoResult tableInfo, T instance)
+          => _tableDelete.Delete<T>(tableInfo, instance);
+
         /// <summary>
         /// Try For Delete Object From Data Base
         /// Use 'await'
@@ -85,6 +94,9 @@ namespace FTeam.Orm.Extentions
         /// <returns>Task <see cref="QueryStatus"/></returns>
         public static async Task<QueryStatus> TryDeleteAsync<T>(this TableInfoResult tableInfo, T instance)
           => await Task.FromResult(await _tableDelete.TryDeleteAsync<T>(tableInfo, instance));
+
+        public static async Task<QueryStatus> DeleteAsync<T>(this TableInfoResult tableInfo, T instance)
+         => await Task.FromResult(await _tableDelete.DeleteAsync<T>(tableInfo, instance));
 
         #endregion
 
@@ -98,6 +110,9 @@ namespace FTeam.Orm.Extentions
         /// <param name="instance">TModel Instance</param>
         /// <returns><see cref="QueryStatus"/></returns>
         public static QueryStatus TryUpdate<T>(this TableInfoResult tableInfo, T instance)
+          => _tableUpdate.TryUpdatet<T>(tableInfo, instance);
+
+        public static QueryStatus Update<T>(this TableInfoResult tableInfo, T instance)
           => _tableUpdate.Updatet<T>(tableInfo, instance);
 
         /// <summary>
@@ -109,23 +124,38 @@ namespace FTeam.Orm.Extentions
         /// <param name="instance">TModel Instance</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
         public static async Task<QueryStatus> TryUpdateAsync<T>(this TableInfoResult tableInfo, T instance)
-            => await Task.FromResult(await _tableUpdate.UpdatetAsync<T>(tableInfo, instance));
+            => await Task.FromResult(await _tableUpdate.TryUpdatetAsync<T>(tableInfo, instance));
+
+        public static async Task<QueryStatus> UpdateAsync<T>(this TableInfoResult tableInfo, T instance)
+           => await Task.FromResult(await _tableUpdate.UpdatetAsync<T>(tableInfo, instance));
 
         #endregion
 
         #region :: Get List ::
 
         public static async Task<IEnumerable<T>> TryGetAllAsync<T>(this TableInfoResult tableInfo)
+          => await Task.FromResult(await _tableGet.TryGetAllAsync<T>(tableInfo));
+
+        public static async Task<IEnumerable<T>> GetAllAsync<T>(this TableInfoResult tableInfo)
           => await Task.FromResult(await _tableGet.GetAllAsync<T>(tableInfo));
 
         public static IEnumerable<T> TryGetAll<T>(this TableInfoResult tableInfo)
-            => _tableGet.GetAll<T>(tableInfo);
+            => _tableGet.TryGetAll<T>(tableInfo);
+
+        public static IEnumerable<T> GetAll<T>(this TableInfoResult tableInfo)
+           => _tableGet.GetAll<T>(tableInfo);
 
         public static async Task<IEnumerable<T>> TryGetAllAsync<T>(this TableInfoResult tableInfo, string query)
-            => await Task.FromResult(await _tableGet.GetAllAsync<T>(tableInfo, query));
+            => await Task.FromResult(await _tableGet.TryGetAllAsync<T>(tableInfo, query));
+
+        public static async Task<IEnumerable<T>> GetAllAsync<T>(this TableInfoResult tableInfo, string query)
+           => await Task.FromResult(await _tableGet.GetAllAsync<T>(tableInfo, query));
 
         public static IEnumerable<T> TryGetAll<T>(this TableInfoResult tableInfo, string query)
-            => _tableGet.GetAll<T>(tableInfo, query);
+            => _tableGet.TryGetAll<T>(tableInfo, query);
+
+        public static IEnumerable<T> GetAll<T>(this TableInfoResult tableInfo, string query)
+           => _tableGet.GetAll<T>(tableInfo, query);
 
         #endregion
 
@@ -134,18 +164,30 @@ namespace FTeam.Orm.Extentions
         public static TableInfoResult TryTable(this DbConnectionInfo dbConnectionInfo, string tableName)
            => _tableInfo.TryGetTableInfo(dbConnectionInfo, tableName);
 
+        public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName)
+          => _tableInfo.GetTableInfo(dbConnectionInfo, tableName);
+
         public static async Task<TableInfoResult> TryTableAsync(this DbConnectionInfo dbConnectionInfo, string tableName)
             => await Task.FromResult(await _tableInfo.TryGetTableInfoAsync(dbConnectionInfo, tableName));
+
+        public static async Task<TableInfoResult> TableAsync(this DbConnectionInfo dbConnectionInfo, string tableName)
+          => await Task.FromResult(await _tableInfo.GetTableInfoAsync(dbConnectionInfo, tableName));
 
         #endregion
 
         #region :: Get ::
 
         public static async Task<T> TryGetAsync<T>(this TableInfoResult tableInfo, string query)
-          => await Task.FromResult(await _tableGet.GetAsync<T>(tableInfo, query));
+          => await Task.FromResult(await _tableGet.TryGetAsync<T>(tableInfo, query));
+
+        public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo, string query)
+         => await Task.FromResult(await _tableGet.GetAsync<T>(tableInfo, query));
 
         public static T TryGet<T>(this TableInfoResult tableInfo, string query)
-            => _tableGet.Get<T>(tableInfo, query);
+            => _tableGet.TryGet<T>(tableInfo, query);
+
+        public static T Get<T>(this TableInfoResult tableInfo, string query)
+          => _tableGet.Get<T>(tableInfo, query);
 
         #endregion
     }

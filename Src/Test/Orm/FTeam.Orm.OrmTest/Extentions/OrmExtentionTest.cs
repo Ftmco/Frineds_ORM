@@ -11,7 +11,7 @@ namespace FTeam.Orm.OrmTest.Extentions
 {
     public class OrmExtentionTest
     {
-        private readonly DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
+        private readonly DbConnectionInfo _dbConnectionInfo = new(".", "Orm_Test", Authentication.WindowsAuthentication);
 
         [SetUp]
         public void Setup()
@@ -60,11 +60,11 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetObjectTest()
         {
-            IEnumerable<Users> users = _dbConnectionInfo.TryTable("Users").TryGetAll<Users>("Users.[PhoneNumber] = '09012523240'");
+            IEnumerable<Entity> users = _dbConnectionInfo.TryTable("Entity").TryGetAll<Entity>();
 
             if (users != null)
             {
-                Assert.Pass(users.FirstOrDefault().UserName);
+                Assert.Pass(users.FirstOrDefault().Name);
             }
             else
             {
@@ -90,24 +90,12 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void InsertRow()
         {
-            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Users").TryInsertAsync<Users>(new()
+            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Entity").TryInsertAsync<Entity>(new()
             {
-                ActiveCode = "234562",
-                ActiveDate = DateTime.Now,
-                Age = "0",
-                Bio = "Null",
-                CitizenCode = "12345",
-                Email = "Gmail",
-                FirstName = "Test",
-                LastName = "Test",
-                ImageName = "Null.jpg",
-                IsActive = true,
-                Password = "Password",
-                PhoneNumber = "09012523240",
-                RequestDescription = "Request Description",
-                UserId = Guid.NewGuid(),
-                UserName = "USer Name",
-                UserType = 1
+               Age = 10,
+               Family = "nullasd",
+               Id = Guid.NewGuid(),
+               Name = "asdasdasd"
 
             }).Result;
 
@@ -227,4 +215,20 @@ namespace FTeam.Orm.OrmTest.Extentions
             }
         }
     }
+}
+
+public record Entity
+{
+    public Entity()
+    {
+
+    }
+
+    public Guid Id { get; set; }
+
+    public string Name { get; set; }
+
+    public string Family { get; set; }
+
+    public int Age { get; set; }
 }

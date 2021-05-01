@@ -12,20 +12,7 @@ namespace FTeam.Orm.DataBase.Commands
         {
             try
             {
-                string columns = string.Join(",", tableInfo.TableInfo.TableColumns.Select(tc => $"[{tc.Column}] = @{tc.Column.ToLower()}").ToList());
-
-                string query = $"UPDATE [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
-
-                SqlCommand cmd = new(query);
-                cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
-
-                PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
-
-                foreach (var item in tableInfo.TableInfo.TableColumns)
-                    cmd.Parameters.AddWithValue($"@{item.Column.ToLower()}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
-
-                sqlCommand = cmd;
-                return CreateCommandStatus.Success;
+                return GenerateUpdateCommand(tableInfo, instance, out sqlCommand);
             }
             catch
             {
@@ -35,6 +22,39 @@ namespace FTeam.Orm.DataBase.Commands
         }
 
         public CreateCommandStatus TryGenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        {
+            try
+            {
+                return GenerateInsertCommand(tableInfo, instance, out sqlCommand);
+            }
+            catch
+            {
+                sqlCommand = default;
+                return CreateCommandStatus.Exception;
+            }
+        }
+
+        public CreateCommandStatus TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        {
+            try
+            {
+                return GenerateDeleteCommand(tableInfo, instance, out sqlCommand);
+            }
+            catch
+            {
+                sqlCommand = default;
+                return CreateCommandStatus.Exception;
+            }
+        }
+
+        private static object GetInstancePrimaryKey<T>(PrimaryKey primaryKey, T instance)
+        {
+            PropertyInfo[] properties = instance.GetType().GetProperties();
+            PropertyInfo property = properties.FirstOrDefault(pi => pi.Name == primaryKey.Column);
+            return property.GetValue(instance);
+        }
+
+        public CreateCommandStatus GenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
         {
             try
             {
@@ -57,12 +77,36 @@ namespace FTeam.Orm.DataBase.Commands
             }
             catch
             {
-                sqlCommand = default;
-                return CreateCommandStatus.Exception;
+                throw;
             }
         }
 
-        public CreateCommandStatus TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        public CreateCommandStatus GenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        {
+            try
+            {
+                string columns = string.Join(",", tableInfo.TableInfo.TableColumns.Select(tc => $"[{tc.Column}] = @{tc.Column.ToLower()}").ToList());
+
+                string query = $"UPDATE [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
+
+                SqlCommand cmd = new(query);
+                cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
+
+                PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
+
+                foreach (var item in tableInfo.TableInfo.TableColumns)
+                    cmd.Parameters.AddWithValue($"@{item.Column.ToLower()}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
+
+                sqlCommand = cmd;
+                return CreateCommandStatus.Success;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public CreateCommandStatus GenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
         {
             try
             {
@@ -76,16 +120,8 @@ namespace FTeam.Orm.DataBase.Commands
             }
             catch
             {
-                sqlCommand = default;
-                return CreateCommandStatus.Exception;
+                throw;
             }
-        }
-
-        private static object GetInstancePrimaryKey<T>(PrimaryKey primaryKey, T instance)
-        {
-            PropertyInfo[] properties = instance.GetType().GetProperties();
-            PropertyInfo property = properties.FirstOrDefault(pi => pi.Name == primaryKey.Column);
-            return property.GetValue(instance);
         }
     }
 }

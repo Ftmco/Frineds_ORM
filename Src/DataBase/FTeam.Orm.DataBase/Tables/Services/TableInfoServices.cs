@@ -122,5 +122,25 @@ namespace FTeam.Orm.DataBase.Tables.Services
             tableInfoResult.TableInfo.PrimaryKey = _tableColumns.TryGetTablePrimaryKey(dbConnectionInfo, tableInfoResult);
             return tableInfoResult;
         }
+
+        public TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName)
+        {
+            string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+            RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+
+            return TryReturnResult(queryResult, dbConnectionInfo, tableName);
+        }
+
+        public async Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName)
+         => await Task.Run(async () =>
+         {
+             string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+             RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+
+             //Return Result
+             return await TryReturnResultAsync(queryResult, dbConnectionInfo, tableName);
+         });
     }
 }

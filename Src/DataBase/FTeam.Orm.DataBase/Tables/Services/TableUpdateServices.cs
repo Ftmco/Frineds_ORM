@@ -29,14 +29,35 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
+        public QueryStatus TryUpdatet<T>(TableInfoResult tableInfo, T instance)
+        {
+            SqlCommand command = new();
+
+            CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
+
+            return status != CreateCommandStatus.Success ? QueryStatus.Exception :
+           _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
+        }
+
+        public async Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance)
+         => await Task.Run(async () =>
+         {
+             SqlCommand command = new();
+
+             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
+
+             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
+             await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
+         });
+
         public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
         {
             SqlCommand command = new();
 
-            CreateCommandStatus status = _cmd.TryGenerateUpdateCommand(tableInfo, instance, out command);
+            CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-           _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
+           _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
@@ -44,10 +65,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
           {
               SqlCommand command = new();
 
-              CreateCommandStatus status = _cmd.TryGenerateUpdateCommand(tableInfo, instance, out command);
+              CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
               return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-              await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
+              await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
           });
     }
 }

@@ -21,6 +21,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
             _crudBase = new TableCrudBaseServices();
         }
 
+     
+
         #endregion
 
         public QueryStatus TryDelete<T>(TableInfoResult tableInfo, T instance)
@@ -43,5 +45,26 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 return status == CreateCommandStatus.Success ? await _crudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command)
                 : QueryStatus.Exception;
             });
+
+        public QueryStatus Delete<T>(TableInfoResult tableInfo, T instance)
+        {
+            SqlCommand command = new();
+
+            CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
+
+            return status == CreateCommandStatus.Success ? _crudBase.CrudBase(tableInfo.DbConnectionInfo, command)
+                : QueryStatus.Exception;
+        }
+
+        public async Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, T instance)
+          => await Task.Run(async () =>
+          {
+              SqlCommand command = new();
+
+              CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
+
+              return status == CreateCommandStatus.Success ? await _crudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command)
+              : QueryStatus.Exception;
+          });
     }
 }
