@@ -17,7 +17,7 @@ namespace FriendsOrmStarter
 
         public static async Task Insert()
         {
-            var table = await _dbConnectionInfo.TableAsync("Entity");
+            var table = await _dbConnectionInfo.TableAsync("Entity", typeof(Entity));
             var result = await table.UpdateAsync(new Entity()
             {
                 Age = 10,

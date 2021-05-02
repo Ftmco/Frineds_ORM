@@ -22,7 +22,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void TestExtentions()
         {
-            TableInfoResult tableInfo = _dbConnectionInfo.TryTable("Users");
+            TableInfoResult tableInfo = _dbConnectionInfo.TryTable("Users",typeof(Users));
 
             switch (tableInfo.Status)
             {
@@ -60,7 +60,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetObjectTest()
         {
-            IEnumerable<Entity> users = _dbConnectionInfo.TryTable("Entity").TryGetAll<Entity>();
+            IEnumerable<Entity> users = _dbConnectionInfo.TryTable("Entity", typeof(Users)).TryGetAll<Entity>();
 
             if (users != null)
             {
@@ -75,7 +75,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetSingleObjectTest()
         {
-            Users users = _dbConnectionInfo.TryTable("Users").TryGet<Users>("Users.[PhoneNumber] = '09012421080'");
+            Users users = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryGet<Users>("Users.[PhoneNumber] = '09012421080'");
 
             if (users != null)
             {
@@ -90,7 +90,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void InsertRow()
         {
-            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Entity").TryInsertAsync<Entity>(new()
+            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Entity", typeof(Entity)).TryInsertAsync<Entity>(new()
             {
                Age = 10,
                Family = "nullasd",
@@ -126,7 +126,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void DeleteTest()
         {
-            QueryStatus result = _dbConnectionInfo.TryTable("Users").TryDelete<Users>(new()
+            QueryStatus result = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryDelete<Users>(new()
             {
                 ActiveCode = "234562",
                 ActiveDate = DateTime.Now,
@@ -172,7 +172,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void UpdateTest()
         {
-            QueryStatus result = _dbConnectionInfo.TryTable("Users").TryUpdate<Users>(new()
+            QueryStatus result = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryUpdate<Users>(new()
             {
                 ActiveCode = "234562",
                 ActiveDate = DateTime.Now,

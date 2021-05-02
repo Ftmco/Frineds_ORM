@@ -42,6 +42,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
+        #region --:: Table Columns Services ::--
+
         public async Task<IEnumerable<TableColumns>> TryGetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
             => await Task.Run(async () =>
             {
@@ -108,6 +110,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         });
 
+        #endregion
+
         #region --:: Table Primary Key Services ::--
 
         public async Task<PrimaryKey> TryGetTablePrimaryKeyAsync<T>()
@@ -139,8 +143,41 @@ namespace FTeam.Orm.DataBase.Tables.Services
         }
 
         public PrimaryKey GetTablePrimaryKey<T>()
+            => GetTablePrimaryKey(typeof(T));
+
+        public async Task<PrimaryKey> TryGetTablePrimaryKeyAsync(TableInfo tableInfo)
+            => await Task.Run(() => TryGetTablePrimaryKey(tableInfo));
+
+        public async Task<PrimaryKey> GetTablePrimaryKeyAsync(TableInfo tableInfo)
+            => await Task.Run(() => GetTablePrimaryKey(tableInfo));
+
+        public PrimaryKey TryGetTablePrimaryKey(TableInfo tableInfo)
+            => TryGetTablePrimaryKey(tableInfo.TableType);
+
+        public PrimaryKey GetTablePrimaryKey(TableInfo tableInfo)
+            => GetTablePrimaryKey(tableInfo.TableType);
+
+        public async Task<PrimaryKey> TryGetTablePrimaryKeyAsync(Type tableType)
+            => await Task.Run(() => TryGetTablePrimaryKey(tableType));
+
+        public async Task<PrimaryKey> GetTablePrimaryKeyAsync(Type tableType)
+            => await Task.Run(() => GetTablePrimaryKey(tableType));
+
+        public PrimaryKey TryGetTablePrimaryKey(Type tableType)
         {
-            PropertyInfo[] tableProperties = typeof(T).GetProperties();
+            try
+            {
+                return GetTablePrimaryKey(tableType);
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        public PrimaryKey GetTablePrimaryKey(Type tableType)
+        {
+            PropertyInfo[] tableProperties = tableType.GetProperties();
             PropertyInfo primaryKey = tableProperties.FirstOrDefault(tp => tp.GetCustomAttribute(typeof(FKey)) != null);
             if (primaryKey != null)
                 return new PrimaryKey

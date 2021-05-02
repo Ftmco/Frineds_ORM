@@ -4,6 +4,7 @@ using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
+using System;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables.Services
@@ -36,19 +37,19 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public TableInfoResult TryGetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName)
+        public TableInfoResult TryGetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
         {
             string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
             RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
 
-            return TryReturnResult(queryResult, dbConnectionInfo, tableName);
+            return TryReturnResult(queryResult, dbConnectionInfo, tableName, tableType);
         }
 
-        private TableInfoResult TryReturnResult(RunQueryResult runQueryResult, DbConnectionInfo dbConnectionInfo, string tableName)
+        private TableInfoResult TryReturnResult(RunQueryResult runQueryResult, DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
             => runQueryResult.QueryStatus switch
             {
-                QueryStatus.Success => TryGetTableInfoResult(dbConnectionInfo, tableName, runQueryResult),
+                QueryStatus.Success => TryGetTableInfoResult(dbConnectionInfo, tableName, runQueryResult, tableType),
 
                 QueryStatus.Exception => new() { TableInfo = null, Status = QueryStatus.Exception },
 
@@ -61,7 +62,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 _ => new() { TableInfo = null, Status = QueryStatus.Exception }
             };
 
-        public async Task<TableInfoResult> TryGetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName)
+        public async Task<TableInfoResult> TryGetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
             => await Task.Run(async () =>
             {
                 string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
@@ -69,16 +70,16 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 RunQueryResult queryResult = await _queryBase.TryRunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
 
                 //Return Result
-                return await TryReturnResultAsync(queryResult, dbConnectionInfo, tableName);
+                return await TryReturnResultAsync(queryResult, dbConnectionInfo, tableName, tableType);
             });
 
-        private async Task<TableInfoResult> TryReturnResultAsync(RunQueryResult runQueryResult, DbConnectionInfo dbConnectionInfo, string tableName)
+        private async Task<TableInfoResult> TryReturnResultAsync(RunQueryResult runQueryResult, DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
             => await Task.Run(async () =>
              runQueryResult.QueryStatus switch
              {
                  //Success Status
                  //Return Table Info
-                 QueryStatus.Success => await TryGetTableInfoResultAsync(dbConnectionInfo, tableName, runQueryResult),
+                 QueryStatus.Success => await TryGetTableInfoResultAsync(dbConnectionInfo, tableName, runQueryResult, tableType),
 
                  //System Exceptions
                  QueryStatus.Exception => new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception },
@@ -96,21 +97,22 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  _ => new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception }
              });
 
-        private async Task<TableInfoResult> TryGetTableInfoResultAsync(DbConnectionInfo dbConnectionInfo, string tableName, RunQueryResult queryResult)
+        private async Task<TableInfoResult> TryGetTableInfoResultAsync(DbConnectionInfo dbConnectionInfo, string tableName, RunQueryResult queryResult, Type tableType)
             => await Task.Run(async () =>
             {
                 TableInfoResult tableInfoResult = new()
                 {
                     TableInfo = await _dataTableMapper.MapAsync<TableInfo>(queryResult.DataTable),
                     Status = QueryStatus.Success,
-                    DbConnectionInfo = dbConnectionInfo
+                    DbConnectionInfo = dbConnectionInfo,
                 };
                 tableInfoResult.TableInfo.TableColumns = await _tableColumns.TryGetTableColumnsAsync(tableName, dbConnectionInfo);
-                tableInfoResult.TableInfo.PrimaryKey = await _tableColumns.TryGetTablePrimaryKeyAsync(dbConnectionInfo, tableInfoResult);
+                tableInfoResult.TableInfo.PrimaryKey = await _tableColumns.TryGetTablePrimaryKeyAsync(tableInfoResult.TableInfo);
+                tableInfoResult.TableInfo.TableType = tableType;
                 return tableInfoResult;
             });
 
-        private TableInfoResult TryGetTableInfoResult(DbConnectionInfo dbConnectionInfo, string tableName, RunQueryResult queryResult)
+        private TableInfoResult TryGetTableInfoResult(DbConnectionInfo dbConnectionInfo, string tableName, RunQueryResult queryResult, Type tableType)
         {
             TableInfoResult tableInfoResult = new()
             {
@@ -119,20 +121,21 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 DbConnectionInfo = dbConnectionInfo
             };
             tableInfoResult.TableInfo.TableColumns = _tableColumns.TryGetTableColumns(tableName, dbConnectionInfo);
-            tableInfoResult.TableInfo.PrimaryKey = _tableColumns.TryGetTablePrimaryKey(dbConnectionInfo, tableInfoResult);
+            tableInfoResult.TableInfo.PrimaryKey = _tableColumns.TryGetTablePrimaryKey(tableInfoResult.TableInfo);
+            tableInfoResult.TableInfo.TableType = tableType;
             return tableInfoResult;
         }
 
-        public TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName)
+        public TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
         {
             string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
             RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
 
-            return TryReturnResult(queryResult, dbConnectionInfo, tableName);
+            return TryReturnResult(queryResult, dbConnectionInfo, tableName, tableType);
         }
 
-        public async Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName)
+        public async Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
          => await Task.Run(async () =>
          {
              string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
@@ -140,7 +143,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
 
              //Return Result
-             return await TryReturnResultAsync(queryResult, dbConnectionInfo, tableName);
+             return await TryReturnResultAsync(queryResult, dbConnectionInfo, tableName, tableType);
          });
     }
 }
