@@ -2,8 +2,8 @@
 
 namespace FTeam.Orm.Attributes
 {
-    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
-    sealed class FKey : Attribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    public sealed class FKey : Attribute
     {
 
     }

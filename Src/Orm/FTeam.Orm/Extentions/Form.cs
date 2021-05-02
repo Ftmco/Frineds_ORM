@@ -2,6 +2,7 @@
 using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -161,17 +162,17 @@ namespace FTeam.Orm.Extentions
 
         #region :: Table :: 
 
-        public static TableInfoResult TryTable(this DbConnectionInfo dbConnectionInfo, string tableName)
-           => _tableInfo.TryGetTableInfo(dbConnectionInfo, tableName);
+        public static TableInfoResult TryTable(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
+           => _tableInfo.TryGetTableInfo(dbConnectionInfo, tableName, tableType);
 
-        public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName)
-          => _tableInfo.GetTableInfo(dbConnectionInfo, tableName);
+        public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
+          => _tableInfo.GetTableInfo(dbConnectionInfo, tableName, tableType);
 
-        public static async Task<TableInfoResult> TryTableAsync(this DbConnectionInfo dbConnectionInfo, string tableName)
-            => await Task.FromResult(await _tableInfo.TryGetTableInfoAsync(dbConnectionInfo, tableName));
+        public static async Task<TableInfoResult> TryTableAsync(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
+            => await Task.FromResult(await _tableInfo.TryGetTableInfoAsync(dbConnectionInfo, tableName, tableType));
 
-        public static async Task<TableInfoResult> TableAsync(this DbConnectionInfo dbConnectionInfo, string tableName)
-          => await Task.FromResult(await _tableInfo.GetTableInfoAsync(dbConnectionInfo, tableName));
+        public static async Task<TableInfoResult> TableAsync(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
+          => await Task.FromResult(await _tableInfo.GetTableInfoAsync(dbConnectionInfo, tableName, tableType));
 
         #endregion
 
