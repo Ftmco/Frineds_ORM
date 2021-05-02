@@ -14,16 +14,9 @@
 
   <ItemGroup>
     <PackageReference Include="Fdi" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Cosmos\FTeam.Orm.Cosmos\FTeam.Orm.Cosmos.csproj" />
-<<<<<<< HEAD
-    <ProjectReference Include="..\..\Results\FTeam.Orm.Results\FTeam.Orm.Results.csproj" />
-=======
-    <ProjectReference Include="..\..\Mapper\FTeam.Orm.Mapper\FTeam.Orm.Mapper.csproj" />
-    <ProjectReference Include="..\..\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj" />
->>>>>>> AmirHosseinBaderan
+    <PackageReference Include="FTeam.Orm.Cosmos" Version="2.0.0" />
+    <PackageReference Include="FTeam.Orm.Mapper" Version="1.0.0" />
+    <PackageReference Include="FTeam.Orm.Models" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

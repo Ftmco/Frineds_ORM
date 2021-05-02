@@ -8,11 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Fdi" Version="1.0.0" />
+    <PackageReference Include="FTeam.Orm.Models" Version="1.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj" />
   </ItemGroup>
 
 </Project>

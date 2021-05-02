@@ -13,9 +13,4 @@
     <PackageReference Include="coverlet.collector" Version="1.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\DataBase\FTeam.Orm.DataBase\FTeam.Orm.DataBase.csproj" />
-    <ProjectReference Include="..\..\..\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj" />
-  </ItemGroup>
-
 </Project>

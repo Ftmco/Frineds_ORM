@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orm\FTeam.Orm\FTeam.Orm.csproj" />
-    <ProjectReference Include="..\..\..\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,13 +10,8 @@
     <PackageTags>Friends Orm Asp.Net dotnet ftmco</PackageTags>
     <Authors>Friends</Authors>
     <Company>Friends</Company>
-    <Version>1.8.0</Version>
+    <Version>2.0.1</Version>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\DataBase\FTeam.Orm.DataBase\FTeam.Orm.DataBase.csproj" />
-    <ProjectReference Include="..\..\Results\FTeam.Orm.Results\FTeam.Orm.Models.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\..\..\..\..\Tools\Icons\Friends Icons\F.ORM.png">
@@ -27,6 +22,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
 </Project>
