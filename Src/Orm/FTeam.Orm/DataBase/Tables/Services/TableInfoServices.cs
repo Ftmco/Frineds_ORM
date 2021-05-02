@@ -106,9 +106,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
                     Status = QueryStatus.Success,
                     DbConnectionInfo = dbConnectionInfo,
                 };
+                tableInfoResult.TableInfo.TableType = tableType;
                 tableInfoResult.TableInfo.TableColumns = await _tableColumns.TryGetTableColumnsAsync(tableName, dbConnectionInfo);
                 tableInfoResult.TableInfo.PrimaryKey = await _tableColumns.TryGetTablePrimaryKeyAsync(tableInfoResult.TableInfo);
-                tableInfoResult.TableInfo.TableType = tableType;
                 return tableInfoResult;
             });
 
@@ -120,15 +120,15 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 Status = QueryStatus.Success,
                 DbConnectionInfo = dbConnectionInfo
             };
+            tableInfoResult.TableInfo.TableType = tableType;
             tableInfoResult.TableInfo.TableColumns = _tableColumns.TryGetTableColumns(tableName, dbConnectionInfo);
             tableInfoResult.TableInfo.PrimaryKey = _tableColumns.TryGetTablePrimaryKey(tableInfoResult.TableInfo);
-            tableInfoResult.TableInfo.TableType = tableType;
             return tableInfoResult;
         }
 
         public TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
         {
-            string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+            string query = $"USE [{dbConnectionInfo.DataBaseName}] SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
             RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
 
@@ -138,7 +138,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public async Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
          => await Task.Run(async () =>
          {
-             string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+             string query = $"USE [{dbConnectionInfo.DataBaseName}] SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
              RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
 
