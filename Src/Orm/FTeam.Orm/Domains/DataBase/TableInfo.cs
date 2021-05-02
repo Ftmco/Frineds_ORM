@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FTeam.Orm.Models
 {
@@ -9,6 +10,8 @@ namespace FTeam.Orm.Models
         public string Schema { get; set; }
 
         public string TableName { get; set; }
+
+        public Type TableType { get; set; }
 
         public PrimaryKey PrimaryKey { get; set; }
 

@@ -1,11 +1,14 @@
-﻿using FTeam.Orm.Cosmos.QueryBase;
+﻿using FTeam.Orm.Attributes;
+using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Extentions;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Tables.Services
@@ -39,74 +42,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public PrimaryKey TryGetTablePrimaryKey(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
-        {
-            string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
-
-            RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
-
-            PrimaryKey primaryKey = new();
-
-            switch (queryResult.QueryStatus)
-            {
-                case QueryStatus.Success:
-                    {
-                        primaryKey = _dataTableMapper.Map<PrimaryKey>(queryResult.DataTable);
-                        if (primaryKey != null)
-                            primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
-                        return primaryKey;
-                    }
-                case QueryStatus.Exception:
-                    return primaryKey;
-
-                case QueryStatus.InvalidOperationException:
-                    return primaryKey;
-
-                case QueryStatus.SqlException:
-                    return primaryKey;
-
-                case QueryStatus.DbException:
-                    return primaryKey;
-
-                default:
-                    return primaryKey;
-            }
-        }
-
-        public async Task<PrimaryKey> TryGetTablePrimaryKeyAsync(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
-             => await Task.Run(async () =>
-             {
-                 string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
-
-                 RunQueryResult queryResult = await _queryBase.TryRunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
-
-                 PrimaryKey primaryKey = new();
-
-                 switch (queryResult.QueryStatus)
-                 {
-                     case QueryStatus.Success:
-                         {
-                             primaryKey = await _dataTableMapper.MapAsync<PrimaryKey>(queryResult.DataTable);
-                             if (primaryKey != null)
-                                 primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
-                             return primaryKey;
-                         }
-                     case QueryStatus.Exception:
-                         return primaryKey;
-
-                     case QueryStatus.InvalidOperationException:
-                         return primaryKey;
-
-                     case QueryStatus.SqlException:
-                         return primaryKey;
-
-                     case QueryStatus.DbException:
-                         return primaryKey;
-
-                     default:
-                         return primaryKey;
-                 }
-             });
+        #region --:: Table Columns Services ::--
 
         public async Task<IEnumerable<TableColumns>> TryGetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
             => await Task.Run(async () =>
@@ -141,49 +77,6 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public async Task<PrimaryKey> GetTablePrimaryKeyAsync(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
-         => await Task.Run(async () =>
-         {
-             try
-             {
-                 string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
-
-                 RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
-
-                 PrimaryKey primaryKey = new();
-
-                 primaryKey = await _dataTableMapper.MapAsync<PrimaryKey>(queryResult.DataTable);
-                 if (primaryKey != null)
-                     primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
-                 return primaryKey;
-             }
-             catch
-             {
-                 throw;
-             }
-         });
-
-        public PrimaryKey GetTablePrimaryKey(DbConnectionInfo dbConnectionInfo, TableInfoResult tableInfoResult)
-        {
-            try
-            {
-                string query = $"SELECT COLUMN_NAME AS [Column] FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_NAME = '{tableInfoResult.TableInfo.TableName}'";
-
-                RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
-
-                PrimaryKey primaryKey = new();
-
-                primaryKey = _dataTableMapper.Map<PrimaryKey>(queryResult.DataTable);
-                if (primaryKey != null)
-                    primaryKey.Type = tableInfoResult.TableInfo.TableColumns.FirstOrDefault(p => p.Column == primaryKey.Column).Type;
-                return primaryKey;
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
         public IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
         {
             try
@@ -216,5 +109,85 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 throw;
             }
         });
+
+        #endregion
+
+        #region --:: Table Primary Key Services ::--
+
+        public async Task<PrimaryKey> TryGetTablePrimaryKeyAsync<T>()
+            => await Task.Run(async () =>
+            {
+                try
+                {
+                    return await GetTablePrimaryKeyAsync<T>();
+                }
+                catch
+                {
+                    return default;
+                }
+            });
+
+        public async Task<PrimaryKey> GetTablePrimaryKeyAsync<T>()
+            => await Task.Run(() => GetTablePrimaryKey<T>());
+
+        public PrimaryKey TryGetTablePrimaryKey<T>()
+        {
+            try
+            {
+                return GetTablePrimaryKey<T>();
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        public PrimaryKey GetTablePrimaryKey<T>()
+            => GetTablePrimaryKey(typeof(T));
+
+        public async Task<PrimaryKey> TryGetTablePrimaryKeyAsync(TableInfo tableInfo)
+            => await Task.Run(() => TryGetTablePrimaryKey(tableInfo));
+
+        public async Task<PrimaryKey> GetTablePrimaryKeyAsync(TableInfo tableInfo)
+            => await Task.Run(() => GetTablePrimaryKey(tableInfo));
+
+        public PrimaryKey TryGetTablePrimaryKey(TableInfo tableInfo)
+            => TryGetTablePrimaryKey(tableInfo.TableType);
+
+        public PrimaryKey GetTablePrimaryKey(TableInfo tableInfo)
+            => GetTablePrimaryKey(tableInfo.TableType);
+
+        public async Task<PrimaryKey> TryGetTablePrimaryKeyAsync(Type tableType)
+            => await Task.Run(() => TryGetTablePrimaryKey(tableType));
+
+        public async Task<PrimaryKey> GetTablePrimaryKeyAsync(Type tableType)
+            => await Task.Run(() => GetTablePrimaryKey(tableType));
+
+        public PrimaryKey TryGetTablePrimaryKey(Type tableType)
+        {
+            try
+            {
+                return GetTablePrimaryKey(tableType);
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        public PrimaryKey GetTablePrimaryKey(Type tableType)
+        {
+            PropertyInfo[] tableProperties = tableType.GetProperties();
+            PropertyInfo primaryKey = tableProperties.FirstOrDefault(tp => tp.GetCustomAttribute(typeof(FKey)) != null);
+            if (primaryKey != null)
+                return new PrimaryKey
+                {
+                    Column = primaryKey.Name,
+                    Type = primaryKey.PropertyType.ToString()
+                };
+            throw new NullReferenceException();
+        }
+
+        #endregion
     }
 }

@@ -1,6 +1,8 @@
-﻿using FTeam.Orm.Extentions;
+﻿using FTeam.Orm.Attributes;
+using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FriendsOrmStarter
@@ -12,12 +14,14 @@ namespace FriendsOrmStarter
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            var entity = _dbConnectionInfo.Table("Entity", typeof(Entity)).GetAll<Entity>();
+            Console.WriteLine(entity.First().Name);
             Insert().Wait();
         }
 
         public static async Task Insert()
         {
-            var table = await _dbConnectionInfo.TableAsync("Entity");
+            var table = await _dbConnectionInfo.TableAsync("Entity", typeof(Entity));
             var result = await table.UpdateAsync(new Entity()
             {
                 Age = 10,
@@ -38,6 +42,7 @@ namespace FriendsOrmStarter
 
         }
 
+        [FKey]
         public Guid Id { get; set; }
 
         public string Name { get; set; }
