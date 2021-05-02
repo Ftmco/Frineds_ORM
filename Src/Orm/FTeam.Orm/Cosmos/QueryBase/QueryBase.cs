@@ -58,13 +58,13 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 sqlDataAdapter.Fill(dataTable);
                 return new RunQueryResult { DataTable = dataTable, QueryStatus = QueryStatus.Success };
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return new RunQueryResult { QueryStatus = QueryStatus.InvalidOperationException };
+                throw ex;
             }
             catch (Exception)
             {
-                return new RunQueryResult { QueryStatus = QueryStatus.Exception };
+                throw;
             }
             finally
             {
@@ -132,7 +132,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
 
                  return openConnection.ConnectionStatus switch
                  {
-                     OpenConnectionStatus.Success => await TryRunVoidQueryAsync(openConnection.SqlConnection, sqlCommand),
+                     OpenConnectionStatus.Success => await RunVoidQueryAsync(openConnection.SqlConnection, sqlCommand),
 
                      OpenConnectionStatus.Exception => QueryStatus.Exception,
 

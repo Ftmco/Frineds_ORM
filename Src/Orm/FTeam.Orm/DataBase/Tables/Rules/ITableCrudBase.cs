@@ -27,9 +27,11 @@ namespace FTeam.Orm.DataBase.Tables
         #region --:: Insert ::--
 
         Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand);
+
         Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand);
 
         QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand);
+
         QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand);
 
         #endregion
