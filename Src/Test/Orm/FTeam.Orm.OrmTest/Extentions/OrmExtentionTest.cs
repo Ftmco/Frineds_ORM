@@ -75,11 +75,11 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetSingleObjectTest()
         {
-            Users users = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryGet<Users>("Users.[PhoneNumber] = '09012421080'");
+            IEnumerable<Entity> users = _dbConnectionInfo.TryTable("Entity", typeof(Entity)).TryGetAll<Entity>();
 
             if (users != null)
             {
-                Assert.Pass($"User Name = {users.UserName};Phone Number = {users.PhoneNumber};User Id = {users.UserId};Password = {users.Password}");
+                Assert.Pass($"{users.First().Name}");
             }
             else
             {
