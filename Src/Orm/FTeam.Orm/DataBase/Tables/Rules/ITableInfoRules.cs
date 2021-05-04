@@ -6,12 +6,12 @@ namespace FTeam.Orm.DataBase.Tables
 {
     public interface ITableInfoRules
     {
-        TableInfoResult TryGetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName,Type tableType);
+        TableInfoResult TryGetTableInfo(SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName,Type tableType);
 
-        TableInfoResult GetTableInfo(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType);
+        TableInfoResult GetTableInfo(SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName, Type tableType);
 
-        Task<TableInfoResult> TryGetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType);
+        Task<TableInfoResult> TryGetTableInfoAsync(SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName, Type tableType);
 
-        Task<TableInfoResult> GetTableInfoAsync(DbConnectionInfo dbConnectionInfo, string tableName, Type tableType);
+        Task<TableInfoResult> GetTableInfoAsync(SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName, Type tableType);
     }
 }

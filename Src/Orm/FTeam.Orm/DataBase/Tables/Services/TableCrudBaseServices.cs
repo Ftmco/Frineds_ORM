@@ -34,7 +34,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public IEnumerable<T> TryGetAllBase<T>(TableInfoResult tableInfoResult, string query)
         {
-            string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+            string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
 
             return runQuery.QueryStatus switch
@@ -48,7 +48,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public async Task<IEnumerable<T>> TryGetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
-                 string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                 string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
                  RunQueryResult runQuery = await _queryBase.TryRunQueryAsync(connectionString, query);
 
                  return runQuery.QueryStatus switch
@@ -61,7 +61,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public T TryGetBase<T>(TableInfoResult tableInfoResult, string query)
         {
-            string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+            string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
 
             return runQuery.QueryStatus switch
@@ -75,7 +75,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public async Task<T> TryGetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
-                 string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                 string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
                  RunQueryResult runQuery = await _queryBase.TryRunQueryAsync(connectionString, query);
 
                  return runQuery.QueryStatus switch
@@ -86,17 +86,17 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus TryCrudBase(SqlServerDbConnectionInfo SqlServerDbConnectionInfo, SqlCommand sqlCommand)
         {
-            string connectionString = dbConnectionInfo.GetConnectionString();
+            string connectionString = SqlServerDbConnectionInfo.GetConnectionString();
 
             return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
         }
 
-        public async Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> TryCrudBaseAsync(SqlServerDbConnectionInfo SqlServerDbConnectionInfo, SqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
-                string connectionString = dbConnectionInfo.GetConnectionString();
+                string connectionString = SqlServerDbConnectionInfo.GetConnectionString();
 
                 return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommand);
             });
@@ -105,7 +105,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         {
             try
             {
-                string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
                 RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
                 return _dataTableMapper.MapList<T>(runQuery.DataTable);
             }
@@ -120,7 +120,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
          {
              try
              {
-                 string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                 string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
                  RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
 
                  return await _dataTableMapper.MapListAsync<T>(runQuery.DataTable);
@@ -136,7 +136,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
          {
              try
              {
-                 string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                 string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
                  RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
 
                  return await _dataTableMapper.MapAsync<T>(runQuery.DataTable);
@@ -151,7 +151,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         {
             try
             {
-                string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
+                string connectionString = tableInfoResult.SqlServerDbConnectionInfo.GetConnectionString();
                 RunQueryResult runQuery = _queryBase.RunQuery(connectionString, query);
 
                 return _dataTableMapper.Map<T>(runQuery.DataTable);
@@ -162,12 +162,12 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         }
 
-        public async Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> CrudBaseAsync(SqlServerDbConnectionInfo SqlServerDbConnectionInfo, SqlCommand sqlCommand)
         => await Task.Run(async () =>
         {
             try
             {
-                string connectionString = dbConnectionInfo.GetConnectionString();
+                string connectionString = SqlServerDbConnectionInfo.GetConnectionString();
 
                 return await _queryBase.RunVoidQueryAsync(connectionString, sqlCommand);
             }
@@ -177,11 +177,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         });
 
-        public QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus CrudBase(SqlServerDbConnectionInfo SqlServerDbConnectionInfo, SqlCommand sqlCommand)
         {
             try
             {
-                string connectionString = dbConnectionInfo.GetConnectionString();
+                string connectionString = SqlServerDbConnectionInfo.GetConnectionString();
 
                 return _queryBase.RunVoidQuery(connectionString, sqlCommand);
             }

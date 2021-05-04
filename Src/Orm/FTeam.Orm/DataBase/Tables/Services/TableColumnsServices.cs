@@ -44,12 +44,12 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #region --:: Table Columns Services ::--
 
-        public async Task<IEnumerable<TableColumns>> TryGetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
+        public async Task<IEnumerable<TableColumns>> TryGetTableColumnsAsync(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo)
             => await Task.Run(async () =>
             {
                 string query = $"SELECT IS_NULLABLE as Nullable,DATA_TYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
-                RunQueryResult queryResult = await _queryBase.TryRunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+                RunQueryResult queryResult = await _queryBase.TryRunQueryAsync(SqlServerDbConnectionInfo.GetConnectionString(), query);
 
                 QueryStatus status = queryResult.QueryStatus;
 
@@ -61,11 +61,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 };
             });
 
-        public IEnumerable<TableColumns> TryGetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
+        public IEnumerable<TableColumns> TryGetTableColumns(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo)
         {
             string query = $"SELECT IS_NULLABLE as [Nullable],DATA_TYPE as [Type],COLUMN_NAME as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =  '{tableName}'";
 
-            RunQueryResult queryResult = _queryBase.TryRunQuery(dbConnectionInfo.GetConnectionString(), query);
+            RunQueryResult queryResult = _queryBase.TryRunQuery(SqlServerDbConnectionInfo.GetConnectionString(), query);
 
             QueryStatus status = queryResult.QueryStatus;
 
@@ -77,13 +77,13 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo)
+        public IEnumerable<TableColumns> GetTableColumns(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo)
         {
             try
             {
                 string query = $"SELECT ISNULLABLE as Nullable,DATATYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
-                RunQueryResult queryResult = _queryBase.RunQuery(dbConnectionInfo.GetConnectionString(), query);
+                RunQueryResult queryResult = _queryBase.RunQuery(SqlServerDbConnectionInfo.GetConnectionString(), query);
 
                 return _dataTableMapper.MapList<TableColumns>(queryResult.DataTable);
             }
@@ -93,14 +93,14 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         }
 
-        public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo)
+        public async Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo)
         => await Task.Run(async () =>
         {
             try
             {
                 string query = $"SELECT ISNULLABLE as Nullable,DATATYPE as Type,Column_name as [Column] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
-                RunQueryResult queryResult = await _queryBase.RunQueryAsync(dbConnectionInfo.GetConnectionString(), query);
+                RunQueryResult queryResult = await _queryBase.RunQueryAsync(SqlServerDbConnectionInfo.GetConnectionString(), query);
 
                 return await _dataTableMapper.MapListAsync<TableColumns>(queryResult.DataTable);
             }

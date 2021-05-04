@@ -9,19 +9,19 @@ namespace FriendsOrmStarter
 {
     class Program
     {
-        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "Orm_Test", Authentication.WindowsAuthentication);
+        static readonly SqlServerDbConnectionInfo _SqlServerDbConnectionInfo = new(".", "Orm_Test", Authentication.WindowsAuthentication);
 
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            var entity = _dbConnectionInfo.Table("Entity", typeof(Entity)).GetAll<Entity>();
+            var entity = _SqlServerDbConnectionInfo.Table("Entity", typeof(Entity)).GetAll<Entity>();
             Console.WriteLine(entity.First().Name);
             Insert().Wait();
         }
 
         public static async Task Insert()
         {
-            var table = await _dbConnectionInfo.TableAsync("Entity", typeof(Entity));
+            var table = await _SqlServerDbConnectionInfo.TableAsync("Entity", typeof(Entity));
             var result = await table.UpdateAsync(new Entity()
             {
                 Age = 10,

@@ -8,7 +8,7 @@ namespace FTeam.Orm.Models
 
         public TableInfo TableInfo { get; set; }
 
-        public DbConnectionInfo DbConnectionInfo { get; set; }
+        public SqlServerDbConnectionInfo SqlServerDbConnectionInfo { get; set; }
 
     }
 }

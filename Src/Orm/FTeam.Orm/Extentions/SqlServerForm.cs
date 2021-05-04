@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FTeam.Orm.Extentions
 {
-    public static class Form
+    public static class SqlServerForm
     {
         #region --:: Dependencies ::--
 
@@ -162,17 +162,17 @@ namespace FTeam.Orm.Extentions
 
         #region :: Table :: 
 
-        public static TableInfoResult TryTable(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
-           => _tableInfo.TryGetTableInfo(dbConnectionInfo, tableName, tableType);
+        public static TableInfoResult TryTable(this SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName, Type tableType)
+           => _tableInfo.TryGetTableInfo(SqlServerDbConnectionInfo, tableName, tableType);
 
-        public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
-          => _tableInfo.GetTableInfo(dbConnectionInfo, tableName, tableType);
+        public static TableInfoResult Table(this SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName, Type tableType)
+          => _tableInfo.GetTableInfo(SqlServerDbConnectionInfo, tableName, tableType);
 
-        public static async Task<TableInfoResult> TryTableAsync(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
-            => await Task.FromResult(await _tableInfo.TryGetTableInfoAsync(dbConnectionInfo, tableName, tableType));
+        public static async Task<TableInfoResult> TryTableAsync(this SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName, Type tableType)
+            => await Task.FromResult(await _tableInfo.TryGetTableInfoAsync(SqlServerDbConnectionInfo, tableName, tableType));
 
-        public static async Task<TableInfoResult> TableAsync(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
-          => await Task.FromResult(await _tableInfo.GetTableInfoAsync(dbConnectionInfo, tableName, tableType));
+        public static async Task<TableInfoResult> TableAsync(this SqlServerSqlServerDbConnectionInfo SqlServerDbConnectionInfo, string tableName, Type tableType)
+          => await Task.FromResult(await _tableInfo.GetTableInfoAsync(SqlServerDbConnectionInfo, tableName, tableType));
 
         #endregion
 

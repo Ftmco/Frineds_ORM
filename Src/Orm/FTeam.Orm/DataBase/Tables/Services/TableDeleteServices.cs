@@ -31,7 +31,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
             CreateCommandStatus status = _cmd.TryGenerateDeleteCommand(tableInfo, instance, out command);
 
-            return status == CreateCommandStatus.Success ? _crudBase.TryCrudBase(tableInfo.DbConnectionInfo, command)
+            return status == CreateCommandStatus.Success ? _crudBase.TryCrudBase(tableInfo.SqlServerDbConnectionInfo, command)
                 : QueryStatus.Exception;
         }
 
@@ -42,7 +42,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
                 CreateCommandStatus status = _cmd.TryGenerateDeleteCommand(tableInfo, instance, out command);
 
-                return status == CreateCommandStatus.Success ? await _crudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command)
+                return status == CreateCommandStatus.Success ? await _crudBase.TryCrudBaseAsync(tableInfo.SqlServerDbConnectionInfo, command)
                 : QueryStatus.Exception;
             });
 
@@ -52,7 +52,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
             CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
 
-            return status == CreateCommandStatus.Success ? _crudBase.CrudBase(tableInfo.DbConnectionInfo, command)
+            return status == CreateCommandStatus.Success ? _crudBase.CrudBase(tableInfo.SqlServerDbConnectionInfo, command)
                 : QueryStatus.Exception;
         }
 
@@ -63,7 +63,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
               CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
 
-              return status == CreateCommandStatus.Success ? await _crudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command)
+              return status == CreateCommandStatus.Success ? await _crudBase.CrudBaseAsync(tableInfo.SqlServerDbConnectionInfo, command)
               : QueryStatus.Exception;
           });
     }

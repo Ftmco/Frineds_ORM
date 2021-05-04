@@ -31,12 +31,12 @@ namespace FTeam.Orm.DataBase.Tables
 
         PrimaryKey GetTablePrimaryKey(Type tableType);
 
-        IEnumerable<TableColumns> TryGetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo);
+        IEnumerable<TableColumns> TryGetTableColumns(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo);
 
-        IEnumerable<TableColumns> GetTableColumns(string tableName, DbConnectionInfo dbConnectionInfo);
+        IEnumerable<TableColumns> GetTableColumns(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo);
 
-        Task<IEnumerable<TableColumns>> TryGetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo);
+        Task<IEnumerable<TableColumns>> TryGetTableColumnsAsync(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo);
 
-        Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, DbConnectionInfo dbConnectionInfo);
+        Task<IEnumerable<TableColumns>> GetTableColumnsAsync(string tableName, SqlServerDbConnectionInfo SqlServerDbConnectionInfo);
     }
 }

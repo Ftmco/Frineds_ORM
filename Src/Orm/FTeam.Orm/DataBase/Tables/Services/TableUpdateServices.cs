@@ -36,7 +36,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-           _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
+           _tableCrudBase.TryCrudBase(tableInfo.SqlServerDbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance)
@@ -47,7 +47,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
              return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-             await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
+             await _tableCrudBase.TryCrudBaseAsync(tableInfo.SqlServerDbConnectionInfo, command);
          });
 
         public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
@@ -57,7 +57,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-           _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
+           _tableCrudBase.CrudBase(tableInfo.SqlServerDbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
@@ -68,7 +68,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
               CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
               return status != CreateCommandStatus.Success ? QueryStatus.Exception :
-              await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
+              await _tableCrudBase.CrudBaseAsync(tableInfo.SqlServerDbConnectionInfo, command);
           });
     }
 }
