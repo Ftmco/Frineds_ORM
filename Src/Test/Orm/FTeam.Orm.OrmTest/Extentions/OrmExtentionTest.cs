@@ -1,4 +1,5 @@
-﻿using FTeam.Orm.Extentions;
+﻿using FTeam.Orm.Domains.Connection;
+using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using NUnit.Framework;

@@ -1,7 +1,8 @@
-﻿using FTeam.Orm.Models;
+﻿using FTeam.Orm.Domains.DataBase.Table;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FTeam.Orm.Domains.Connection;
 
 namespace FTeam.Orm.DataBase.Tables
 {

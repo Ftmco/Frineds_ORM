@@ -1,4 +1,4 @@
-﻿using FTeam.Orm.Models;
+﻿using FTeam.Orm.Domains.Connection;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Extentions

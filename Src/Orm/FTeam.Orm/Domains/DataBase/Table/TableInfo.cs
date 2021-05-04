@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FTeam.Orm.Models
+namespace FTeam.Orm.Domains.DataBase.Table
 {
     public record TableInfo
     {
@@ -16,21 +16,5 @@ namespace FTeam.Orm.Models
         public PrimaryKey PrimaryKey { get; set; }
 
         public IEnumerable<TableColumns> TableColumns { get; set; }
-    }
-
-    public record PrimaryKey
-    {
-        public string Column { get; set; }
-
-        public string Type { get; set; }
-    }
-
-    public record TableColumns
-    {
-        public bool Nullable { get; set; }
-
-        public string Type { get; set; }
-
-        public string Column { get; set; }
-    }
+    }   
 }

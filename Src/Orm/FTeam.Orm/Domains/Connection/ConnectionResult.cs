@@ -1,6 +1,6 @@
 ﻿using System.Data.SqlClient;
 
-namespace FTeam.Orm.Models
+namespace FTeam.Orm.Domains.Connection
 {
 
     /// <summary>

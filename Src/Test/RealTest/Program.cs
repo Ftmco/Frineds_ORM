@@ -1,6 +1,6 @@
 ﻿using FTeam.Orm.Attributes;
+using FTeam.Orm.Domains.Connection;
 using FTeam.Orm.Extentions;
-using FTeam.Orm.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

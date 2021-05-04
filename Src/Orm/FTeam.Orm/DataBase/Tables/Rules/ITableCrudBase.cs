@@ -1,4 +1,5 @@
-﻿using FTeam.Orm.Models;
+﻿using FTeam.Orm.Domains.Connection;
+using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using System.Collections.Generic;
 using System.Data.SqlClient;

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.Extentions
+namespace FTeam.Orm.Domains.DataBase.StoreProcedure
 {
-    public static class PgSqlForm
+    public record StoreProcedureInfo
     {
-        
+
     }
 }

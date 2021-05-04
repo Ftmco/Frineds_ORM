@@ -1,4 +1,5 @@
-﻿using FTeam.Orm.Models;
+﻿using FTeam.Orm.Domains.DataBase.Table;
+using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
 using System.Data.SqlClient;
 using System.Linq;

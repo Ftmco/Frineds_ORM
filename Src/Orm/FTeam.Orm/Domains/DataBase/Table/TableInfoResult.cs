@@ -1,4 +1,6 @@
-﻿using FTeam.Orm.Models.QueryBase;
+﻿using FTeam.Orm.Domains.DataBase.Table;
+using FTeam.Orm.Models.QueryBase;
+using FTeam.Orm.Domains.Connection;
 
 namespace FTeam.Orm.Models
 {

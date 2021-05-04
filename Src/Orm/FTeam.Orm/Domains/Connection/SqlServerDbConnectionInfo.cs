@@ -1,11 +1,11 @@
 ﻿//Friends Sql Orm
 
-namespace FTeam.Orm.Models
+namespace FTeam.Orm.Domains.Connection
 {
     /// <summary>
     /// Connection String Data Base Model
     /// </summary>
-    public record SqlServerSqlServerDbConnectionInfo
+    public record SqlServerDbConnectionInfo
     {
         /// <summary>
         /// Data Base Connection Info 
@@ -15,7 +15,7 @@ namespace FTeam.Orm.Models
         /// <param name="authentication">Authentication Type</param>
         /// <param name="userId">Login User Id</param>
         /// <param name="password">Password</param>
-        public SqlServerSqlServerDbConnectionInfo(string server, string dataBase, Authentication authentication, string userId = null, string password = null)
+        public SqlServerDbConnectionInfo(string server, string dataBase, Authentication authentication, string userId = null, string password = null)
         {
             Server = server;
             DataBaseName = dataBase;

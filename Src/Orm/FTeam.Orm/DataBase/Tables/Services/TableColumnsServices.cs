@@ -1,9 +1,10 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Extentions;
+using FTeam.Orm.Domains.Connection;
+using FTeam.Orm.Domains.DataBase.Table;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
-using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using System;
 using System.Collections.Generic;
