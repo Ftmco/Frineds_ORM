@@ -25,7 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FTeam.Orm.Attributes" Version="1.0.0" />
     <PackageReference Include="FTeam.Orm.Mapper" Version="1.5.2" />
+    <PackageReference Include="FTeam.Orm.Models" Version="1.0.3" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
