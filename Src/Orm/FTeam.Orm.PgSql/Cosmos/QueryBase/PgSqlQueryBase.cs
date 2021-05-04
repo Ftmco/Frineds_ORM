@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FTeam.Orm.PgSql.Cosmos.QueryBase
 {
-    public class PgSqlQueryBase
+    public class PgSqlQueryBase : IPgSqlQueryBase
     {
 
     }
