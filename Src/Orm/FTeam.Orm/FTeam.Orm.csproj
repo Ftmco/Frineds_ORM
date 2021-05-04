@@ -29,4 +29,8 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mapper\FTeam.Orm.Mapper\FTeam.Orm.Mapper.csproj" />
+  </ItemGroup>
+
 </Project>

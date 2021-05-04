@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.Mapper.Impelement
@@ -12,29 +13,30 @@ namespace FTeam.Orm.Mapper.Impelement
     {
         public T Map<T>(DataTable dataTable)
         {
+
             IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
 
             PropertyInfo[] properties = typeof(T).GetProperties();
 
             return dataTable.AsEnumerable().Select(row =>
-            {
-                T objT = Activator.CreateInstance<T>();
-                foreach (var item in properties)
-                {
-                    if (columnNames.Contains(item.Name.ToLower()))
-                    {
-                        try
-                        {
-                            item.SetValue(objT, row[item.Name]);
-                        }
-                        catch (Exception)
-                        {
+             {
+                 T objT = Activator.CreateInstance<T>();
+                 for (int i = 0; i < properties.Length; i += 1)
+                 {
+                     if (columnNames.Contains(properties[i].Name.ToLower()))
+                     {
+                         try
+                         {
+                             properties[i].SetValue(objT, row[properties[i].Name]);
+                         }
+                         catch
+                         {
 
-                        }
-                    }
-                }
-                return objT;
-            }).FirstOrDefault();
+                         }
+                     }
+                 }
+                 return objT;
+             }).FirstOrDefault();
         }
 
         public async Task<T> MapAsync<T>(DataTable dataTable)
@@ -49,7 +51,7 @@ namespace FTeam.Orm.Mapper.Impelement
             return dataTable.AsEnumerable().Select(row =>
             {
                 T objT = Activator.CreateInstance<T>();
-                foreach (var item in properties)
+                foreach (PropertyInfo item in properties)
                 {
                     if (columnNames.Contains(item.Name.ToLower()))
                     {
@@ -57,7 +59,7 @@ namespace FTeam.Orm.Mapper.Impelement
                         {
                             item.SetValue(objT, row[item.Name]);
                         }
-                        catch (Exception)
+                        catch
                         {
 
                         }
