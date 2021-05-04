@@ -191,5 +191,93 @@ namespace FTeam.Orm.Extentions
           => _tableGet.Get<T>(tableInfo, query);
 
         #endregion
+
+        #region :: Store Procedure Async ::
+
+        public static async Task<IEnumerable<T>> ExecStoreProcedureAsync<T>(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task<IEnumerable<T>> ExecStoreProcedureAsync<T>(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task ExecStoreProcedureAsync(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task ExecStoreProcedureAsync(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task<IEnumerable<T>> TryExecStoreProcedureAsync<T>(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task<IEnumerable<T>> TryExecStoreProcedureAsync<T>(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task TryExecStoreProcedureAsync(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task TryExecStoreProcedureAsync(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region :: Store Procedure Sync ::
+
+        public static IEnumerable<T> ExecStoreProcedure<T>(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IEnumerable<T> ExecStoreProcedure<T>(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void ExecStoreProcedure(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void ExecStoreProcedure(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IEnumerable<T> TryExecStoreProcedure<T>(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IEnumerable<T> TryExecStoreProcedure<T>(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void TryExecStoreProcedure(this SqlServerDbConnectionInfo sqlServerDbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void TryExecStoreProcedure(this SqlServerDbConnectionInfo sqlServerDbConnection, object parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
