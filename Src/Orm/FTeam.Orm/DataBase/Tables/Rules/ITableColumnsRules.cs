@@ -1,8 +1,8 @@
-﻿using FTeam.Orm.Domains.DataBase.Table;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FTeam.Orm.Domains.Connection;
+using FTeam.Orm.Domains.Connection.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 
 namespace FTeam.Orm.DataBase.Tables
 {

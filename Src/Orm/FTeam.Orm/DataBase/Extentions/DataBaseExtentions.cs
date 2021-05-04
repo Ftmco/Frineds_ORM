@@ -1,4 +1,4 @@
-﻿using FTeam.Orm.Domains.Connection;
+﻿using FTeam.Orm.Domains.Connection.SqlServer;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Extentions

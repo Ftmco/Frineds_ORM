@@ -1,6 +1,6 @@
 ﻿namespace FTeam.Orm.Domains.Connection.PgSql
 {
-    public record PgSqlSqlServerDbConnectionInfo
+    public record PgSqlDbConnectionInfo
     {
 
         /// <summary>
@@ -11,7 +11,7 @@
         /// <param name="dataBase">the database name</param>
         /// <param name="userId">the database user</param>
         /// <param name="password">the password for the database user</param>
-        public PgSqlSqlServerDbConnectionInfo(string server, string dataBase, string userId, string password, string port = "5432")
+        public PgSqlDbConnectionInfo(string server, string dataBase, string userId, string password, string port = "5432")
         {
             Server = server;
             Port = port;

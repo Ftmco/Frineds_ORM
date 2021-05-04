@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataBase\" />
     <Folder Include="Domains\" />
   </ItemGroup>
 
