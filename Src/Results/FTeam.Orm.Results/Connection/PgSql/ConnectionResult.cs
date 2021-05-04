@@ -1,7 +1,7 @@
 ﻿using FTeam.Orm.Models.Connection.Shared;
-using System.Data.SqlClient;
+using Npgsql;
 
-namespace FTeam.Orm.Domains.Connection.SqlServer
+namespace FTeam.Orm.Domains.Connection.PgSql
 {
 
     /// <summary>
@@ -12,7 +12,7 @@ namespace FTeam.Orm.Domains.Connection.SqlServer
         /// <summary>
         /// SqlConnection Model
         /// </summary>
-        public SqlConnection SqlConnection { get; set; }
+        public NpgsqlConnection SqlConnection { get; set; }
 
         /// <summary>
         /// Connection Status

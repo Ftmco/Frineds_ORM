@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FTeam.Orm.Models" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Orm\FTeam.Orm\FTeam.Orm.csproj" />
   </ItemGroup>
 
