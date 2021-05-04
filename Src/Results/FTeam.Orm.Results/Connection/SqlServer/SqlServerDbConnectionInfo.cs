@@ -1,15 +1,12 @@
 ﻿//Friends Sql Orm
 
-namespace FTeam.Orm.Models
+namespace FTeam.Orm.Domains.Connection.SqlServer
 {
     /// <summary>
     /// Connection String Data Base Model
     /// </summary>
-    public record DbConnectionInfo
+    public record SqlServerDbConnectionInfo
     {
-        string _server, _dataBase, _userId, _password = "";
-        Authentication _authentication;
-
         /// <summary>
         /// Data Base Connection Info 
         /// </summary>
@@ -18,38 +15,40 @@ namespace FTeam.Orm.Models
         /// <param name="authentication">Authentication Type</param>
         /// <param name="userId">Login User Id</param>
         /// <param name="password">Password</param>
-        public DbConnectionInfo(string server, string dataBase, Authentication authentication, string userId = null, string password = null)
+        public SqlServerDbConnectionInfo(string server, string dataBase, Authentication authentication, string userId = null, string password = null)
         {
-            _server = server;
-            _dataBase = dataBase;
-            _userId = userId;
-            _password = password;
-            _authentication = authentication;
+            Server = server;
+            DataBaseName = dataBase;
+            UserId = userId;
+            Password = password;
+            Authentication = authentication;
         }
 
         /// <summary>
         /// Server Name
         /// </summary>
-        public string Server { get => _server; }
+        public string Server { get; }
 
         /// <summary>
         /// Data Base Name
         /// </summary>
-        public string DataBaseName { get => _dataBase; }
+        public string DataBaseName { get; }
 
         /// <summary>
         /// Login User Name 
         /// </summary>
-        public string UserId { get => _userId; }
+        public string UserId { get; }
 
         /// <summary>
         /// Password
         /// </summary>
-        public string Password { get => _password; }
+        public string Password { get; }
 
         /// <summary>
         /// Authentication Type
         /// </summary>
-        public Authentication Authentication { get => _authentication; }
+        public Authentication Authentication { get; }
     }
+
+
 }

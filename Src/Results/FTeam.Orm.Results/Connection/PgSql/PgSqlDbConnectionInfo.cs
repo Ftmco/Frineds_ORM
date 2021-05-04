@@ -1,4 +1,4 @@
-﻿namespace FTeam.Orm.Domains.Connection
+﻿namespace FTeam.Orm.Domains.Connection.PgSql
 {
     public record PgSqlSqlServerDbConnectionInfo
     {

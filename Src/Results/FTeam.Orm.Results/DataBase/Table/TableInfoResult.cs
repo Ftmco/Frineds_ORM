@@ -1,6 +1,7 @@
 ﻿using FTeam.Orm.Models.QueryBase;
+using FTeam.Orm.Domains.Connection.SqlServer;
 
-namespace FTeam.Orm.Models
+namespace FTeam.Orm.Domains.DataBase.Table.SqlServer
 {
     public record TableInfoResult
     {
@@ -8,7 +9,7 @@ namespace FTeam.Orm.Models
 
         public TableInfo TableInfo { get; set; }
 
-        public DbConnectionInfo DbConnectionInfo { get; set; }
+        public SqlServerDbConnectionInfo SqlServerDbConnectionInfo { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace FTeam.Orm.Models
+﻿namespace FTeam.Orm.Domains.Connection.SqlServer
 {
     public enum Authentication
     {
