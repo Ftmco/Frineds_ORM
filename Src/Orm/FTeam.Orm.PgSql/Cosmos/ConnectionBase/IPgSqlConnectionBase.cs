@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using FTeam.Orm.Domains.Connection;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.PgSql.Cosmos.ConnectionBase
 {
     public interface IPgSqlConnectionBase
     {
-        Task
+        Task<OpenConnectionResult> OpenConnectionAsync(string connectionString);
+
+        Task<OpenConnectionResult> TryOpenConnectionAsync(string connectionString);
     }
 }

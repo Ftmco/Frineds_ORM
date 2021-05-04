@@ -1,8 +1,7 @@
-﻿using FTeam.Orm.Domains.DataBase.Table;
-using FTeam.Orm.Models.QueryBase;
-using FTeam.Orm.Domains.Connection;
+﻿using FTeam.Orm.Models.QueryBase;
+using FTeam.Orm.Domains.Connection.SqlServer;
 
-namespace FTeam.Orm.Models
+namespace FTeam.Orm.Domains.DataBase.Table.SqlServer
 {
     public record TableInfoResult
     {
