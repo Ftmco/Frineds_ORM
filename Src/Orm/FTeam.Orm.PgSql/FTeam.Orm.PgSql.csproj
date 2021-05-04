@@ -7,8 +7,11 @@
   <ItemGroup>
     <Folder Include="Cosmos\QueryBase\" />
     <Folder Include="DataBase\" />
-    <Folder Include="Extentions\" />
     <Folder Include="Domains\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FTeam.Orm.Mapper" Version="1.5.2" />
   </ItemGroup>
 
 </Project>

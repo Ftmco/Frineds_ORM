@@ -25,12 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FTeam.Orm.Mapper" Version="1.5.2" />
     <PackageReference Include="Npgsql" Version="6.0.0-preview3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Mapper\FTeam.Orm.Mapper\FTeam.Orm.Mapper.csproj" />
   </ItemGroup>
 
 </Project>
