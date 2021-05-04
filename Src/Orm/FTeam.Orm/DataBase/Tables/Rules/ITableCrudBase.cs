@@ -1,5 +1,5 @@
-﻿using FTeam.Orm.Domains.Connection;
-using FTeam.Orm.Models;
+﻿using FTeam.Orm.Domains.Connection.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 using FTeam.Orm.Models.QueryBase;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,15 +12,19 @@ namespace FTeam.Orm.DataBase.Tables
         #region --:: Get Base Services ::--
 
         IEnumerable<T> TryGetAllBase<T>(TableInfoResult tableInfoResult, string query);
+
         IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query);
 
         Task<IEnumerable<T>> TryGetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query);
+
         Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query);
 
         Task<T> TryGetBaseAsync<T>(TableInfoResult tableInfoResult, string query);
+
         Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query);
 
         T TryGetBase<T>(TableInfoResult tableInfoResult, string query);
+
         T GetBase<T>(TableInfoResult tableInfoResult, string query);
 
         #endregion

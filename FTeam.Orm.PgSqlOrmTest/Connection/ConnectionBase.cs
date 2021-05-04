@@ -9,7 +9,7 @@ namespace FTeam.Orm.PgSqlOrmTest.Connection
     {
         IPgSqlConnectionBase _connection;
 
-        PgSqlSqlServerDbConnectionInfo _connectionInfo = new("localhost", "new_db", "postger", "1G14ijWA");
+        PgSqlDbConnectionInfo _connectionInfo = new("localhost", "new_db", "postger", "1G14ijWA");
 
         [SetUp]
         public void Setup()

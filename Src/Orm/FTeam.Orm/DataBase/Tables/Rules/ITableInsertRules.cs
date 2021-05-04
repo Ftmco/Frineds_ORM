@@ -1,4 +1,4 @@
-﻿using FTeam.Orm.Models;
+﻿using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 using FTeam.Orm.Models.QueryBase;
 using System.Threading.Tasks;
 

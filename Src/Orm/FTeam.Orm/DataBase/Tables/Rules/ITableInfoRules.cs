@@ -1,5 +1,5 @@
-﻿using FTeam.Orm.Domains.Connection;
-using FTeam.Orm.Models;
+﻿using FTeam.Orm.Domains.Connection.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 using System;
 using System.Threading.Tasks;
 

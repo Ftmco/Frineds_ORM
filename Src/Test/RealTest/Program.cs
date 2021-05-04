@@ -1,5 +1,6 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Domains.Connection;
+using FTeam.Orm.Domains.Connection.SqlServer;
 using FTeam.Orm.Extentions;
 using System;
 using System.Linq;

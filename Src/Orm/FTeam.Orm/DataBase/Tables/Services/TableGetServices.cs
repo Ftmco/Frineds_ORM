@@ -1,8 +1,8 @@
 ﻿using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Tables.Services;
+using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
-using FTeam.Orm.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

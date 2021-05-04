@@ -1,7 +1,7 @@
 ﻿using FTeam.Orm.DataBase.Tables;
 using FTeam.Orm.DataBase.Tables.Services;
-using FTeam.Orm.Domains.Connection;
-using FTeam.Orm.Models;
+using FTeam.Orm.Domains.Connection.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 using FTeam.Orm.Models.QueryBase;
 using System;
 using System.Collections.Generic;

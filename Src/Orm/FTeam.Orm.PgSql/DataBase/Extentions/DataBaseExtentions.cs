@@ -11,18 +11,18 @@ namespace FTeam.Orm.DataBase.Extentions
         /// <summary>
         /// Create Connection String For Pg Sql From <see cref="PgSqlSqlServerDbConnectionInfo"/>
         /// </summary>
-        /// <param name="pgSqlConnectionInfo"><see cref="PgSqlSqlServerDbConnectionInfo"/></param>
+        /// <param name="pgSqlConnectionInfo"><see cref="PgSqlDbConnectionInfo"/></param>
         /// <returns>Connection String</returns>
-        public static string GetConnectionString(this PgSqlSqlServerDbConnectionInfo pgSqlConnectionInfo)
+        public static string GetConnectionString(this PgSqlDbConnectionInfo pgSqlConnectionInfo)
          => $"Server={pgSqlConnectionInfo.Server};Port={pgSqlConnectionInfo.Port};User Id={pgSqlConnectionInfo.UserId};Passwrod={pgSqlConnectionInfo.Password}";
 
         /// <summary>
         /// Create Connection String For Pg Sql From <see cref="PgSqlSqlServerDbConnectionInfo"/>
         /// Use 'await'
         /// </summary>
-        /// <param name="pgSqlConnectionInfo"><see cref="PgSqlSqlServerDbConnectionInfo"/></param>
+        /// <param name="pgSqlConnectionInfo"><see cref="PgSqlDbConnectionInfo"/></param>
         /// <returns>Task Connection String</returns>
-        public static async Task<string> GetConnectionStringAsync(this PgSqlSqlServerDbConnectionInfo pgSqlConnectionInfo)
+        public static async Task<string> GetConnectionStringAsync(this PgSqlDbConnectionInfo pgSqlConnectionInfo)
           => await Task.Run(() => pgSqlConnectionInfo.GetConnectionString());
     }
 }
