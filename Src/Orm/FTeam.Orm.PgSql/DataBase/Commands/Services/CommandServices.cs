@@ -65,7 +65,7 @@ namespace FTeam.Orm.DataBase.Commands
                 string values = string.Join(",",
                     tableInfo.TableInfo.TableColumns.Select(ip => $"@{ip.Column}"));
 
-                string query = $"INSERT INTO [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] ({columns})VALUES({values})";
+                string query = $"INSERT INTO public.\"{tableInfo.TableInfo.TableName}\" ({columns})VALUES({values})";
 
                 NpgsqlCommand cmd = new(query);
 
@@ -87,7 +87,7 @@ namespace FTeam.Orm.DataBase.Commands
             {
                 string columns = string.Join(",", tableInfo.TableInfo.TableColumns.Select(tc => $"[{tc.Column}] = @{tc.Column.ToLower()}").ToList());
 
-                string query = $"UPDATE [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
+                string query = $"UPDATE public.\"{tableInfo.TableInfo.TableName}\" SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
 
                 NpgsqlCommand cmd = new(query);
                 cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
@@ -110,7 +110,7 @@ namespace FTeam.Orm.DataBase.Commands
         {
             try
             {
-                string query = $"DELETE FROM [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
+                string query = $"DELETE FROM public.\"{tableInfo.TableInfo.TableName}\" WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
 
                 NpgsqlCommand cmd = new(query);
                 cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));

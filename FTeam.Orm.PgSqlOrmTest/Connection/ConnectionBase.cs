@@ -41,5 +41,11 @@ namespace FTeam.Orm.PgSqlOrmTest.Connection
                     break;
             }
         }
+
+        [Test]
+        public void InsertTest()
+        {
+            
+        }
     }
 }
