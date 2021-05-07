@@ -3,6 +3,7 @@ using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using System;
+using System.Data.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -51,6 +52,15 @@ namespace FTeam.Orm.Extentions
         public static QueryStatus TryInsert<T>(this TableInfoResult tableInfo, T instance)
            => _tableInsert.TryInsert<T>(tableInfo, instance);
 
+        /// <summary>
+        /// Insert New Instance To Data Base
+        /// </summary>
+        /// <typeparam name="T">TModel</typeparam>
+        /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
+        /// <param name="instance">Instance Object</param>
+        /// <returns><see cref="QueryStatus"/></returns>
+        /// <exception cref="System.Data.Common.DbException"></exception>
+        /// <exception cref="Exception"></exception>
         public static QueryStatus Insert<T>(this TableInfoResult tableInfo, T instance)
           => _tableInsert.Insert<T>(tableInfo, instance);
 
@@ -65,6 +75,16 @@ namespace FTeam.Orm.Extentions
         public static async Task<QueryStatus> TryInsertAsync<T>(this TableInfoResult tableInfo, T instance)
            => await Task.FromResult(await _tableInsert.TryInsertAsync<T>(tableInfo, instance));
 
+        /// <summary>
+        /// Insert New Instance To Data Base 
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">TModel</typeparam>
+        /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
+        /// <param name="instance">Instance Object</param>
+        /// <returns>Task <see cref="QueryStatus"/></returns>
+        /// <exception cref="System.Data.Common.DbException"></exception>
+        /// <exception cref="Exception"></exception>
         public static async Task<QueryStatus> InsertAsync<T>(this TableInfoResult tableInfo, T instance)
           => await Task.FromResult(await _tableInsert.InsertAsync<T>(tableInfo, instance));
 
@@ -82,6 +102,15 @@ namespace FTeam.Orm.Extentions
         public static QueryStatus TryDelete<T>(this TableInfoResult tableInfo, T instance)
           => _tableDelete.TryDelete<T>(tableInfo, instance);
 
+        /// <summary>
+        /// Delete Object From Data Base
+        /// </summary>
+        /// <typeparam name="T">TModel</typeparam>
+        /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
+        /// <param name="instance">TModel Instance</param>
+        /// <returns><see cref="QueryStatus"/></returns>
+        /// <exception cref="DbException"></exception>
+        /// <exception cref="Exception"></exception>
         public static QueryStatus Delete<T>(this TableInfoResult tableInfo, T instance)
           => _tableDelete.Delete<T>(tableInfo, instance);
 
@@ -96,6 +125,16 @@ namespace FTeam.Orm.Extentions
         public static async Task<QueryStatus> TryDeleteAsync<T>(this TableInfoResult tableInfo, T instance)
           => await Task.FromResult(await _tableDelete.TryDeleteAsync<T>(tableInfo, instance));
 
+        /// <summary>
+        /// Delete Object From Data Base
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">TModel</typeparam>
+        /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
+        /// <param name="instance">TModel Instance</param>
+        /// <returns><see cref="QueryStatus"/></returns>
+        /// <exception cref="DbException"></exception>
+        /// <exception cref="Exception"></exception>
         public static async Task<QueryStatus> DeleteAsync<T>(this TableInfoResult tableInfo, T instance)
          => await Task.FromResult(await _tableDelete.DeleteAsync<T>(tableInfo, instance));
 
@@ -113,6 +152,15 @@ namespace FTeam.Orm.Extentions
         public static QueryStatus TryUpdate<T>(this TableInfoResult tableInfo, T instance)
           => _tableUpdate.TryUpdatet<T>(tableInfo, instance);
 
+        /// <summary>
+        /// Update Object From Data Base
+        /// </summary>
+        /// <typeparam name="T">TModel</typeparam>
+        /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
+        /// <param name="instance">TModel Instance</param>
+        /// <returns><see cref="QueryStatus"/></returns>
+        /// <exception cref="DbException"></exception>
+        /// <exception cref="Exception"></exception>
         public static QueryStatus Update<T>(this TableInfoResult tableInfo, T instance)
           => _tableUpdate.Updatet<T>(tableInfo, instance);
 
@@ -127,6 +175,16 @@ namespace FTeam.Orm.Extentions
         public static async Task<QueryStatus> TryUpdateAsync<T>(this TableInfoResult tableInfo, T instance)
             => await Task.FromResult(await _tableUpdate.TryUpdatetAsync<T>(tableInfo, instance));
 
+        /// <summary>
+        ///  Update Object From Data Base
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">TModel</typeparam>
+        /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
+        /// <param name="instance">TModel Instance</param>
+        /// <returns>Task <see cref="QueryStatus"/></returns>
+        /// <exception cref="DbException"></exception>
+        /// <exception cref="Exception"></exception>
         public static async Task<QueryStatus> UpdateAsync<T>(this TableInfoResult tableInfo, T instance)
            => await Task.FromResult(await _tableUpdate.UpdatetAsync<T>(tableInfo, instance));
 
@@ -134,21 +192,55 @@ namespace FTeam.Orm.Extentions
 
         #region :: Get List ::
 
+        /// <summary>
+        /// Try To Get All Items From Table
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">Return Targt Object</typeparam>
+        /// <param name="tableInfo">Table Informations Schema <see cref="TableInfoResult"/></param>
+        /// <returns>Task IEnumerable <typeparamref name="T"/></returns>
         public static async Task<IEnumerable<T>> TryGetAllAsync<T>(this TableInfoResult tableInfo)
           => await Task.FromResult(await _tableGet.TryGetAllAsync<T>(tableInfo));
 
+        /// <summary>
+        /// Get All Items From Table
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">Return Targt Object</typeparam>
+        /// <param name="tableInfo">Table Informations Schema <see cref="TableInfoResult"/></param>
+        /// <returns>Task IEnumerable <typeparamref name="T"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static async Task<IEnumerable<T>> GetAllAsync<T>(this TableInfoResult tableInfo)
           => await Task.FromResult(await _tableGet.GetAllAsync<T>(tableInfo));
 
         public static IEnumerable<T> TryGetAll<T>(this TableInfoResult tableInfo)
             => _tableGet.TryGetAll<T>(tableInfo);
 
+        /// <summary>
+        /// Get All Items From Table
+        /// </summary>
+        /// <typeparam name="T">Return Targt Object</typeparam>
+        /// <param name="tableInfo">Table Informations Schema <see cref="TableInfoResult"/></param>
+        /// <returns>Task IEnumerable <typeparamref name="T"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static IEnumerable<T> GetAll<T>(this TableInfoResult tableInfo)
            => _tableGet.GetAll<T>(tableInfo);
 
         public static async Task<IEnumerable<T>> TryGetAllAsync<T>(this TableInfoResult tableInfo, string query)
             => await Task.FromResult(await _tableGet.TryGetAllAsync<T>(tableInfo, query));
 
+        /// <summary>
+        /// Get All Items From Table
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">Return Targt Object</typeparam>
+        /// <param name="tableInfo">Table Informations Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">Sql Query For Filter Objects</param>
+        /// <returns>Task IEnumerable <typeparamref name="T"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static async Task<IEnumerable<T>> GetAllAsync<T>(this TableInfoResult tableInfo, string query)
            => await Task.FromResult(await _tableGet.GetAllAsync<T>(tableInfo, query));
 
