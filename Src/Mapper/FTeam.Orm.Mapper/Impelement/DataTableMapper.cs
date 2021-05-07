@@ -17,7 +17,9 @@ namespace FTeam.Orm.Mapper.Impelement
 
             PropertyInfo[] properties = typeof(T).GetProperties();
 
-            return dataTable.AsEnumerable().Select(row =>
+            IList<T> result = new List<T>();
+
+            foreach (var row in dataTable.AsEnumerable())
             {
                 T objT = Activator.CreateInstance<T>();
                 for (int i = 0; i < properties.Length; i += 1)
@@ -34,8 +36,9 @@ namespace FTeam.Orm.Mapper.Impelement
                         }
                     }
                 }
-                return objT;
-            }).FirstOrDefault();
+                result.Add(objT);
+            }
+            return result.FirstOrDefault();
         }
 
         public async Task<T> MapAsync<T>(DataTable dataTable)
@@ -46,8 +49,9 @@ namespace FTeam.Orm.Mapper.Impelement
             IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
 
             PropertyInfo[] properties = typeof(T).GetProperties();
+            IList<T> result = new List<T>();
 
-            return dataTable.AsEnumerable().Select(row =>
+            foreach (DataRow row in dataTable.AsEnumerable())
             {
                 T objT = Activator.CreateInstance<T>();
                 foreach (PropertyInfo item in properties)
@@ -58,14 +62,16 @@ namespace FTeam.Orm.Mapper.Impelement
                         {
                             item.SetValue(objT, row[item.Name]);
                         }
-                        catch
+                        catch(Exception ex)
                         {
 
                         }
                     }
                 }
-                return objT;
-            }).ToList();
+                result.Add(objT);
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<T>> MapListAsync<T>(DataTable dataTable)
