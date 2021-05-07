@@ -1,12 +1,7 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
-using FTeam.Orm.Models.QueryBase;
 using System;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FriendsOrmStarter
 {
@@ -17,21 +12,19 @@ namespace FriendsOrmStarter
         static void Main(string[] args)
         {
             TableInfoResult table = _dbConnectionInfo.Table("News", typeof(News));
-            string path = "E:/Logs.txt";
-
-            Console.WriteLine("St Get");
-            var allNews = table.GetAllAsync<News>().Result;
-            Console.WriteLine("Fn Get");
-
-            File.WriteAllText(path, $"Start Update {DateTime.Now}");
-
-
-            foreach (var news in allNews)
+            News news = new()
             {
-                news.Title = "Updated News";
-                Console.Write($"{ table.TryDelete(news)} \t");
-            }
-            Console.WriteLine($"End Insert {DateTime.Now}");
+                CreateDate = DateTime.Now,
+                ImageName = "null.png",
+                IsPublic = false,
+                NewsId = Guid.Parse("6C0A3D2E-35F1-4591-A00C-295EA70B42E0"),
+                ShortDescription = "Short Desc",
+                ShowInSlider = true,
+                Text = "Text",
+                Title = "Title"
+            };
+
+            Console.WriteLine($"{table.Delete(news)}");
 
         }
 

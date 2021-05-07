@@ -98,12 +98,13 @@ namespace FTeam.Orm.Cosmos.QueryBase
         }
 
         public QueryStatus RunVoidQuery(string connectionString, SqlCommand sqlCommand)
-            => RunVoidQuery(connectionString, sqlCommand.CommandText);
+            => RunVoidQuery(new SqlConnection(connectionString), sqlCommand);
 
         public QueryStatus RunVoidQuery(SqlConnection sqlConnection, SqlCommand sqlCommand)
         {
             try
             {
+                sqlConnection = _connectionBase.OpenConnection(sqlConnection).SqlConnection;
                 sqlCommand.Connection = sqlConnection;
                 sqlCommand.ExecuteNonQuery();
                 return QueryStatus.Success;
