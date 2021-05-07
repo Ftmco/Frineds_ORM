@@ -1,7 +1,4 @@
-﻿using FTeam.Orm.Attributes;
-using FTeam.Orm.Domains.Connection;
-using FTeam.Orm.Domains.Connection.SqlServer;
-using FTeam.Orm.Extentions;
+﻿using FTeam.Orm.Domains.Connection.SqlServer;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +11,7 @@ namespace FriendsOrmStarter
 
         static void Main(string[] args)
         {
+
             Console.WriteLine("Hello World!");
             var entity = _SqlServerDbConnectionInfo.Table("Entity", typeof(Entity)).GetAll<Entity>();
             Console.WriteLine(entity.First().Name);
@@ -23,7 +21,7 @@ namespace FriendsOrmStarter
         public static async Task Insert()
         {
             var table = await _SqlServerDbConnectionInfo.TableAsync("Entity", typeof(Entity));
-            var result = await table.UpdateAsync(new Entity()
+            var result = await table.TryInsert(new Entity()
             {
                 Age = 10,
                 Family = "update",
