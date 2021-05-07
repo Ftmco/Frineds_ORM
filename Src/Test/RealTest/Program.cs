@@ -1,36 +1,38 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
+using FTeam.Orm.Models.QueryBase;
 using System;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FriendsOrmStarter
 {
     class Program
     {
-        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "Orm_Test", Authentication.WindowsAuthentication);
+        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            var entity = _dbConnectionInfo.Table("Entity", typeof(Entity)).GetAll<Entity>();
-            Console.WriteLine(entity.First().Name);
-            Insert().Wait();
-        }
+            TableInfoResult table = _dbConnectionInfo.Table("News", typeof(News));
+            string path = "E:/Logs.txt";
 
-        public static async Task Insert()
-        {
-            var table = await _dbConnectionInfo.TableAsync("Entity", typeof(Entity));
-            var result = await table.UpdateAsync(new Entity()
+            Console.WriteLine("St Get");
+            var allNews = table.GetAllAsync<News>().Result;
+            Console.WriteLine("Fn Get");
+
+            File.WriteAllText(path, $"Start Update {DateTime.Now}");
+
+
+            foreach (var news in allNews)
             {
-                Age = 10,
-                Family = "update",
-                Name = "update",
-                Id = Guid.Parse("24740D17-80E6-4D00-9674-A2EA78D28CAA")
-            });
+                news.Title = "Updated News";
+                Console.Write($"{ table.TryDelete(news)} \t");
+            }
+            Console.WriteLine($"End Insert {DateTime.Now}");
 
-            Console.WriteLine(result);
         }
 
     }

@@ -27,7 +27,7 @@ namespace FTeam.Orm.Models
 
     public record TableColumns
     {
-        public bool Nullable { get; set; }
+        public string Nullable { get; set; }
 
         public string Type { get; set; }
 
