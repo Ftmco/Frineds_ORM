@@ -13,10 +13,11 @@ namespace FTeam.Orm.Models
         /// <param name="server">Server Address</param>
         /// <param name="dataBase">Data Base Name</param>
         /// <param name="authentication">Authentication Type</param>
+        /// <param name="dataBaseType">Data Base Type</param>
         /// <param name="userId">Login User Id</param>
         /// <param name="password">Password</param>
         /// <param name="port">Data Base Port</param>
-        public DbConnectionInfo(string server, string dataBase, Authentication authentication, string userId = null, string password = null, string port = "")
+        public DbConnectionInfo(string server, string dataBase, Authentication authentication, DataBaseType dataBaseType, string userId = null, string password = null, string port = "")
         {
             Server = server;
             DataBaseName = dataBase;
@@ -24,6 +25,7 @@ namespace FTeam.Orm.Models
             Password = password;
             Authentication = authentication;
             Port = port;
+            DataBaseType = dataBaseType;
         }
 
         /// <summary>
@@ -55,5 +57,10 @@ namespace FTeam.Orm.Models
         /// Authentication Type
         /// </summary>
         public Authentication Authentication { get; }
+
+        /// <summary>
+        /// Data Base Type
+        /// </summary>
+        public DataBaseType DataBaseType { get; set; }
     }
 }

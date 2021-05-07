@@ -5,4 +5,10 @@
         WindowsAuthentication,
         SqlServerAuthentication
     }
+
+    public enum DataBaseType
+    {
+        SQLServer,
+        PostgreSQL
+    }
 }
