@@ -1,21 +1,21 @@
 ﻿using FTeam.Orm.Domains;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using Npgsql;
 
-namespace FTeam.Orm.DataBase.Commands
+namespace FTeam.Orm.PgSql.DataBase.Commands
 {
     public interface ICommandRules
     {
-        CreateCommandStatus TryGenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand  sqlCommand);
+        CreateCommandStatus TryGenerateInsertCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand  sqlCommand);
 
-        CreateCommandStatus GenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
+        CreateCommandStatus GenerateInsertCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
 
-        CreateCommandStatus TryGenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
+        CreateCommandStatus TryGenerateUpdateCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
 
-        CreateCommandStatus GenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
+        CreateCommandStatus GenerateUpdateCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
 
-        CreateCommandStatus TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
+        CreateCommandStatus TryGenerateDeleteCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
 
-        CreateCommandStatus GenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
+        CreateCommandStatus GenerateDeleteCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand);
     }
 }

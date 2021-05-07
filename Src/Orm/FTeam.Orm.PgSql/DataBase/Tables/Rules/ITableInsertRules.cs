@@ -1,8 +1,8 @@
-﻿using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables
+namespace FTeam.Orm.PgSql.DataBase.Tables
 {
     public interface ITableInsertRules
     {
@@ -11,22 +11,22 @@ namespace FTeam.Orm.DataBase.Tables
         /// use 'await'
         /// </summary>
         /// <typeparam name="T">TModel</typeparam>
-        /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
+        /// <param name="tableInfo">Table Information Schema <see cref="PgSqlTableInfoResult"/></param>
         /// <param name="instance">Model Instance</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
-        Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> TryInsertAsync<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> InsertAsync<T>(PgSqlTableInfoResult tableInfo, T instance);
 
         /// <summary>
         /// Try Insert Model To Table 
         /// </summary>
         /// <typeparam name="T">TModel</typeparam>
-        /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
+        /// <param name="tableInfo">Table Information Schema <see cref="PgSqlTableInfoResult"/></param>
         /// <param name="instance">Model Instance</param>
         /// <returns><see cref="QueryStatus"/></returns>
-        QueryStatus TryInsert<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus TryInsert<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        QueryStatus Insert<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus Insert<T>(PgSqlTableInfoResult tableInfo, T instance);
     }
 }

@@ -1,17 +1,17 @@
-﻿using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables
+namespace FTeam.Orm.PgSql.DataBase.Tables
 {
     public interface ITableUpdateRules
     {
-        Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> TryUpdatetAsync<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> UpdatetAsync<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus Updatet<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        QueryStatus TryUpdatet<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus TryUpdatet<T>(PgSqlTableInfoResult tableInfo, T instance);
     }
 }

@@ -1,18 +1,18 @@
 ﻿using FTeam.Orm.Domains.Connection.PgSql;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using System;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables
+namespace FTeam.Orm.PgSql.DataBase.Tables
 {
     public interface ITableInfoRules
     {
-        TableInfoResult TryGetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName,Type tableType);
+        PgSqlTableInfoResult TryGetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName,Type tableType);
 
-        TableInfoResult GetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType);
+        PgSqlTableInfoResult GetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType);
 
-        Task<TableInfoResult> TryGetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType);
+        Task<PgSqlTableInfoResult> TryGetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType);
 
-        Task<TableInfoResult> GetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType);
+        Task<PgSqlTableInfoResult> GetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType);
     }
 }

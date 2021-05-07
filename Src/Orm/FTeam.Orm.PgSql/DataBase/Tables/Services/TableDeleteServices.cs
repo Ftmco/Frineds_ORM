@@ -1,11 +1,11 @@
-﻿using FTeam.Orm.DataBase.Commands;
-using FTeam.Orm.Domains;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Domains;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
-using System.Data.SqlClient;
+using FTeam.Orm.PgSql.DataBase.Commands;
+using Npgsql;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables.Services
+namespace FTeam.Orm.PgSql.DataBase.Tables.Services
 {
     public class TableDeleteServices : ITableDeleteRules
     {
@@ -25,9 +25,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public QueryStatus TryDelete<T>(TableInfoResult tableInfo, T instance)
+        public QueryStatus TryDelete<T>(PgSqlTableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            NpgsqlCommand command = new();
 
             CreateCommandStatus status = _cmd.TryGenerateDeleteCommand(tableInfo, instance, out command);
 
@@ -35,10 +35,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 : QueryStatus.Exception;
         }
 
-        public async Task<QueryStatus> TryDeleteAsync<T>(TableInfoResult tableInfo, T instance)
+        public async Task<QueryStatus> TryDeleteAsync<T>(PgSqlTableInfoResult tableInfo, T instance)
             => await Task.Run(async () =>
             {
-                SqlCommand command = new();
+                NpgsqlCommand command = new();
 
                 CreateCommandStatus status = _cmd.TryGenerateDeleteCommand(tableInfo, instance, out command);
 
@@ -46,9 +46,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 : QueryStatus.Exception;
             });
 
-        public QueryStatus Delete<T>(TableInfoResult tableInfo, T instance)
+        public QueryStatus Delete<T>(PgSqlTableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            NpgsqlCommand command = new();
 
             CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
 
@@ -56,10 +56,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 : QueryStatus.Exception;
         }
 
-        public async Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, T instance)
+        public async Task<QueryStatus> DeleteAsync<T>(PgSqlTableInfoResult tableInfo, T instance)
           => await Task.Run(async () =>
           {
-              SqlCommand command = new();
+              NpgsqlCommand command = new();
 
               CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
 

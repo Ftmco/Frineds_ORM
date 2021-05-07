@@ -1,11 +1,11 @@
-﻿using FTeam.Orm.DataBase.Commands;
-using FTeam.Orm.Domains;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Domains;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
-using System.Data.SqlClient;
+using FTeam.Orm.PgSql.DataBase.Commands;
+using Npgsql;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables.Services
+namespace FTeam.Orm.PgSql.DataBase.Tables.Services
 {
     public class TableInsertServices : ITableInsertRules
     {
@@ -27,9 +27,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
             _cmd = new CommandServices();
         }
 
-        public QueryStatus Insert<T>(TableInfoResult tableInfo, T instance)
+        public QueryStatus Insert<T>(PgSqlTableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            NpgsqlCommand command = new();
 
             CreateCommandStatus status = _cmd.GenerateInsertCommand(tableInfo, instance, out command);
 
@@ -37,10 +37,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.CrudBase(tableInfo.PgSqlDbConnectionInfo, command);
         }
 
-        public async Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance)
+        public async Task<QueryStatus> InsertAsync<T>(PgSqlTableInfoResult tableInfo, T instance)
          => await Task.Run(async () =>
          {
-             SqlCommand command = new();
+             NpgsqlCommand command = new();
 
              CreateCommandStatus status = _cmd.GenerateInsertCommand(tableInfo, instance, out command);
 
@@ -50,9 +50,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public QueryStatus TryInsert<T>(TableInfoResult tableInfo, T instance)
+        public QueryStatus TryInsert<T>(PgSqlTableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            NpgsqlCommand command = new();
 
             CreateCommandStatus status = _cmd.TryGenerateInsertCommand(tableInfo, instance, out command);
 
@@ -60,10 +60,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.TryCrudBase(tableInfo.PgSqlDbConnectionInfo, command);
         }
 
-        public async Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, T instance)
+        public async Task<QueryStatus> TryInsertAsync<T>(PgSqlTableInfoResult tableInfo, T instance)
             => await Task.Run(async () =>
             {
-                SqlCommand command = new();
+                NpgsqlCommand command = new();
 
                 CreateCommandStatus status = _cmd.TryGenerateInsertCommand(tableInfo, instance, out command);
 

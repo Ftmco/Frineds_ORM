@@ -1,18 +1,18 @@
 ﻿using FTeam.Orm.Attributes;
-using FTeam.Orm.DataBase.Extentions;
 using FTeam.Orm.Domains.Connection.PgSql;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.Base;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models.QueryBase;
 using FTeam.Orm.PgSql.Cosmos.QueryBase;
+using FTeam.Orm.PgSql.DataBase.Extentions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables.Services
+namespace FTeam.Orm.PgSql.DataBase.Tables.Services
 {
     public class TableColumnsServices : ITableColumnsRules
     {
@@ -28,15 +28,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
         /// </summary>
         private readonly IDataTableMapper _dataTableMapper;
 
-        /// <summary>
-        /// Crud Base Services
-        /// </summary>
-        private readonly ITableCrudBase _crudBase;
-
         public TableColumnsServices()
         {
             _dataTableMapper = new DataTableMapper();
-            _crudBase = new TableCrudBaseServices();
             _queryBase = new PgSqlQueryBase();
         }
 

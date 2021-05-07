@@ -1,14 +1,15 @@
 ﻿using FTeam.Orm.Domains;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.Base;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using Npgsql;
 using System.Linq;
 using System.Reflection;
 
-namespace FTeam.Orm.DataBase.Commands
+namespace FTeam.Orm.PgSql.DataBase.Commands
 {
     public class CommandServices : ICommandRules
     {
-        public CreateCommandStatus TryGenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
+        public CreateCommandStatus TryGenerateUpdateCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
         {
             try
             {
@@ -21,7 +22,7 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus TryGenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
+        public CreateCommandStatus TryGenerateInsertCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
         {
             try
             {
@@ -34,7 +35,7 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
+        public CreateCommandStatus TryGenerateDeleteCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
         {
             try
             {
@@ -54,7 +55,7 @@ namespace FTeam.Orm.DataBase.Commands
             return property.GetValue(instance);
         }
 
-        public CreateCommandStatus GenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
+        public CreateCommandStatus GenerateInsertCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
         {
             try
             {
@@ -81,7 +82,7 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus GenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
+        public CreateCommandStatus GenerateUpdateCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
         {
             try
             {
@@ -106,7 +107,7 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus GenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
+        public CreateCommandStatus GenerateDeleteCommand<T>(PgSqlTableInfoResult tableInfo, T instance, out NpgsqlCommand sqlCommand)
         {
             try
             {

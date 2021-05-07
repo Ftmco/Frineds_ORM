@@ -1,17 +1,17 @@
-﻿using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables
+namespace FTeam.Orm.PgSql.DataBase.Tables
 {
     public interface ITableDeleteRules
     {
-        Task<QueryStatus> TryDeleteAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> TryDeleteAsync<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, T instance);
+        Task<QueryStatus> DeleteAsync<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        QueryStatus TryDelete<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus TryDelete<T>(PgSqlTableInfoResult tableInfo, T instance);
 
-        QueryStatus Delete<T>(TableInfoResult tableInfo, T instance);
+        QueryStatus Delete<T>(PgSqlTableInfoResult tableInfo, T instance);
     }
 }

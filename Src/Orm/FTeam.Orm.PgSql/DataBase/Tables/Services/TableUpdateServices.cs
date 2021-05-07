@@ -1,11 +1,11 @@
-﻿using FTeam.Orm.DataBase.Commands;
-using FTeam.Orm.Domains;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Domains;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
-using System.Data.SqlClient;
+using FTeam.Orm.PgSql.DataBase.Commands;
+using Npgsql;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables.Services
+namespace FTeam.Orm.PgSql.DataBase.Tables.Services
 {
     public class TableUpdateServices : ITableUpdateRules
     {
@@ -29,9 +29,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public QueryStatus TryUpdatet<T>(TableInfoResult tableInfo, T instance)
+        public QueryStatus TryUpdatet<T>(PgSqlTableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            NpgsqlCommand command = new();
 
             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
@@ -39,10 +39,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.TryCrudBase(tableInfo.PgSqlDbConnectionInfo, command);
         }
 
-        public async Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance)
+        public async Task<QueryStatus> TryUpdatetAsync<T>(PgSqlTableInfoResult tableInfo, T instance)
          => await Task.Run(async () =>
          {
-             SqlCommand command = new();
+             NpgsqlCommand command = new();
 
              CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
@@ -50,9 +50,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
              await _tableCrudBase.TryCrudBaseAsync(tableInfo.PgSqlDbConnectionInfo, command);
          });
 
-        public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
+        public QueryStatus Updatet<T>(PgSqlTableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            NpgsqlCommand command = new();
 
             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
@@ -60,10 +60,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.CrudBase(tableInfo.PgSqlDbConnectionInfo, command);
         }
 
-        public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
+        public async Task<QueryStatus> UpdatetAsync<T>(PgSqlTableInfoResult tableInfo, T instance)
           => await Task.Run(async () =>
           {
-              SqlCommand command = new();
+              NpgsqlCommand command = new();
 
               CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 

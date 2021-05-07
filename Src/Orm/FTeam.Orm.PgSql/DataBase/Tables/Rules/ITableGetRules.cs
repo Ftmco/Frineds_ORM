@@ -1,34 +1,34 @@
-﻿using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Models.DataBase.Table.PgSql;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables
+namespace FTeam.Orm.PgSql.DataBase.Tables
 {
     public interface ITableGetRules
     {
-        IEnumerable<T> TryGetAll<T>(TableInfoResult tableInfoResult);
+        IEnumerable<T> TryGetAll<T>(PgSqlTableInfoResult tableInfoResult);
 
-        IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult);
+        IEnumerable<T> GetAll<T>(PgSqlTableInfoResult tableInfoResult);
 
-        IEnumerable<T> TryGetAll<T>(TableInfoResult tableInfoResult, string query);
+        IEnumerable<T> TryGetAll<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
-        IEnumerable<T> GetAll<T>(TableInfoResult tableInfoResult, string query);
+        IEnumerable<T> GetAll<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
-        Task<IEnumerable<T>> TryGetAllAsync<T>(TableInfoResult tableInfoResult);
+        Task<IEnumerable<T>> TryGetAllAsync<T>(PgSqlTableInfoResult tableInfoResult);
 
-        Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult);
+        Task<IEnumerable<T>> GetAllAsync<T>(PgSqlTableInfoResult tableInfoResult);
 
-        Task<IEnumerable<T>> TryGetAllAsync<T>(TableInfoResult tableInfoResult, string query);
+        Task<IEnumerable<T>> TryGetAllAsync<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
-        Task<IEnumerable<T>> GetAllAsync<T>(TableInfoResult tableInfoResult, string query);
+        Task<IEnumerable<T>> GetAllAsync<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
-        Task<T> TryGetAsync<T>(TableInfoResult tableInfoResult, string query);
+        Task<T> TryGetAsync<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
-        Task<T> GetAsync<T>(TableInfoResult tableInfoResult, string query);
+        Task<T> GetAsync<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
-        T TryGet<T>(TableInfoResult tableInfoResult, string query);
+        T TryGet<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
-        T Get<T>(TableInfoResult tableInfoResult, string query);
+        T Get<T>(PgSqlTableInfoResult tableInfoResult, string query);
 
     }
 }

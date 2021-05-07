@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FTeam.Orm.Domains.Connection.PgSql;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.Base;
 
-namespace FTeam.Orm.DataBase.Tables
+namespace FTeam.Orm.PgSql.DataBase.Tables
 {
     public interface ITableColumnsRules
     {

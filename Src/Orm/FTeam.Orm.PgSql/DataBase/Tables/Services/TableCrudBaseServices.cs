@@ -1,15 +1,15 @@
-﻿using FTeam.Orm.Cosmos.QueryBase;
-using FTeam.Orm.DataBase.Extentions;
-using FTeam.Orm.Domains.Connection.SqlServer;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Domains.Connection.PgSql;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
+using FTeam.Orm.PgSql.Cosmos.QueryBase;
+using FTeam.Orm.PgSql.DataBase.Extentions;
+using Npgsql;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables.Services
+namespace FTeam.Orm.PgSql.DataBase.Tables.Services
 {
     public class TableCrudBaseServices : ITableCrudBase
     {
@@ -33,7 +33,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public IEnumerable<T> TryGetAllBase<T>(TableInfoResult tableInfoResult, string query)
+        public IEnumerable<T> TryGetAllBase<T>(PgSqlTableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.PgSqlDbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
@@ -46,7 +46,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public async Task<IEnumerable<T>> TryGetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<IEnumerable<T>> TryGetAllBaseAsync<T>(PgSqlTableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.PgSqlDbConnectionInfo.GetConnectionString();
@@ -60,7 +60,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public T TryGetBase<T>(TableInfoResult tableInfoResult, string query)
+        public T TryGetBase<T>(PgSqlTableInfoResult tableInfoResult, string query)
         {
             string connectionString = tableInfoResult.PgSqlDbConnectionInfo.GetConnectionString();
             RunQueryResult runQuery = _queryBase.TryRunQuery(connectionString, query);
@@ -73,7 +73,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             };
         }
 
-        public async Task<T> TryGetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<T> TryGetBaseAsync<T>(PgSqlTableInfoResult tableInfoResult, string query)
              => await Task.Run(async () =>
              {
                  string connectionString = tableInfoResult.PgSqlDbConnectionInfo.GetConnectionString();
@@ -87,14 +87,14 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public QueryStatus TryCrudBase(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus TryCrudBase(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, NpgsqlCommand sqlCommand)
         {
             string connectionString = PgSqlDbConnectionInfo.GetConnectionString();
 
             return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
         }
 
-        public async Task<QueryStatus> TryCrudBaseAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> TryCrudBaseAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, NpgsqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
                 string connectionString = PgSqlDbConnectionInfo.GetConnectionString();
@@ -102,7 +102,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommand);
             });
 
-        public IEnumerable<T> GetAllBase<T>(TableInfoResult tableInfoResult, string query)
+        public IEnumerable<T> GetAllBase<T>(PgSqlTableInfoResult tableInfoResult, string query)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         }
 
-        public async Task<IEnumerable<T>> GetAllBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<IEnumerable<T>> GetAllBaseAsync<T>(PgSqlTableInfoResult tableInfoResult, string query)
          => await Task.Run(async () =>
          {
              try
@@ -132,7 +132,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              }
          });
 
-        public async Task<T> GetBaseAsync<T>(TableInfoResult tableInfoResult, string query)
+        public async Task<T> GetBaseAsync<T>(PgSqlTableInfoResult tableInfoResult, string query)
          => await Task.Run(async () =>
          {
              try
@@ -148,7 +148,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              }
          });
 
-        public T GetBase<T>(TableInfoResult tableInfoResult, string query)
+        public T GetBase<T>(PgSqlTableInfoResult tableInfoResult, string query)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         }
 
-        public async Task<QueryStatus> CrudBaseAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> CrudBaseAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, NpgsqlCommand sqlCommand)
         => await Task.Run(async () =>
         {
             try
@@ -178,7 +178,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         });
 
-        public QueryStatus CrudBase(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus CrudBase(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, NpgsqlCommand sqlCommand)
         {
             try
             {

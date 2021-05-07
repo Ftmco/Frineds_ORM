@@ -1,7 +1,7 @@
 ﻿using FTeam.Orm.Domains.Connection.PgSql;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Extentions
+namespace FTeam.Orm.PgSql.DataBase.Extentions
 {
     /// <summary>
     /// Data Base Connection String Extentions

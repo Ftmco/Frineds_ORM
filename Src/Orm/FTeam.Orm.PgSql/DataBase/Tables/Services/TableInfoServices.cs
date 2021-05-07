@@ -1,14 +1,15 @@
-﻿using FTeam.Orm.DataBase.Extentions;
-using FTeam.Orm.Domains.Connection.PgSql;
-using FTeam.Orm.Domains.DataBase.Table.SqlServer;
+﻿using FTeam.Orm.Domains.Connection.PgSql;
+using FTeam.Orm.Domains.DataBase.Table.Base;
 using FTeam.Orm.Mapper.Impelement;
 using FTeam.Orm.Mapper.Rules;
+using FTeam.Orm.Models.DataBase.Table.PgSql;
 using FTeam.Orm.Models.QueryBase;
 using FTeam.Orm.PgSql.Cosmos.QueryBase;
+using FTeam.Orm.PgSql.DataBase.Extentions;
 using System;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.DataBase.Tables.Services
+namespace FTeam.Orm.PgSql.DataBase.Tables.Services
 {
     public class TableInfoServices : ITableInfoRules
     {
@@ -38,7 +39,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         #endregion
 
-        public TableInfoResult TryGetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
+        public PgSqlTableInfoResult TryGetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
         {
             string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
 
@@ -47,7 +48,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             return TryReturnResult(queryResult, PgSqlDbConnectionInfo, tableName, tableType);
         }
 
-        private TableInfoResult TryReturnResult(RunQueryResult runQueryResult, PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
+        private PgSqlTableInfoResult TryReturnResult(RunQueryResult runQueryResult, PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
             => runQueryResult.QueryStatus switch
             {
                 QueryStatus.Success => TryGetTableInfoResult(PgSqlDbConnectionInfo, tableName, runQueryResult, tableType),
@@ -63,7 +64,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 _ => new() { TableInfo = null, Status = QueryStatus.Exception }
             };
 
-        public async Task<TableInfoResult> TryGetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
+        public async Task<PgSqlTableInfoResult> TryGetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
             => await Task.Run(async () =>
             {
                 string query = $"SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
@@ -74,7 +75,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 return await TryReturnResultAsync(queryResult, PgSqlDbConnectionInfo, tableName, tableType);
             });
 
-        private async Task<TableInfoResult> TryReturnResultAsync(RunQueryResult runQueryResult, PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
+        private async Task<PgSqlTableInfoResult> TryReturnResultAsync(RunQueryResult runQueryResult, PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
             => await Task.Run(async () =>
              runQueryResult.QueryStatus switch
              {
@@ -83,25 +84,25 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  QueryStatus.Success => await TryGetTableInfoResultAsync(PgSqlDbConnectionInfo, tableName, runQueryResult, tableType),
 
                  //System Exceptions
-                 QueryStatus.Exception => new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception },
+                 QueryStatus.Exception => new PgSqlTableInfoResult() { TableInfo = null, Status = QueryStatus.Exception },
 
                  //InvalidOperationException Ado.Net Exceptions
-                 QueryStatus.InvalidOperationException => new TableInfoResult { TableInfo = null, Status = QueryStatus.InvalidOperationException },
+                 QueryStatus.InvalidOperationException => new PgSqlTableInfoResult { TableInfo = null, Status = QueryStatus.InvalidOperationException },
 
                  //Connection Or Query Execute Exceptions
-                 QueryStatus.SqlException => new TableInfoResult() { TableInfo = null, Status = QueryStatus.SqlException },
+                 QueryStatus.SqlException => new PgSqlTableInfoResult() { TableInfo = null, Status = QueryStatus.SqlException },
 
                  //Data Base Exceptions
-                 QueryStatus.DbException => new TableInfoResult() { TableInfo = null, Status = QueryStatus.DbException },
+                 QueryStatus.DbException => new PgSqlTableInfoResult() { TableInfo = null, Status = QueryStatus.DbException },
 
                  //default
-                 _ => new TableInfoResult() { TableInfo = null, Status = QueryStatus.Exception }
+                 _ => new PgSqlTableInfoResult() { TableInfo = null, Status = QueryStatus.Exception }
              });
 
-        private async Task<TableInfoResult> TryGetTableInfoResultAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, RunQueryResult queryResult, Type tableType)
+        private async Task<PgSqlTableInfoResult> TryGetTableInfoResultAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, RunQueryResult queryResult, Type tableType)
             => await Task.Run(async () =>
             {
-                TableInfoResult tableInfoResult = new()
+                PgSqlTableInfoResult tableInfoResult = new()
                 {
                     TableInfo = await _dataTableMapper.MapAsync<TableInfo>(queryResult.DataTable),
                     Status = QueryStatus.Success,
@@ -113,9 +114,9 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 return tableInfoResult;
             });
 
-        private TableInfoResult TryGetTableInfoResult(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, RunQueryResult queryResult, Type tableType)
+        private PgSqlTableInfoResult TryGetTableInfoResult(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, RunQueryResult queryResult, Type tableType)
         {
-            TableInfoResult tableInfoResult = new()
+            PgSqlTableInfoResult tableInfoResult = new()
             {
                 TableInfo = _dataTableMapper.Map<TableInfo>(queryResult.DataTable),
                 Status = QueryStatus.Success,
@@ -127,19 +128,19 @@ namespace FTeam.Orm.DataBase.Tables.Services
             return tableInfoResult;
         }
 
-        public TableInfoResult GetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
+        public PgSqlTableInfoResult GetTableInfo(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
         {
-            string query = $"USE [{PgSqlDbConnectionInfo.DataBaseName}] SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+            string query = $"SELECT table_name as TableName, table_schema as Schema,table_catalog as Catalog FROM information_schema.tables WHERE table_name='{tableName}'";
 
             RunQueryResult queryResult = _queryBase.RunQuery(PgSqlDbConnectionInfo.GetConnectionString(), query);
 
             return TryReturnResult(queryResult, PgSqlDbConnectionInfo, tableName, tableType);
         }
 
-        public async Task<TableInfoResult> GetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
+        public async Task<PgSqlTableInfoResult> GetTableInfoAsync(PgSqlDbConnectionInfo PgSqlDbConnectionInfo, string tableName, Type tableType)
          => await Task.Run(async () =>
          {
-             string query = $"USE [{PgSqlDbConnectionInfo.DataBaseName}] SELECT TABLE_NAME as [TableName], TABLE_SCHEMA as [Schema],TABLE_CATALOG as [Catalog] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+             string query = $"SELECT table_name as TableName, table_schema as Schema,table_catalog as Catalog FROM information_schema.tables WHERE table_name='{tableName}'";
 
              RunQueryResult queryResult = await _queryBase.RunQueryAsync(PgSqlDbConnectionInfo.GetConnectionString(), query);
 
