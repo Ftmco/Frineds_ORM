@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace FTeam.Orm.Mapper.Impelement
@@ -19,24 +18,24 @@ namespace FTeam.Orm.Mapper.Impelement
             PropertyInfo[] properties = typeof(T).GetProperties();
 
             return dataTable.AsEnumerable().Select(row =>
-             {
-                 T objT = Activator.CreateInstance<T>();
-                 for (int i = 0; i < properties.Length; i += 1)
-                 {
-                     if (columnNames.Contains(properties[i].Name.ToLower()))
-                     {
-                         try
-                         {
-                             properties[i].SetValue(objT, row[properties[i].Name]);
-                         }
-                         catch
-                         {
+            {
+                T objT = Activator.CreateInstance<T>();
+                for (int i = 0; i < properties.Length; i += 1)
+                {
+                    if (columnNames.Contains(properties[i].Name.ToLower()))
+                    {
+                        try
+                        {
+                            properties[i].SetValue(objT, row[properties[i].Name]);
+                        }
+                        catch
+                        {
 
-                         }
-                     }
-                 }
-                 return objT;
-             }).FirstOrDefault();
+                        }
+                    }
+                }
+                return objT;
+            }).FirstOrDefault();
         }
 
         public async Task<T> MapAsync<T>(DataTable dataTable)
