@@ -1,4 +1,4 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
 
 namespace FTeam.Orm.Models
 {
@@ -11,7 +11,7 @@ namespace FTeam.Orm.Models
         /// <summary>
         /// SqlConnection Model
         /// </summary>
-        public SqlConnection SqlConnection { get; set; }
+        public IDbConnection DbConnection { get; set; }
 
         /// <summary>
         /// Connection Status
