@@ -1,6 +1,6 @@
 ﻿using FTeam.Orm.DataBase.Commands;
-using FTeam.Orm.Models;
-using FTeam.Orm.Models.DataBase;
+using FTeam.Orm.Domains;
+using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 using FTeam.Orm.Models.QueryBase;
 using System.Data.SqlClient;
 using System.Threading.Tasks;

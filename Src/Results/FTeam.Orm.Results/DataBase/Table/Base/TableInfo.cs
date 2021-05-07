@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FTeam.Orm.Domains.DataBase.Table.SqlServer
+namespace FTeam.Orm.Domains.DataBase.Table.Base
 {
     public record TableInfo
     {

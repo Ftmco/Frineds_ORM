@@ -1,4 +1,5 @@
 ﻿using FTeam.Orm.Models.QueryBase;
+using FTeam.Orm.PgSql.Cosmos.ConnectionBase;
 using Npgsql;
 using System;
 using System.Threading.Tasks;
@@ -7,6 +8,17 @@ namespace FTeam.Orm.PgSql.Cosmos.QueryBase
 {
     public class PgSqlQueryBase : IPgSqlQueryBase
     {
+        #region --:: Dependency ::--
+
+        private readonly IPgSqlConnectionBase _connectionBase;
+
+        public PgSqlQueryBase()
+        {
+            _connectionBase = new PgSqlConnectionBase();
+        }
+
+        #endregion
+
         public RunQueryResult RunQuery(string connectionString, string query)
         {
             throw new NotImplementedException();

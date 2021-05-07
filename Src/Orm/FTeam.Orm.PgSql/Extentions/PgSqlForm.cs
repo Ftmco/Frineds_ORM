@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FTeam.Orm.Extentions
+namespace FTeam.Orm.PgSql.Extentions
 {
     public static class PgSqlForm
     {

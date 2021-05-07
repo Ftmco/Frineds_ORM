@@ -1,4 +1,5 @@
-﻿using FTeam.Orm.Domains.Connection;
+﻿using FTeam.Orm.Domains.Connection.SqlServer;
+using FTeam.Orm.Models.Connection.Shared;
 using System;
 using System.Data;
 using System.Data.SqlClient;

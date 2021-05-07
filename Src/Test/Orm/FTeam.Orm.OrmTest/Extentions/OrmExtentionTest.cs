@@ -1,6 +1,6 @@
-﻿using FTeam.Orm.Domains.Connection;
+﻿using FTeam.Orm.Domains.Connection.SqlServer;
+using FTeam.Orm.Domains.DataBase.Table.SqlServer;
 using FTeam.Orm.Extentions;
-using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using NUnit.Framework;
 using NUnit.Framework.Internal;

@@ -1,5 +1,6 @@
 ﻿using FTeam.Orm.Cosmos.ConnectionBase;
-using FTeam.Orm.Domains.Connection;
+using FTeam.Orm.Domains.Connection.SqlServer;
+using FTeam.Orm.Models.Connection.Shared;
 using FTeam.Orm.Models.QueryBase;
 using System;
 using System.Data;
