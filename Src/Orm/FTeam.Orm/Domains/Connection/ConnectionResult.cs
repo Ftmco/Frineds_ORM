@@ -9,7 +9,7 @@ namespace FTeam.Orm.Models
     public record OpenConnectionResult
     {
         /// <summary>
-        /// SqlConnection Model
+        /// IDbConnection Model
         /// </summary>
         public IDbConnection DbConnection { get; set; }
 

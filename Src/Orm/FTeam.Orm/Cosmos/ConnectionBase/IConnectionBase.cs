@@ -1,4 +1,5 @@
 ﻿using FTeam.Orm.Models;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -26,18 +27,18 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
         /// <summary>
         /// Open Data Base Connection
         /// </summary>
-        /// <param name="sqlConnection"><see cref="SqlConnection"/></param>
+        /// <param name="sqlConnection"><see cref="IDbConnection"/></param>
         /// <returns>Task <see cref="OpenConnectionResult"/></returns>
-        Task<OpenConnectionResult> TryOpenConnectionAsync(SqlConnection sqlConnection);
-        Task<OpenConnectionResult> OpenConnectionAsync(SqlConnection sqlConnection);
+        Task<OpenConnectionResult> TryOpenConnectionAsync(IDbConnection sqlConnection);
+        Task<OpenConnectionResult> OpenConnectionAsync(IDbConnection sqlConnection);
 
         /// <summary>
         /// Open Data Base Connection
         /// </summary>
-        /// <param name="sqlConnection"><see cref="SqlConnection"/></param>
+        /// <param name="sqlConnection"><see cref="IDbConnection"/></param>
         /// <returns><see cref="OpenConnectionResult"/></returns>
-        OpenConnectionResult TryOpenConnection(SqlConnection sqlConnection);
-        OpenConnectionResult OpenConnection(SqlConnection sqlConnection);
+        OpenConnectionResult TryOpenConnection(IDbConnection sqlConnection);
+        OpenConnectionResult OpenConnection(IDbConnection sqlConnection);
 
         /// <summary>
         /// Close Data Base Connection
@@ -58,17 +59,17 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
         /// <summary>
         /// Close Data Base Connection
         /// </summary>
-        /// <param name="sqlConnection"><see cref="SqlConnection"/></param>
+        /// <param name="sqlConnection"><see cref="IDbConnection"/></param>
         /// <returns>Task <see cref="CloseConnectionResult"/></returns>
-        Task<CloseConnectionResult> TryCloseConnectionAsync(SqlConnection sqlConnection);
-        Task<CloseConnectionResult> CloseConnectionAsync(SqlConnection sqlConnection);
+        Task<CloseConnectionResult> TryCloseConnectionAsync(IDbConnection sqlConnection);
+        Task<CloseConnectionResult> CloseConnectionAsync(IDbConnection sqlConnection);
 
         /// <summary>
         /// Close Data Base Connection
         /// </summary>
-        /// <param name="sqlConnection"><see cref="SqlConnection"/></param>
+        /// <param name="sqlConnection"><see cref="IDbConnection"/></param>
         /// <returns><see cref="CloseConnectionResult"/></returns>
-        CloseConnectionResult TryCloseConnection(SqlConnection sqlConnection);
-        CloseConnectionResult CloseConnection(SqlConnection sqlConnection);
+        CloseConnectionResult TryCloseConnection(IDbConnection sqlConnection);
+        CloseConnectionResult CloseConnection(IDbConnection sqlConnection);
     }
 }

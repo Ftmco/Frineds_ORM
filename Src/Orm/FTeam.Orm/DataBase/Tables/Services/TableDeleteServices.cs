@@ -27,7 +27,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public QueryStatus TryDelete<T>(TableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            IDbCommand command = new();
 
             CreateCommandStatus status = _cmd.TryGenerateDeleteCommand(tableInfo, instance, out command);
 
@@ -38,7 +38,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public async Task<QueryStatus> TryDeleteAsync<T>(TableInfoResult tableInfo, T instance)
             => await Task.Run(async () =>
             {
-                SqlCommand command = new();
+                IDbCommand command = new();
 
                 CreateCommandStatus status = _cmd.TryGenerateDeleteCommand(tableInfo, instance, out command);
 
@@ -48,7 +48,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public QueryStatus Delete<T>(TableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            IDbCommand command = new();
 
             CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
 
@@ -59,7 +59,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public async Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, T instance)
           => await Task.Run(async () =>
           {
-              SqlCommand command = new();
+              IDbCommand command = new();
 
               CreateCommandStatus status = _cmd.GenerateDeleteCommand(tableInfo, instance, out command);
 

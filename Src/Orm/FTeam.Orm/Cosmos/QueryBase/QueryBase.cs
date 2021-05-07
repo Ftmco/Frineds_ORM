@@ -19,10 +19,10 @@ namespace FTeam.Orm.Cosmos.QueryBase
         }
 
         public RunQueryResult RunQuery(string connectionString, string query)
-            => RunQuery(_connectionBase.OpenConnection(connectionString).SqlConnection, query);
+            => RunQuery(_connectionBase.OpenConnection(connectionString).IDbConnection, query);
 
 
-        public RunQueryResult RunQuery(SqlConnection sqlConnection, string query)
+        public RunQueryResult RunQuery(IDbConnection sqlConnection, string query)
         {
             try
             {
@@ -46,9 +46,9 @@ namespace FTeam.Orm.Cosmos.QueryBase
         }
 
         public async Task<RunQueryResult> RunQueryAsync(string connectionString, string query)
-            => await Task.FromResult(await RunQueryAsync(_connectionBase.OpenConnectionAsync(connectionString).Result.SqlConnection, query));
+            => await Task.FromResult(await RunQueryAsync(_connectionBase.OpenConnectionAsync(connectionString).Result.IDbConnection, query));
 
-        public async Task<RunQueryResult> RunQueryAsync(SqlConnection sqlConnection, string query)
+        public async Task<RunQueryResult> RunQueryAsync(IDbConnection sqlConnection, string query)
         => await Task.Run(async () =>
         {
             try
@@ -73,13 +73,13 @@ namespace FTeam.Orm.Cosmos.QueryBase
         });
 
         public QueryStatus RunVoidQuery(string connectionString, string query)
-            => RunVoidQuery(_connectionBase.OpenConnection(connectionString).SqlConnection, query);
+            => RunVoidQuery(_connectionBase.OpenConnection(connectionString).IDbConnection, query);
 
-        public QueryStatus RunVoidQuery(SqlConnection sqlConnection, string query)
+        public QueryStatus RunVoidQuery(IDbConnection sqlConnection, string query)
         {
             try
             {
-                SqlCommand cmd = new(query, sqlConnection);
+                IDbCommand cmd = new(query, sqlConnection);
                 cmd.ExecuteNonQuery();
                 return QueryStatus.Success;
             }
@@ -97,10 +97,10 @@ namespace FTeam.Orm.Cosmos.QueryBase
             }
         }
 
-        public QueryStatus RunVoidQuery(string connectionString, SqlCommand sqlCommand)
+        public QueryStatus RunVoidQuery(string connectionString, IDbCommand sqlCommand)
             => RunVoidQuery(connectionString, sqlCommand.CommandText);
 
-        public QueryStatus RunVoidQuery(SqlConnection sqlConnection, SqlCommand sqlCommand)
+        public QueryStatus RunVoidQuery(IDbConnection sqlConnection, IDbCommand sqlCommand)
         {
             try
             {
@@ -123,16 +123,16 @@ namespace FTeam.Orm.Cosmos.QueryBase
         }
 
         public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)
-            => await Task.FromResult(await RunVoidQueryAsync(_connectionBase.OpenConnectionAsync(connectionString).Result.SqlConnection, query));
+            => await Task.FromResult(await RunVoidQueryAsync(_connectionBase.OpenConnectionAsync(connectionString).Result.IDbConnection, query));
 
-        public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, SqlCommand sqlCommand)
+        public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, IDbCommand sqlCommand)
              => await Task.Run(async () =>
              {
                  OpenConnectionResult openConnection = await _connectionBase.TryOpenConnectionAsync(connectionString);
 
                  return openConnection.ConnectionStatus switch
                  {
-                     OpenConnectionStatus.Success => await RunVoidQueryAsync(openConnection.SqlConnection, sqlCommand),
+                     OpenConnectionStatus.Success => await RunVoidQueryAsync(openConnection.IDbConnection, sqlCommand),
 
                      OpenConnectionStatus.Exception => QueryStatus.Exception,
 
@@ -144,7 +144,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                  };
              });
 
-        public async Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, SqlCommand sqlCommand)
+        public async Task<QueryStatus> RunVoidQueryAsync(IDbConnection sqlConnection, IDbCommand sqlCommand)
             => await Task.Run(async () =>
             {
                 try
@@ -167,12 +167,12 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 }
             });
 
-        public async Task<QueryStatus> RunVoidQueryAsync(SqlConnection sqlConnection, string query)
+        public async Task<QueryStatus> RunVoidQueryAsync(IDbConnection sqlConnection, string query)
             => await Task.Run(async () =>
             {
                 try
                 {
-                    SqlCommand cmd = new(query, sqlConnection);
+                    IDbCommand cmd = new(query, sqlConnection);
                     await cmd.ExecuteNonQueryAsync();
                     return QueryStatus.Success;
                 }
@@ -196,7 +196,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
 
             return openConnection.ConnectionStatus switch
             {
-                OpenConnectionStatus.Success => TryRunQuery(openConnection.SqlConnection, query),
+                OpenConnectionStatus.Success => TryRunQuery(openConnection.IDbConnection, query),
 
                 OpenConnectionStatus.Exception => new RunQueryResult { QueryStatus = QueryStatus.Exception },
 
@@ -208,7 +208,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
             };
         }
 
-        public RunQueryResult TryRunQuery(SqlConnection sqlConnection, string query)
+        public RunQueryResult TryRunQuery(IDbConnection sqlConnection, string query)
         {
             try
             {
@@ -235,7 +235,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
 
                 return openConnection.ConnectionStatus switch
                 {
-                    OpenConnectionStatus.Success => await TryRunQueryAsync(openConnection.SqlConnection, query),
+                    OpenConnectionStatus.Success => await TryRunQueryAsync(openConnection.IDbConnection, query),
 
                     OpenConnectionStatus.Exception => new RunQueryResult { QueryStatus = QueryStatus.Exception },
 
@@ -247,7 +247,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 };
             });
 
-        public async Task<RunQueryResult> TryRunQueryAsync(SqlConnection sqlConnection, string query)
+        public async Task<RunQueryResult> TryRunQueryAsync(IDbConnection sqlConnection, string query)
             => await Task.Run(async () =>
             {
                 try
@@ -274,7 +274,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
 
             return openConnection.ConnectionStatus switch
             {
-                OpenConnectionStatus.Success => TryRunVoidQuery(openConnection.SqlConnection, query),
+                OpenConnectionStatus.Success => TryRunVoidQuery(openConnection.IDbConnection, query),
 
                 OpenConnectionStatus.Exception => QueryStatus.Exception,
 
@@ -286,7 +286,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
             };
         }
 
-        public QueryStatus TryRunVoidQuery(SqlConnection sqlConnection, string query)
+        public QueryStatus TryRunVoidQuery(IDbConnection sqlConnection, string query)
         {
             try
             {
@@ -306,13 +306,13 @@ namespace FTeam.Orm.Cosmos.QueryBase
             }
         }
 
-        public QueryStatus TryRunVoidQuery(string connectionString, SqlCommand sqlCommand)
+        public QueryStatus TryRunVoidQuery(string connectionString, IDbCommand sqlCommand)
         {
             OpenConnectionResult openConnection = _connectionBase.TryOpenConnection(connectionString);
 
             return openConnection.ConnectionStatus switch
             {
-                OpenConnectionStatus.Success => TryRunVoidQuery(openConnection.SqlConnection, sqlCommand),
+                OpenConnectionStatus.Success => TryRunVoidQuery(openConnection.IDbConnection, sqlCommand),
 
                 OpenConnectionStatus.Exception => QueryStatus.Exception,
 
@@ -324,7 +324,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
             };
         }
 
-        public QueryStatus TryRunVoidQuery(SqlConnection sqlConnection, SqlCommand sqlCommand)
+        public QueryStatus TryRunVoidQuery(IDbConnection sqlConnection, IDbCommand sqlCommand)
         {
             try
             {
@@ -351,7 +351,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
 
                 return openConnection.ConnectionStatus switch
                 {
-                    OpenConnectionStatus.Success => await TryRunVoidQueryAsync(openConnection.SqlConnection, query),
+                    OpenConnectionStatus.Success => await TryRunVoidQueryAsync(openConnection.IDbConnection, query),
 
                     OpenConnectionStatus.Exception => QueryStatus.Exception,
 
@@ -363,7 +363,7 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 };
             });
 
-        public async Task<QueryStatus> TryRunVoidQueryAsync(SqlConnection sqlConnection, string query)
+        public async Task<QueryStatus> TryRunVoidQueryAsync(IDbConnection sqlConnection, string query)
             => await Task.Run(async () =>
             {
                 try
@@ -384,10 +384,10 @@ namespace FTeam.Orm.Cosmos.QueryBase
                 }
             });
 
-        public async Task<QueryStatus> TryRunVoidQueryAsync(string connectionString, SqlCommand sqlCommand)
+        public async Task<QueryStatus> TryRunVoidQueryAsync(string connectionString, IDbCommand sqlCommand)
              => await Task.FromResult(await RunVoidQueryAsync(connectionString, sqlCommand));
 
-        public async Task<QueryStatus> TryRunVoidQueryAsync(SqlConnection sqlConnection, SqlCommand sqlCommand)
+        public async Task<QueryStatus> TryRunVoidQueryAsync(IDbConnection sqlConnection, IDbCommand sqlCommand)
              => await Task.Run(async () =>
              {
                  try

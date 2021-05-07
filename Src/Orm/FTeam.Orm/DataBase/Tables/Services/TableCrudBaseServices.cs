@@ -86,14 +86,14 @@ namespace FTeam.Orm.DataBase.Tables.Services
                  };
              });
 
-        public QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, IDbCommand sqlCommand)
         {
             string connectionString = dbConnectionInfo.GetConnectionString();
 
             return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
         }
 
-        public async Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IDbCommand sqlCommand)
             => await Task.Run(async () =>
             {
                 string connectionString = dbConnectionInfo.GetConnectionString();
@@ -162,7 +162,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         }
 
-        public async Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public async Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IDbCommand sqlCommand)
         => await Task.Run(async () =>
         {
             try
@@ -177,7 +177,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         });
 
-        public QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
+        public QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, IDbCommand sqlCommand)
         {
             try
             {

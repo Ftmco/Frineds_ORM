@@ -31,7 +31,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public QueryStatus TryUpdatet<T>(TableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            IDbCommand command = new();
 
             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
@@ -42,7 +42,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public async Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance)
          => await Task.Run(async () =>
          {
-             SqlCommand command = new();
+             IDbCommand command = new();
 
              CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
@@ -52,7 +52,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
+            IDbCommand command = new();
 
             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 
@@ -63,7 +63,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
           => await Task.Run(async () =>
           {
-              SqlCommand command = new();
+              IDbCommand command = new();
 
               CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
 

@@ -13,18 +13,18 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
         /// <summary>
         /// Sql Connection Object
         /// </summary>
-        private readonly SqlConnection _connection;
+        private readonly IDbConnection _connection;
 
-        public ConnectionBase()
+        public ConnectionBase(IDbConnection dbConnection)
         {
-            _connection = new();
+            _connection = dbConnection;
         }
 
         #endregion
 
         #region :: Open Connection Base ::
 
-        public OpenConnectionResult TryOpenConnection(SqlConnection sqlConnection)
+        public OpenConnectionResult TryOpenConnection(IDbConnection sqlConnection)
             => TryOpenConnection(sqlConnection.ConnectionString);
 
         public async Task<OpenConnectionResult> TryOpenConnectionAsync(string connectionString)
@@ -52,7 +52,7 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
                 }
             });
 
-        public async Task<OpenConnectionResult> TryOpenConnectionAsync(SqlConnection sqlConnection)
+        public async Task<OpenConnectionResult> TryOpenConnectionAsync(IDbConnection sqlConnection)
             => await Task.FromResult(await TryOpenConnectionAsync(sqlConnection.ConnectionString));
 
         public OpenConnectionResult TryOpenConnection(string connectionString)
@@ -80,36 +80,7 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
         }
 
         public async Task<OpenConnectionResult> OpenConnectionAsync(string connectionString)
-         => await Task.Run(async () =>
-         {
-             OpenConnectionResult result = new();
-             try
-             {
-                 if (_connection.State == ConnectionState.Open)
-                 {
-                     result.SqlConnection = _connection;
-                     return result;
-                 }
-                 _connection.ConnectionString = connectionString;
-                 await _connection.OpenAsync();
-
-                 result.SqlConnection = _connection;
-                 result.ConnectionStatus = OpenConnectionStatus.Success;
-                 return result;
-             }
-             catch (InvalidOperationException ex)
-             {
-                 throw ex;
-             }
-             catch (SqlException ex)
-             {
-                 throw ex;
-             }
-             catch (Exception)
-             {
-                 throw;
-             }
-         });
+         => await Task.Run(() => OpenConnection(connectionString));
 
         public OpenConnectionResult OpenConnection(string connectionString)
         {
@@ -118,13 +89,13 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
             {
                 if (_connection.State == ConnectionState.Open)
                 {
-                    result.SqlConnection = _connection;
+                    result.DbConnection = _connection;
                     return result;
                 }
                 _connection.ConnectionString = connectionString;
                 _connection.Open();
 
-                result.SqlConnection = _connection;
+                result.DbConnection = _connection;
                 result.ConnectionStatus = OpenConnectionStatus.Success;
                 return result;
             }
@@ -142,10 +113,10 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
             }
         }
 
-        public async Task<OpenConnectionResult> OpenConnectionAsync(SqlConnection sqlConnection)
+        public async Task<OpenConnectionResult> OpenConnectionAsync(IDbConnection sqlConnection)
             => await Task.FromResult(await OpenConnectionAsync(sqlConnection.ConnectionString));
 
-        public OpenConnectionResult OpenConnection(SqlConnection sqlConnection)
+        public OpenConnectionResult OpenConnection(IDbConnection sqlConnection)
             => OpenConnection(sqlConnection.ConnectionString);
 
         #endregion
@@ -168,7 +139,7 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
             }
         }
 
-        public CloseConnectionResult TryCloseConnection(SqlConnection sqlConnection)
+        public CloseConnectionResult TryCloseConnection(IDbConnection sqlConnection)
             => TryCloseConnection(sqlConnection.ConnectionString);
 
 
@@ -189,29 +160,13 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
                 }
             });
 
-        public async Task<CloseConnectionResult> TryCloseConnectionAsync(SqlConnection sqlConnection)
+        public async Task<CloseConnectionResult> TryCloseConnectionAsync(IDbConnection sqlConnection)
             => await Task.FromResult(await TryCloseConnectionAsync(sqlConnection.ConnectionString));
 
 
 
         public async Task<CloseConnectionResult> CloseConnectionAsync(string connectionString)
-         => await Task.Run(async () =>
-         {
-             try
-             {
-                 _connection.ConnectionString = connectionString;
-                 await _connection.CloseAsync();
-                 return CloseConnectionResult.Success;
-             }
-             catch (SqlException ex)
-             {
-                 throw ex;
-             }
-             catch (Exception)
-             {
-                 throw;
-             }
-         });
+         => await Task.Run(() => CloseConnection(connectionString));
 
         public CloseConnectionResult CloseConnection(string connectionString)
         {
@@ -231,10 +186,10 @@ namespace FTeam.Orm.Cosmos.ConnectionBase
             }
         }
 
-        public async Task<CloseConnectionResult> CloseConnectionAsync(SqlConnection sqlConnection)
+        public async Task<CloseConnectionResult> CloseConnectionAsync(IDbConnection sqlConnection)
             => await Task.FromResult(await CloseConnectionAsync(sqlConnection.ConnectionString));
 
-        public CloseConnectionResult CloseConnection(SqlConnection sqlConnection)
+        public CloseConnectionResult CloseConnection(IDbConnection sqlConnection)
             => CloseConnection(sqlConnection.ConnectionString);
 
         #endregion

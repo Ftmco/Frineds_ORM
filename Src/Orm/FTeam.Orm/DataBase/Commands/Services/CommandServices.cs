@@ -1,5 +1,7 @@
 ﻿using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
+using Npgsql;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +10,7 @@ namespace FTeam.Orm.DataBase.Commands
 {
     public class CommandServices : ICommandRules
     {
-        public CreateCommandStatus TryGenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        public CreateCommandStatus TryGenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out IDbCommand sqlCommand)
         {
             try
             {
@@ -21,7 +23,7 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus TryGenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        public CreateCommandStatus TryGenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out IDbCommand sqlCommand)
         {
             try
             {
@@ -34,7 +36,7 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        public CreateCommandStatus TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out IDbCommand sqlCommand)
         {
             try
             {
@@ -54,7 +56,7 @@ namespace FTeam.Orm.DataBase.Commands
             return property.GetValue(instance);
         }
 
-        public CreateCommandStatus GenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        public CreateCommandStatus GenerateInsertCommand<T>(TableInfoResult tableInfo, T instance, out IDbCommand sqlCommand)
         {
             try
             {
@@ -67,7 +69,7 @@ namespace FTeam.Orm.DataBase.Commands
 
                 string query = $"INSERT INTO [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] ({columns})VALUES({values})";
 
-                SqlCommand cmd = new(query);
+                IDbCommand cmd = new NpgsqlCommand(query);
 
                 foreach (var item in tableInfo.TableInfo.TableColumns)
                     cmd.Parameters.AddWithValue($"@{item.Column}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
@@ -81,7 +83,7 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus GenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        public CreateCommandStatus GenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out IDbCommand sqlCommand)
         {
             try
             {
@@ -89,7 +91,7 @@ namespace FTeam.Orm.DataBase.Commands
 
                 string query = $"UPDATE [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
 
-                SqlCommand cmd = new(query);
+                IDbCommand cmd = new(query);
                 cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
 
                 PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
@@ -106,13 +108,13 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public CreateCommandStatus GenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
+        public CreateCommandStatus GenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out IDbCommand sqlCommand)
         {
             try
             {
                 string query = $"DELETE FROM [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
 
-                SqlCommand cmd = new(query);
+                IDbCommand cmd = new(query);
                 cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
 
                 sqlCommand = cmd;
