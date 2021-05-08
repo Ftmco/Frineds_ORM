@@ -228,6 +228,14 @@ namespace FTeam.Orm.Extentions
         public static IEnumerable<T> GetAll<T>(this TableInfoResult tableInfo)
            => _tableGet.GetAll<T>(tableInfo);
 
+        /// <summary>
+        /// Try Get All Items From Table
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">Return Targt Object</typeparam>
+        /// <param name="tableInfo">Table Informations Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">Sql Query For Filter Objects</param>
+        /// <returns>Task IEnumerable <typeparamref name="T"/></returns>
         public static async Task<IEnumerable<T>> TryGetAllAsync<T>(this TableInfoResult tableInfo, string query)
             => await Task.FromResult(await _tableGet.TryGetAllAsync<T>(tableInfo, query));
 
@@ -244,9 +252,25 @@ namespace FTeam.Orm.Extentions
         public static async Task<IEnumerable<T>> GetAllAsync<T>(this TableInfoResult tableInfo, string query)
            => await Task.FromResult(await _tableGet.GetAllAsync<T>(tableInfo, query));
 
+        /// <summary>
+        /// Try Get All Items From Table
+        /// </summary>
+        /// <typeparam name="T">Return Targt Object</typeparam>
+        /// <param name="tableInfo">Table Informations Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">Sql Query For Filter Objects</param>
+        /// <returns>Task IEnumerable <typeparamref name="T"/></returns>
         public static IEnumerable<T> TryGetAll<T>(this TableInfoResult tableInfo, string query)
             => _tableGet.TryGetAll<T>(tableInfo, query);
 
+        /// <summary>
+        /// Get All Items From Table
+        /// </summary>
+        /// <typeparam name="T">Return Targt Object</typeparam>
+        /// <param name="tableInfo">Table Informations Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">Sql Query For Filter Objects</param>
+        /// <returns>Task IEnumerable <typeparamref name="T"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static IEnumerable<T> GetAll<T>(this TableInfoResult tableInfo, string query)
            => _tableGet.GetAll<T>(tableInfo, query);
 
@@ -254,15 +278,49 @@ namespace FTeam.Orm.Extentions
 
         #region :: Table :: 
 
+        /// <summary>
+        /// Try Get <see cref="TableInfoResult"/>
+        /// </summary>
+        /// <param name="dbConnectionInfo">Data Base Connection Info <see cref="DbConnectionInfo"/></param>
+        /// <param name="tableName">Sql Table Name</param>
+        /// <param name="tableType">C# Table Type </param>
+        /// <returns><see cref="TableInfoResult"/></returns>
         public static TableInfoResult TryTable(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
            => _tableInfo.TryGetTableInfo(dbConnectionInfo, tableName, tableType);
 
+        /// <summary>
+        /// Get <see cref="TableInfoResult"/>
+        /// </summary>
+        /// <param name="dbConnectionInfo">Data Base Connection Info <see cref="DbConnectionInfo"/></param>
+        /// <param name="tableName">Sql Table Name</param>
+        /// <param name="tableType">C# Table Type </param>
+        /// <returns><see cref="TableInfoResult"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static TableInfoResult Table(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
           => _tableInfo.GetTableInfo(dbConnectionInfo, tableName, tableType);
 
+        /// <summary>
+        /// Try Get <see cref="TableInfoResult"/>
+        /// Use 'await'
+        /// </summary>
+        /// <param name="dbConnectionInfo">Data Base Connection Info <see cref="DbConnectionInfo"/></param>
+        /// <param name="tableName">Sql Table Name</param>
+        /// <param name="tableType">C# Table Type </param>
+        /// <returns><see cref="TableInfoResult"/></returns>
         public static async Task<TableInfoResult> TryTableAsync(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
             => await Task.FromResult(await _tableInfo.TryGetTableInfoAsync(dbConnectionInfo, tableName, tableType));
 
+        /// <summary>
+        /// Get <see cref="TableInfoResult"/>
+        /// Use 'await'
+        /// </summary>
+        /// <param name="dbConnectionInfo">Data Base Connection Info <see cref="DbConnectionInfo"/></param>
+        /// <param name="tableName">Sql Table Name</param>
+        /// <param name="tableType">C# Table Type </param>
+        /// <returns><see cref="TableInfoResult"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static async Task<TableInfoResult> TableAsync(this DbConnectionInfo dbConnectionInfo, string tableName, Type tableType)
           => await Task.FromResult(await _tableInfo.GetTableInfoAsync(dbConnectionInfo, tableName, tableType));
 
@@ -270,15 +328,49 @@ namespace FTeam.Orm.Extentions
 
         #region :: Get ::
 
+        /// <summary>
+        /// Try Get Single Object From Data Base
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">Result Target Type</typeparam>
+        /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">T-Sql Query</param>
+        /// <returns>Task <typeparamref name="T"/></returns>
         public static async Task<T> TryGetAsync<T>(this TableInfoResult tableInfo, string query)
           => await Task.FromResult(await _tableGet.TryGetAsync<T>(tableInfo, query));
 
+        /// <summary>
+        /// Get Single Object From Data Base
+        /// Use 'await'
+        /// </summary>
+        /// <typeparam name="T">Result Target Type</typeparam>
+        /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">T-Sql Query</param>
+        /// <returns>Task <typeparamref name="T"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static async Task<T> GetAsync<T>(this TableInfoResult tableInfo, string query)
          => await Task.FromResult(await _tableGet.GetAsync<T>(tableInfo, query));
 
+        /// <summary>
+        /// Try Get Single Object From Data Base
+        /// </summary>
+        /// <typeparam name="T">Result Target Type</typeparam>
+        /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">T-Sql Query</param>
+        /// <returns>Task <typeparamref name="T"/></returns>
         public static T TryGet<T>(this TableInfoResult tableInfo, string query)
             => _tableGet.TryGet<T>(tableInfo, query);
 
+        /// <summary>
+        /// Get Single Object From Data Base
+        /// </summary>
+        /// <typeparam name="T">Result Target Type</typeparam>
+        /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
+        /// <param name="query">T-Sql Query</param>
+        /// <returns>Task <typeparamref name="T"/></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static T Get<T>(this TableInfoResult tableInfo, string query)
           => _tableGet.Get<T>(tableInfo, query);
 
