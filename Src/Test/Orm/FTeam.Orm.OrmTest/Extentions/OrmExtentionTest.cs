@@ -1,4 +1,6 @@
-﻿using FTeam.Orm.Extentions;
+﻿using FTeam.Orm.Cosmos.QueryBase;
+using FTeam.Orm.DataBase.Extentions;
+using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using NUnit.Framework;
@@ -11,7 +13,7 @@ namespace FTeam.Orm.OrmTest.Extentions
 {
     public class OrmExtentionTest
     {
-        private readonly DbConnectionInfo _dbConnectionInfo = new(".", "Orm_Test", Authentication.WindowsAuthentication);
+        private readonly DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
         [SetUp]
         public void Setup()
@@ -20,9 +22,34 @@ namespace FTeam.Orm.OrmTest.Extentions
         }
 
         [Test]
+        public void TestQuery()
+        {
+            IQueryBase _query = new QueryBase();
+
+            RunQueryResult result = _query.RunQueryAsync(_dbConnectionInfo.GetConnectionString(), "SELECT * FROM USERS").Result;
+
+            switch (result.QueryStatus)
+            {
+                case QueryStatus.Success:
+                    Assert.Pass("Suucess");
+                    break;
+                case QueryStatus.Exception:
+                    break;
+                case QueryStatus.InvalidOperationException:
+                    break;
+                case QueryStatus.SqlException:
+                    break;
+                case QueryStatus.DbException:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        [Test]
         public void TestExtentions()
         {
-            TableInfoResult tableInfo = _dbConnectionInfo.TryTable("Users",typeof(Users));
+            TableInfoResult tableInfo = _dbConnectionInfo.TryTable("Users", typeof(Users));
 
             switch (tableInfo.Status)
             {
@@ -60,11 +87,11 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void GetObjectTest()
         {
-            IEnumerable<Entity> users = _dbConnectionInfo.TryTable("Entity", typeof(Users)).TryGetAll<Entity>();
+            IEnumerable<Users> users = _dbConnectionInfo.TryTableAsync("Users", typeof(Users)).Result.TryGetAllAsync<Users>().Result;
 
             if (users != null)
             {
-                Assert.Pass(users.FirstOrDefault().Name);
+                Assert.Pass(users.Count().ToString());
             }
             else
             {
@@ -92,10 +119,10 @@ namespace FTeam.Orm.OrmTest.Extentions
         {
             QueryStatus insertStatus = _dbConnectionInfo.TryTable("Entity", typeof(Entity)).TryInsertAsync<Entity>(new()
             {
-               Age = 10,
-               Family = "nullasd",
-               Id = Guid.NewGuid(),
-               Name = "asdasdasd"
+                Age = 10,
+                Family = "nullasd",
+                Id = Guid.NewGuid(),
+                Name = "asdasdasd"
 
             }).Result;
 
