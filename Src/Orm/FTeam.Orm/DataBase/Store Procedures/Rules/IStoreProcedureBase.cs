@@ -8,5 +8,6 @@ namespace FTeam.Orm.DataBase.StoreProcedures
 {
     public interface IStoreProcedureBase
     {
+        Task<IEnumerable<T>> ExecStoreProcedureAsync<T>(object inputs);
     }
 }
