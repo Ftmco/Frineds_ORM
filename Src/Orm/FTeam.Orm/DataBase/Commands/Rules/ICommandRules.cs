@@ -1,6 +1,8 @@
 ﻿using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Commands
 {
@@ -14,5 +16,7 @@ namespace FTeam.Orm.DataBase.Commands
 
         CreateCommandStatus TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand);
         CreateCommandStatus GenerateDeleteCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand);
+
+        Task<IEnumerable<TableColumns>> GetRelasedColumnsAsync<T>(TableInfoResult tableInfo,T instance);
     }
 }

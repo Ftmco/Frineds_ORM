@@ -1,8 +1,10 @@
 ﻿using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace FTeam.Orm.DataBase.Commands
 {
@@ -58,18 +60,19 @@ namespace FTeam.Orm.DataBase.Commands
         {
             try
             {
-                string columns = string.Join(",", tableInfo.TableInfo.TableColumns.Select(tc => $"[{tc.Column}]").ToList());
-
                 PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
+                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync<T>(tableInfo, instance).Result;
+
+                string columns = string.Join(",", relasedColumns.Select(tc => $"[{tc.Column}]").ToList());
 
                 string values = string.Join(",",
-                    tableInfo.TableInfo.TableColumns.Select(ip => $"@{ip.Column}"));
+                    relasedColumns.Select(ip => $"@{ip.Column}"));
 
                 string query = $"INSERT INTO [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] ({columns})VALUES({values})";
 
                 SqlCommand cmd = new(query);
 
-                foreach (var item in tableInfo.TableInfo.TableColumns)
+                foreach (var item in relasedColumns)
                     cmd.Parameters.AddWithValue($"@{item.Column}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
 
                 sqlCommand = cmd;
@@ -85,16 +88,18 @@ namespace FTeam.Orm.DataBase.Commands
         {
             try
             {
-                string columns = string.Join(",", tableInfo.TableInfo.TableColumns.Select(tc => $"[{tc.Column}] = @{tc.Column.ToLower()}").ToList());
+                PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
+                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync<T>(tableInfo, instance).Result;
+
+                string columns = string.Join(",", relasedColumns.Select(tc => $"[{tc.Column}] = @{tc.Column.ToLower()}").ToList());
 
                 string query = $"UPDATE [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
 
                 SqlCommand cmd = new(query);
                 cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
 
-                PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
 
-                foreach (var item in tableInfo.TableInfo.TableColumns)
+                foreach (TableColumns item in relasedColumns)
                     cmd.Parameters.AddWithValue($"@{item.Column.ToLower()}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
 
                 sqlCommand = cmd;
@@ -123,5 +128,17 @@ namespace FTeam.Orm.DataBase.Commands
                 throw;
             }
         }
+
+        public async Task<IEnumerable<TableColumns>> GetRelasedColumnsAsync<T>(TableInfoResult tableInfo, T instance)
+            => await Task.Run(() =>
+            {
+                PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
+                List<TableColumns> relasedColumns = new();
+                relasedColumns.AddRange(from TableColumns column in tableInfo.TableInfo.TableColumns
+                                        let sumbitColumn = instanceProperties.Any(ip => ip.Name == column.Column)
+                                        where sumbitColumn
+                                        select column);
+                return relasedColumns;
+            });
     }
 }

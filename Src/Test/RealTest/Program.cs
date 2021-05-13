@@ -1,30 +1,33 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
+using RealTest;
 using System;
 
 namespace FriendsOrmStarter
 {
     class Program
     {
-        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
+        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "FStore_db", Authentication.WindowsAuthentication);
 
         static void Main(string[] args)
         {
-            TableInfoResult table = _dbConnectionInfo.Table("News", typeof(News));
-            News news = new()
+            TableInfoResult table = _dbConnectionInfo.Table("UserSessions", typeof(UserSessions));
+            UserSessions userSessions = new()
             {
-                CreateDate = DateTime.Now,
-                ImageName = "null.png",
-                IsPublic = false,
-                NewsId = Guid.Parse("6C0A3D2E-35F1-4591-A00C-295EA70B42E0"),
-                ShortDescription = "Short Desc",
-                ShowInSlider = true,
-                Text = "Text",
-                Title = "Title"
+                Key = "Authorization",
+                SetDate = DateTime.Now,
+                ExpireDate = DateTime.Now.AddDays(10),
+                Token = Guid.NewGuid().ToString(),
+                UserId =Guid.Parse("16E405BA-E002-4D7F-9D00-0BCD6BB27EBF"),
+                LocalIp = "127.0.0.0",
+                LocalPort = 2020,
+                RemoteIp = "127.0.0.0",
+                RemotePort = 2020,
+                Id = Guid.NewGuid(),
             };
 
-            Console.WriteLine($"{table.Delete(news)}");
+            Console.WriteLine($"{table.Insert(userSessions)}");
 
         }
 
