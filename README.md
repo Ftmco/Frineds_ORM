@@ -26,6 +26,8 @@ SQL ORM and RAW SQL for Cs and Fs
         _table.GetAllAsync<Model>();
   
    Try modes run without Exceptions and show Exceptions with a status
+  
+    
     Example : 
       QueryStatus status = await _table.TryInsertAsync<Model>(new(){});
       
