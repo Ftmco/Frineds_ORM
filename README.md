@@ -6,12 +6,16 @@ SQL ORM and RAW SQL for Cs and Fs
 1.To use this ORM, you need to create a data base in any way you like. 
 
 2.We need an example of the details of the data base connection. 
-  # DbConnectionInfo _dbConnectionInfo = new(server:"",dataBase:"",authentication:Authentication.SqlServerAuthentication,userId:"",password:"")
+
+  
+   DbConnectionInfo _dbConnectionInfo = new(server:"",dataBase:"",authentication:Authentication.SqlServerAuthentication,userId:"",password:"")
   #If you are using Windows authentication, there is no need for username and password 
  
 3. We need an example of the information in the table. 
-     ![]TableInfo _table = _dbConnectionInfo.TryTableAsync(tableName:"SqlTableName",tableType:typeof(CSharpTable))
-     ![]In addition to sql table name, we need to type table in C#
+
+
+     TableInfo _table = _dbConnectionInfo.TryTableAsync(tableName:"SqlTableName",tableType:typeof(CSharpTable))
+     In addition to sql table name, we need to type table in C#
      
  4. Now we can perform operations using table data. 
     # _table.TryGetAll<Model>(); or _table.TryGetAll<Model>("MODEL.name LIKE '%param%'");
