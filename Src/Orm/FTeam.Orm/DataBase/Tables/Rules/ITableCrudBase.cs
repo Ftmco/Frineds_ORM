@@ -38,13 +38,13 @@ namespace FTeam.Orm.DataBase.Tables
 
         #region --:: Crud Base List ::--
 
-        Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+        Task<IEnumerable<QueryStatus>> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
 
-        Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+        Task<IEnumerable<QueryStatus>> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
 
-        QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+        IEnumerable<QueryStatus> TryCrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
 
-        QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+        IEnumerable<QueryStatus> CrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
 
         #endregion
     }

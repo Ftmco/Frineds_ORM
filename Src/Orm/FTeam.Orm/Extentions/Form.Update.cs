@@ -67,7 +67,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">TModel Instance</param>
         /// <returns><see cref="QueryStatus"/></returns>
-        public static QueryStatus TryUpdateRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static IEnumerable<QueryStatus> TryUpdateRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
           => _tableUpdate.TryUpdatetRange<T>(tableInfo, instances);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace FTeam.Orm.Extentions
         /// <returns><see cref="QueryStatus"/></returns>
         /// <exception cref="DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static QueryStatus UpdateRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static IEnumerable<QueryStatus> UpdateRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
           => _tableUpdate.UpdatetRange<T>(tableInfo, instances);
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">TModel Instance</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
-        public static async Task<QueryStatus> TryUpdateRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static async Task<IEnumerable<QueryStatus>> TryUpdateRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
             => await Task.FromResult(await _tableUpdate.TryUpdatetRangeAsync<T>(tableInfo, instances));
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace FTeam.Orm.Extentions
         /// <returns>Task <see cref="QueryStatus"/></returns>
         /// <exception cref="DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static async Task<QueryStatus> UpdateRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static async Task<IEnumerable<QueryStatus>> UpdateRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
            => await Task.FromResult(await _tableUpdate.UpdatetRangeAsync<T>(tableInfo, instances));
 
         #endregion

@@ -67,7 +67,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">TModel Instance</param>
         /// <returns><see cref="QueryStatus"/></returns>
-        public static QueryStatus TryDeleteRange<T>(this TableInfoResult tableInfo,IEnumerable<T> instances)
+        public static IEnumerable<QueryStatus> TryDeleteRange<T>(this TableInfoResult tableInfo,IEnumerable<T> instances)
           => _tableDelete.TryDeleteRange<T>(tableInfo, instances);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace FTeam.Orm.Extentions
         /// <returns><see cref="QueryStatus"/></returns>
         /// <exception cref="DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static QueryStatus DeleteRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static IEnumerable<QueryStatus> DeleteRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
           => _tableDelete.DeleteRange<T>(tableInfo, instances);
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">TModel Instance</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
-        public static async Task<QueryStatus> TryDeleteRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static async Task<IEnumerable<QueryStatus>> TryDeleteRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
           => await Task.FromResult(await _tableDelete.TryDeleteRangeAsync<T>(tableInfo, instances));
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace FTeam.Orm.Extentions
         /// <returns><see cref="QueryStatus"/></returns>
         /// <exception cref="DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static async Task<QueryStatus> DeleteRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static async Task<IEnumerable<QueryStatus>> DeleteRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
          => await Task.FromResult(await _tableDelete.DeleteRangeAsync<T>(tableInfo, instances));
 
         #endregion

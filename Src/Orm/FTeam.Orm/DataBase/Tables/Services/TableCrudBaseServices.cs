@@ -191,22 +191,22 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         }
 
-        public Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
+        public Task<IEnumerable<QueryStatus>> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<QueryStatus> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
+        public Task<IEnumerable<QueryStatus>> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
         {
             throw new System.NotImplementedException();
         }
 
-        public QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
+        public IEnumerable<QueryStatus> TryCrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
         {
             throw new System.NotImplementedException();
         }
 
-        public QueryStatus CrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
+        public IEnumerable<QueryStatus> CrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
         {
             throw new System.NotImplementedException();
         }

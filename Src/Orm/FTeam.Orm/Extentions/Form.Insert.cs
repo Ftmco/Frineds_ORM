@@ -67,7 +67,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">Instance Object</param>
         /// <returns><see cref="QueryStatus"/></returns>
-        public static QueryStatus TryInsertRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static IEnumerable<QueryStatus> TryInsertRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
            => _tableInsert.TryInsertRange<T>(tableInfo, instances);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace FTeam.Orm.Extentions
         /// <returns><see cref="QueryStatus"/></returns>
         /// <exception cref="System.Data.Common.DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static QueryStatus InsertRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static IEnumerable<QueryStatus> InsertRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
           => _tableInsert.InsertRange<T>(tableInfo, instances);
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">Instance Object</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
-        public static async Task<QueryStatus> TryInsertRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static async Task<IEnumerable<QueryStatus>> TryInsertRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
            => await Task.FromResult(await _tableInsert.TryInsertRangeAsync<T>(tableInfo, instances));
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace FTeam.Orm.Extentions
         /// <returns>Task <see cref="QueryStatus"/></returns>
         /// <exception cref="System.Data.Common.DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static async Task<QueryStatus> InsertRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+        public static async Task<IEnumerable<QueryStatus>> InsertRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
           => await Task.FromResult(await _tableInsert.InsertRangeAsync<T>(tableInfo, instances));
 
         #endregion
