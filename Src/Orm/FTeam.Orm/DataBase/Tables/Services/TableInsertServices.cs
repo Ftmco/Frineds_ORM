@@ -29,8 +29,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         }
 
         public QueryStatus Insert<T>(TableInfoResult tableInfo, T instance)
-        {
-           
+        {           
             CreateCommandStatus status = _cmd.GenerateInsertCommand(tableInfo, instance, out SqlCommand command);
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
@@ -39,7 +38,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public IEnumerable<QueryStatus> InsertRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
-            throw new System.NotImplementedException();
+            _cmd.GenerateInsertCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+            return _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance)
@@ -52,10 +52,12 @@ namespace FTeam.Orm.DataBase.Tables.Services
              await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
          });
 
-        public Task<IEnumerable<QueryStatus>> InsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<QueryStatus>> InsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+                  => await Task.Run(async () =>
+                  {
+                      _cmd.GenerateInsertCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+                      return await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
+                  });
 
         #endregion
 
@@ -69,22 +71,24 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public IEnumerable<QueryStatus> TryInsertRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
-            throw new System.NotImplementedException();
+            _cmd.TryGenerateInsertCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+            return _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, T instance)
             => await Task.Run(async () =>
-            {
-            
+            {           
                 CreateCommandStatus status = _cmd.TryGenerateInsertCommand(tableInfo, instance, out SqlCommand command);
 
                 return status != CreateCommandStatus.Success ? QueryStatus.Exception :
                 await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
             });
 
-        public Task<IEnumerable<QueryStatus>> TryInsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<QueryStatus>> TryInsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+            => await Task.Run(async () =>
+            {
+                _cmd.TryGenerateInsertCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+                return await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
+            });
     }
 }

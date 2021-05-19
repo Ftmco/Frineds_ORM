@@ -89,15 +89,13 @@ namespace FTeam.Orm.DataBase.Tables.Services
         public QueryStatus TryCrudBase(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
         {
             string connectionString = dbConnectionInfo.GetConnectionString();
-
             return _queryBase.TryRunVoidQuery(connectionString, sqlCommand);
         }
 
         public async Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand)
             => await Task.Run(async () =>
             {
-                string connectionString = dbConnectionInfo.GetConnectionString();
-
+                string connectionString = await dbConnectionInfo.GetConnectionStringAsync();
                 return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommand);
             });
 
@@ -122,7 +120,6 @@ namespace FTeam.Orm.DataBase.Tables.Services
              {
                  string connectionString = tableInfoResult.DbConnectionInfo.GetConnectionString();
                  RunQueryResult runQuery = await _queryBase.RunQueryAsync(connectionString, query);
-
                  return await _dataTableMapper.MapListAsync<T>(runQuery.DataTable);
              }
              catch
@@ -167,8 +164,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
         {
             try
             {
-                string connectionString = dbConnectionInfo.GetConnectionString();
-
+                string connectionString = await dbConnectionInfo.GetConnectionStringAsync();
                 return await _queryBase.RunVoidQueryAsync(connectionString, sqlCommand);
             }
             catch
@@ -182,7 +178,6 @@ namespace FTeam.Orm.DataBase.Tables.Services
             try
             {
                 string connectionString = dbConnectionInfo.GetConnectionString();
-
                 return _queryBase.RunVoidQuery(connectionString, sqlCommand);
             }
             catch
@@ -191,24 +186,44 @@ namespace FTeam.Orm.DataBase.Tables.Services
             }
         }
 
-        public Task<IEnumerable<QueryStatus>> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<QueryStatus>> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
+          => await Task.Run(async () =>
+          {
+              string connectionString = await dbConnectionInfo.GetConnectionStringAsync();
+              return await _queryBase.TryRunVoidQueryAsync(connectionString, sqlCommands);
+          });
 
-        public Task<IEnumerable<QueryStatus>> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<QueryStatus>> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
+             => await Task.Run(async () =>
+             {
+                 try
+                 {
+                     string connectionString = await dbConnectionInfo.GetConnectionStringAsync();
+                     return await _queryBase.RunVoidQueryAsync(connectionString, sqlCommands);
+                 }
+                 catch
+                 {
+                     throw;
+                 }
+             });
 
         public IEnumerable<QueryStatus> TryCrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
         {
-            throw new System.NotImplementedException();
+            string connectionString = dbConnectionInfo.GetConnectionString();
+            return _queryBase.TryRunVoidQuery(connectionString, sqlCommands);
         }
 
         public IEnumerable<QueryStatus> CrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                string connectionString = dbConnectionInfo.GetConnectionString();
+                return _queryBase.RunVoidQuery(connectionString, sqlCommands);
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

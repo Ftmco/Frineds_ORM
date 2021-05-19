@@ -40,7 +40,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public IEnumerable<QueryStatus> TryUpdatetRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
-            throw new System.NotImplementedException();
+            _cmd.TryGenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+            return _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance)
@@ -52,10 +53,12 @@ namespace FTeam.Orm.DataBase.Tables.Services
              await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
          });
 
-        public Task<IEnumerable<QueryStatus>> TryUpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<QueryStatus>> TryUpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+            => await Task.Run(async () =>
+            {
+                _cmd.TryGenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+                return await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
+            });
 
         public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
         {
@@ -67,7 +70,8 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public IEnumerable<QueryStatus> UpdatetRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
-            throw new System.NotImplementedException();
+            _cmd.GenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+            return _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
         public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
@@ -79,9 +83,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
               await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
           });
 
-        public Task<IEnumerable<QueryStatus>> UpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IEnumerable<QueryStatus>> UpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+                 => await Task.Run(async () =>
+                 {
+                     _cmd.GenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+                     return await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
+                 });
     }
 }
