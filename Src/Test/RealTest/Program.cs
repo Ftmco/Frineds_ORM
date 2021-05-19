@@ -1,9 +1,11 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
+using FTeam.Orm.Models.QueryBase;
 using RealTest;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FriendsOrmStarter
 {
@@ -33,8 +35,9 @@ namespace FriendsOrmStarter
                 });
             }
 
+            
             Console.WriteLine(DateTime.Now);
-            Console.WriteLine($"{table.InsertRange(sessions)}");
+            Console.WriteLine($"{table.InsertRange(sessions).Where(s=> s == QueryStatus.Success).Count()}");
             Console.WriteLine(DateTime.Now);
         }
 
