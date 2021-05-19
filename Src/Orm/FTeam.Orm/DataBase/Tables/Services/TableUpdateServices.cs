@@ -2,6 +2,7 @@
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
 using FTeam.Orm.Models.QueryBase;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -39,6 +40,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
+        public QueryStatus TryUpdatet<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance)
          => await Task.Run(async () =>
          {
@@ -50,6 +56,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
              await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
          });
 
+        public Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
         {
             SqlCommand command = new();
@@ -58,6 +69,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
            _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
+        }
+
+        public QueryStatus Updatet<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
@@ -70,5 +86,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
               return status != CreateCommandStatus.Success ? QueryStatus.Exception :
               await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
           });
+
+        public Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

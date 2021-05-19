@@ -140,5 +140,95 @@ namespace FTeam.Orm.DataBase.Commands
                                         select column);
                 return relasedColumns;
             });
+
+        public IEnumerable<CreateCommandStatus> TryGenerateInsertCommand<T>(TableInfoResult tableInfo, IEnumerable<T> instances, out IEnumerable<SqlCommand> sqlCommand)
+        {
+            List<SqlCommand> sqlCommands = new();
+            List<CreateCommandStatus> statuses = new();
+            foreach (T instance in instances)
+            {
+                CreateCommandStatus command = TryGenerateInsertCommand<T>(tableInfo, instance, out SqlCommand cmd);
+                if (command == CreateCommandStatus.Success)
+                    sqlCommands.Add(cmd);
+                statuses.Add(command);
+            }
+            sqlCommand = sqlCommands;
+            return statuses;
+        }
+
+        public IEnumerable<CreateCommandStatus> GenerateInsertCommand<T>(TableInfoResult tableInfo, IEnumerable<T> instances, out IEnumerable<SqlCommand> sqlCommand)
+        {
+            List<SqlCommand> sqlCommands = new();
+            List<CreateCommandStatus> statuses = new();
+            foreach (T instance in instances)
+            {
+                CreateCommandStatus command = GenerateInsertCommand<T>(tableInfo, instance, out SqlCommand cmd);
+                if (command == CreateCommandStatus.Success)
+                    sqlCommands.Add(cmd);
+                statuses.Add(command);
+            }
+            sqlCommand = sqlCommands;
+            return statuses;
+        }
+
+        public IEnumerable<CreateCommandStatus> TryGenerateUpdateCommand<T>(TableInfoResult tableInfo, IEnumerable<T> instances, out IEnumerable<SqlCommand> sqlCommand)
+        {
+            List<SqlCommand> sqlCommands = new();
+            List<CreateCommandStatus> statuses = new();
+            foreach (T instance in instances)
+            {
+                CreateCommandStatus command = TryGenerateUpdateCommand<T>(tableInfo, instance, out SqlCommand cmd);
+                if (command == CreateCommandStatus.Success)
+                    sqlCommands.Add(cmd);
+                statuses.Add(command);
+            }
+            sqlCommand = sqlCommands;
+            return statuses;
+        }
+
+        public IEnumerable<CreateCommandStatus> GenerateUpdateCommand<T>(TableInfoResult tableInfo, IEnumerable<T> instances, out IEnumerable<SqlCommand> sqlCommand)
+        {
+            List<SqlCommand> sqlCommands = new();
+            List<CreateCommandStatus> statuses = new();
+            foreach (T instance in instances)
+            {
+                CreateCommandStatus command = GenerateUpdateCommand<T>(tableInfo, instance, out SqlCommand cmd);
+                if (command == CreateCommandStatus.Success)
+                    sqlCommands.Add(cmd);
+                statuses.Add(command);
+            }
+            sqlCommand = sqlCommands;
+            return statuses;
+        }
+
+        public IEnumerable<CreateCommandStatus> TryGenerateDeleteCommand<T>(TableInfoResult tableInfo, IEnumerable<T> instances, out IEnumerable<SqlCommand> sqlCommand)
+        {
+            List<SqlCommand> sqlCommands = new();
+            List<CreateCommandStatus> statuses = new();
+            foreach (T instance in instances)
+            {
+                CreateCommandStatus command = TryGenerateDeleteCommand<T>(tableInfo, instance, out SqlCommand cmd);
+                if (command == CreateCommandStatus.Success)
+                    sqlCommands.Add(cmd);
+                statuses.Add(command);
+            }
+            sqlCommand = sqlCommands;
+            return statuses;
+        }
+
+        public IEnumerable<CreateCommandStatus> GenerateDeleteCommand<T>(TableInfoResult tableInfo, IEnumerable<T> instances, out IEnumerable<SqlCommand> sqlCommand)
+        {
+            List<SqlCommand> sqlCommands = new();
+            List<CreateCommandStatus> statuses = new();
+            foreach (T instance in instances)
+            {
+                CreateCommandStatus command = GenerateDeleteCommand<T>(tableInfo, instance, out SqlCommand cmd);
+                if (command == CreateCommandStatus.Success)
+                    sqlCommands.Add(cmd);
+                statuses.Add(command);
+            }
+            sqlCommand = sqlCommands;
+            return statuses;
+        }
     }
 }

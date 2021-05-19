@@ -2,6 +2,7 @@
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.QueryBase;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -123,6 +124,22 @@ namespace FTeam.Orm.Cosmos.QueryBase
             }
         }
 
+        public IEnumerable<QueryStatus> RunVoidQuery(string connectionString, IEnumerable<SqlCommand> sqlCommands)
+        {
+            List<QueryStatus> status = new();
+            foreach (var cmd in sqlCommands)
+                status.Add(RunVoidQuery(connectionString, cmd));
+            return status;
+        }
+
+        public IEnumerable<QueryStatus> RunVoidQuery(SqlConnection sqlConnection, IEnumerable<SqlCommand> sqlCommands)
+        {
+            List<QueryStatus> status = new();
+            foreach (var cmd in sqlCommands)
+                status.Add(RunVoidQuery(sqlConnection, cmd));
+            return status;
+        }
+
         public async Task<QueryStatus> RunVoidQueryAsync(string connectionString, string query)
             => await Task.FromResult(await RunVoidQueryAsync(_connectionBase.OpenConnectionAsync(connectionString).Result.SqlConnection, query));
 
@@ -190,6 +207,24 @@ namespace FTeam.Orm.Cosmos.QueryBase
                     await _connectionBase.TryCloseConnectionAsync(sqlConnection);
                 }
             });
+
+        public async Task<IEnumerable<QueryStatus>> RunVoidQueryAsync(string connectionString, IEnumerable<SqlCommand> sqlCommands)
+            => await Task.Run(async () =>
+            {
+                List<QueryStatus> status = new();
+                foreach (var cmd in sqlCommands)
+                    status.Add(await RunVoidQueryAsync(connectionString, cmd));
+                return status;
+            });
+
+        public async Task<IEnumerable<QueryStatus>> RunVoidQueryAsync(SqlConnection sqlConnection, IEnumerable<SqlCommand> sqlCommands)
+         => await Task.Run(async () =>
+         {
+             List<QueryStatus> status = new();
+             foreach (var cmd in sqlCommands)
+                 status.Add(await RunVoidQueryAsync(sqlConnection, cmd));
+             return status;
+         });
 
         public RunQueryResult TryRunQuery(string connectionString, string query)
         {
@@ -345,6 +380,22 @@ namespace FTeam.Orm.Cosmos.QueryBase
             }
         }
 
+        public IEnumerable<QueryStatus> TryRunVoidQuery(string connectionString, IEnumerable<SqlCommand> sqlCommands)
+        {
+            List<QueryStatus> status = new();
+            foreach (var cmd in sqlCommands)
+                status.Add(TryRunVoidQuery(connectionString, cmd));
+            return status;
+        }
+
+        public IEnumerable<QueryStatus> TryRunVoidQuery(SqlConnection sqlConnection, IEnumerable<SqlCommand> sqlCommands)
+        {
+            List<QueryStatus> status = new();
+            foreach (var cmd in sqlCommands)
+                status.Add(TryRunVoidQuery(sqlConnection, cmd));
+            return status;
+        }
+
         public async Task<QueryStatus> TryRunVoidQueryAsync(string connectionString, string query)
             => await Task.Run(async () =>
             {
@@ -408,5 +459,23 @@ namespace FTeam.Orm.Cosmos.QueryBase
                      await _connectionBase.TryCloseConnectionAsync(sqlConnection);
                  }
              });
+
+        public async Task<IEnumerable<QueryStatus>> TryRunVoidQueryAsync(string connectionString, IEnumerable<SqlCommand> sqlCommands)
+         => await Task.Run(async () =>
+         {
+             List<QueryStatus> status = new();
+             foreach (var cmd in sqlCommands)
+                 status.Add(await TryRunVoidQueryAsync(connectionString, cmd));
+             return status;
+         });
+
+        public async Task<IEnumerable<QueryStatus>> TryRunVoidQueryAsync(SqlConnection sqlConnection, IEnumerable<SqlCommand> sqlCommands)
+          => await Task.Run(async () =>
+          {
+              List<QueryStatus> status = new();
+              foreach (var cmd in sqlCommands)
+                  status.Add(await TryRunVoidQueryAsync(sqlConnection, cmd));
+              return status;
+          });
     }
 }

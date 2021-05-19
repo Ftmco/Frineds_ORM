@@ -2,6 +2,7 @@
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
 using FTeam.Orm.Models.QueryBase;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -66,5 +67,25 @@ namespace FTeam.Orm.DataBase.Tables.Services
               return status == CreateCommandStatus.Success ? await _crudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command)
               : QueryStatus.Exception;
           });
+
+        public Task<QueryStatus> TryDeleteAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public QueryStatus TryDelete<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public QueryStatus Delete<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

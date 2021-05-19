@@ -117,7 +117,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void InsertRow()
         {
-            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Entity", typeof(Entity)).TryInsertAsync<Entity>(new()
+            QueryStatus insertStatus = _dbConnectionInfo.TryTable("Entity", typeof(Entity)).TryInsertAsync<Entity>(new Entity()
             {
                 Age = 10,
                 Family = "nullasd",
@@ -153,7 +153,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void DeleteTest()
         {
-            QueryStatus result = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryDelete<Users>(new()
+            QueryStatus result = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryDelete<Users>(new Users()
             {
                 ActiveCode = "234562",
                 ActiveDate = DateTime.Now,
@@ -199,7 +199,7 @@ namespace FTeam.Orm.OrmTest.Extentions
         [Test]
         public void UpdateTest()
         {
-            QueryStatus result = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryUpdate<Users>(new()
+            QueryStatus result = _dbConnectionInfo.TryTable("Users", typeof(Users)).TryUpdate<Users>(new Users()
             {
                 ActiveCode = "234562",
                 ActiveDate = DateTime.Now,

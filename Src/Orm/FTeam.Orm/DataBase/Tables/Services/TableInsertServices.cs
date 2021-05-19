@@ -2,6 +2,7 @@
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
 using FTeam.Orm.Models.QueryBase;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -37,6 +38,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
+        public QueryStatus Insert<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, T instance)
          => await Task.Run(async () =>
          {
@@ -47,6 +53,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
              return status != CreateCommandStatus.Success ? QueryStatus.Exception :
              await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
          });
+
+        public Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
 
         #endregion
 
@@ -60,6 +71,11 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
+        public QueryStatus TryInsert<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, T instance)
             => await Task.Run(async () =>
             {
@@ -70,5 +86,10 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 return status != CreateCommandStatus.Success ? QueryStatus.Exception :
                 await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
             });
+
+        public Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
