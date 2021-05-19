@@ -68,22 +68,22 @@ namespace FTeam.Orm.DataBase.Tables.Services
               : QueryStatus.Exception;
           });
 
-        public Task<QueryStatus> TryDeleteAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public Task<QueryStatus> TryDeleteRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<QueryStatus> DeleteAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public Task<QueryStatus> DeleteRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
 
-        public QueryStatus TryDelete<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public QueryStatus TryDeleteRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
 
-        public QueryStatus Delete<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public QueryStatus DeleteRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }

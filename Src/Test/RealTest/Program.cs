@@ -3,6 +3,7 @@ using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
 using RealTest;
 using System;
+using System.Collections.Generic;
 
 namespace FriendsOrmStarter
 {
@@ -13,22 +14,28 @@ namespace FriendsOrmStarter
         static void Main(string[] args)
         {
             TableInfoResult table = _dbConnectionInfo.Table("UserSessions", typeof(UserSessions));
-            UserSessions userSessions = new()
+            List<UserSessions> sessions = new();
+
+            for (int i = 0; i < 1000; i++)
             {
-                Key = "Authorization",
-                SetDate = DateTime.Now,
-                ExpireDate = DateTime.Now.AddDays(10),
-                Token = Guid.NewGuid().ToString(),
-                UserId =Guid.Parse("16E405BA-E002-4D7F-9D00-0BCD6BB27EBF"),
-                LocalIp = "127.0.0.0",
-                LocalPort = 2020,
-                RemoteIp = "127.0.0.0",
-                RemotePort = 2020,
-                Id = Guid.NewGuid(),
-            };
+                sessions.Add(new()
+                {
+                    Key = "Authorization",
+                    SetDate = DateTime.Now,
+                    ExpireDate = DateTime.Now.AddDays(10),
+                    Token = Guid.NewGuid().ToString(),
+                    UserId = Guid.Parse("16E405BA-E002-4D7F-9D00-0BCD6BB27EBF"),
+                    LocalIp = "127.0.0.0",
+                    LocalPort = 2020,
+                    RemoteIp = "127.0.0.0",
+                    RemotePort = 2020,
+                    Id = Guid.NewGuid(),
+                });
+            }
 
-            Console.WriteLine($"{table.Insert(userSessions)}");
-
+            Console.WriteLine(DateTime.Now);
+            Console.WriteLine($"{table.InsertRange(sessions)}");
+            Console.WriteLine(DateTime.Now);
         }
 
     }

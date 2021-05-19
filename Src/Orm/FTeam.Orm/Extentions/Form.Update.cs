@@ -67,8 +67,8 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">TModel Instance</param>
         /// <returns><see cref="QueryStatus"/></returns>
-        public static QueryStatus TryUpdate<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
-          => _tableUpdate.TryUpdatet<T>(tableInfo, instances);
+        public static QueryStatus TryUpdateRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+          => _tableUpdate.TryUpdatetRange<T>(tableInfo, instances);
 
         /// <summary>
         /// Update Object From Data Base
@@ -79,8 +79,8 @@ namespace FTeam.Orm.Extentions
         /// <returns><see cref="QueryStatus"/></returns>
         /// <exception cref="DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static QueryStatus Update<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
-          => _tableUpdate.Updatet<T>(tableInfo, instances);
+        public static QueryStatus UpdateRange<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+          => _tableUpdate.UpdatetRange<T>(tableInfo, instances);
 
         /// <summary>
         /// Try For Update Object From Data Base
@@ -90,8 +90,8 @@ namespace FTeam.Orm.Extentions
         /// <param name="tableInfo">Table Information Schema Result <see cref="TableInfoResult"/></param>
         /// <param name="instance">TModel Instance</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
-        public static async Task<QueryStatus> TryUpdateAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
-            => await Task.FromResult(await _tableUpdate.TryUpdatetAsync<T>(tableInfo, instances));
+        public static async Task<QueryStatus> TryUpdateRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+            => await Task.FromResult(await _tableUpdate.TryUpdatetRangeAsync<T>(tableInfo, instances));
 
         /// <summary>
         ///  Update Object From Data Base
@@ -103,8 +103,8 @@ namespace FTeam.Orm.Extentions
         /// <returns>Task <see cref="QueryStatus"/></returns>
         /// <exception cref="DbException"></exception>
         /// <exception cref="Exception"></exception>
-        public static async Task<QueryStatus> UpdateAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
-           => await Task.FromResult(await _tableUpdate.UpdatetAsync<T>(tableInfo, instances));
+        public static async Task<QueryStatus> UpdateRangeAsync<T>(this TableInfoResult tableInfo, IEnumerable<T> instances)
+           => await Task.FromResult(await _tableUpdate.UpdatetRangeAsync<T>(tableInfo, instances));
 
         #endregion
     }

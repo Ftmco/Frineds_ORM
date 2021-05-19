@@ -38,9 +38,9 @@ namespace FTeam.Orm.DataBase.Tables
         /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
         /// <param name="instance">Model Instance</param>
         /// <returns>Task <see cref="QueryStatus"/></returns>
-        Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
+        Task<IEnumerable<QueryStatus>> TryInsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
 
-        Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
+        Task<IEnumerable<QueryStatus>> InsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
 
         /// <summary>
         /// Try Insert Model To Table 
@@ -49,8 +49,8 @@ namespace FTeam.Orm.DataBase.Tables
         /// <param name="tableInfo">Table Information Schema <see cref="TableInfoResult"/></param>
         /// <param name="instance">Model Instance</param>
         /// <returns><see cref="QueryStatus"/></returns>
-        QueryStatus TryInsert<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
+        IEnumerable<QueryStatus> TryInsertRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
 
-        QueryStatus Insert<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
+        IEnumerable<QueryStatus> InsertRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances);
     }
 }

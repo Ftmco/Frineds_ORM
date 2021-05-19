@@ -38,7 +38,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
-        public QueryStatus Insert<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public QueryStatus InsertRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
@@ -54,7 +54,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
          });
 
-        public Task<QueryStatus> InsertAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public Task<QueryStatus> InsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
@@ -71,7 +71,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
-        public QueryStatus TryInsert<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public QueryStatus TryInsertRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
@@ -87,7 +87,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
                 await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
             });
 
-        public Task<QueryStatus> TryInsertAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public Task<QueryStatus> TryInsertRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }

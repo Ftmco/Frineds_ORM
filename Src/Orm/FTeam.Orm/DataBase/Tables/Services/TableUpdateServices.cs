@@ -40,7 +40,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
-        public QueryStatus TryUpdatet<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public QueryStatus TryUpdatetRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
@@ -56,7 +56,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
              await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
          });
 
-        public Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public Task<QueryStatus> TryUpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
@@ -71,7 +71,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
            _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
-        public QueryStatus Updatet<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public QueryStatus UpdatetRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
@@ -87,7 +87,7 @@ namespace FTeam.Orm.DataBase.Tables.Services
               await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
           });
 
-        public Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        public Task<QueryStatus> UpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
         {
             throw new System.NotImplementedException();
         }
