@@ -1,31 +1,42 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
+using FTeam.Orm.Models.QueryBase;
+using RealTest;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FriendsOrmStarter
 {
     class Program
     {
-        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
+        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "FStore_db", Authentication.WindowsAuthentication);
 
         static void Main(string[] args)
         {
-            TableInfoResult table = _dbConnectionInfo.Table("News", typeof(News));
-            News news = new()
+            TableInfoResult table = _dbConnectionInfo.Table("UserSessions", typeof(UserSessions));
+            List<UserSessions> sessions = new();
+
+            for (int i = 0; i < 2; i++)
             {
-                CreateDate = DateTime.Now,
-                ImageName = "null.png",
-                IsPublic = false,
-                NewsId = Guid.Parse("6C0A3D2E-35F1-4591-A00C-295EA70B42E0"),
-                ShortDescription = "Short Desc",
-                ShowInSlider = true,
-                Text = "Text",
-                Title = "Title"
-            };
-
-            Console.WriteLine($"{table.Delete(news)}");
-
+                sessions.Add(new()
+                {
+                    Key = "Authorization",
+                    SetDate = DateTime.Now,
+                    ExpireDate = DateTime.Now.AddDays(10),
+                    Token = Guid.NewGuid().ToString(),
+                    UserId = Guid.Parse("16E405BA-E002-4D7F-9D00-0BCD6BB27EBF"),
+                    LocalIp = "127.0.0.0",
+                    LocalPort = 2020,
+                    RemoteIp = "127.0.0.0",
+                    RemotePort = 2020
+                });
+            }
+            
+            Console.WriteLine(DateTime.Now);
+            Console.WriteLine($"{table.InsertRange(sessions).Where(s=> s == QueryStatus.Success).Count()}");
+            Console.WriteLine(DateTime.Now);
         }
 
     }

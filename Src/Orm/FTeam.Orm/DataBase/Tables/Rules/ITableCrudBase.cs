@@ -24,7 +24,7 @@ namespace FTeam.Orm.DataBase.Tables
 
         #endregion
 
-        #region --:: Insert ::--
+        #region --:: Crud Base ::--
 
         Task<QueryStatus> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, SqlCommand sqlCommand);
 
@@ -36,5 +36,16 @@ namespace FTeam.Orm.DataBase.Tables
 
         #endregion
 
+        #region --:: Crud Base List ::--
+
+        Task<IEnumerable<QueryStatus>> TryCrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+
+        Task<IEnumerable<QueryStatus>> CrudBaseAsync(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+
+        IEnumerable<QueryStatus> TryCrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+
+        IEnumerable<QueryStatus> CrudBase(DbConnectionInfo dbConnectionInfo, IEnumerable<SqlCommand> sqlCommands);
+
+        #endregion
     }
 }

@@ -2,6 +2,7 @@
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
 using FTeam.Orm.Models.QueryBase;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -31,44 +32,62 @@ namespace FTeam.Orm.DataBase.Tables.Services
 
         public QueryStatus TryUpdatet<T>(TableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
-
-            CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
+            CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out SqlCommand command);
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
            _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
         }
 
+        public IEnumerable<QueryStatus> TryUpdatetRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            _cmd.TryGenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+            return _tableCrudBase.TryCrudBase(tableInfo.DbConnectionInfo, command);
+        }
+
         public async Task<QueryStatus> TryUpdatetAsync<T>(TableInfoResult tableInfo, T instance)
          => await Task.Run(async () =>
          {
-             SqlCommand command = new();
-
-             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
+             CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out SqlCommand command);
 
              return status != CreateCommandStatus.Success ? QueryStatus.Exception :
              await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
          });
 
+        public async Task<IEnumerable<QueryStatus>> TryUpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+            => await Task.Run(async () =>
+            {
+                _cmd.TryGenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+                return await _tableCrudBase.TryCrudBaseAsync(tableInfo.DbConnectionInfo, command);
+            });
+
         public QueryStatus Updatet<T>(TableInfoResult tableInfo, T instance)
         {
-            SqlCommand command = new();
-
-            CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
+            CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out SqlCommand command);
 
             return status != CreateCommandStatus.Success ? QueryStatus.Exception :
            _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
         }
 
+        public IEnumerable<QueryStatus> UpdatetRange<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+        {
+            _cmd.GenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+            return _tableCrudBase.CrudBase(tableInfo.DbConnectionInfo, command);
+        }
+
         public async Task<QueryStatus> UpdatetAsync<T>(TableInfoResult tableInfo, T instance)
           => await Task.Run(async () =>
           {
-              SqlCommand command = new();
-
-              CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out command);
+              CreateCommandStatus status = _cmd.GenerateUpdateCommand(tableInfo, instance, out SqlCommand command);
 
               return status != CreateCommandStatus.Success ? QueryStatus.Exception :
               await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
           });
+
+        public async Task<IEnumerable<QueryStatus>> UpdatetRangeAsync<T>(TableInfoResult tableInfo, IEnumerable<T> instances)
+                 => await Task.Run(async () =>
+                 {
+                     _cmd.GenerateUpdateCommand(tableInfo, instances, out IEnumerable<SqlCommand> command);
+                     return await _tableCrudBase.CrudBaseAsync(tableInfo.DbConnectionInfo, command);
+                 });
     }
 }
