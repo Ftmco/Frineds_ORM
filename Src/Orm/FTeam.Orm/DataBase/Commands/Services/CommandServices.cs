@@ -1,5 +1,8 @@
-﻿using FTeam.Orm.Models;
+﻿using FTeam.Orm.Attributes;
+using FTeam.Orm.DataBase.Extentions;
+using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -61,7 +64,26 @@ namespace FTeam.Orm.DataBase.Commands
             try
             {
                 PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
-                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync<T>(tableInfo, instance).Result;
+                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync(tableInfo, instance).Result;
+
+                PropertyInfo key = instanceProperties.FirstOrDefault(ip => ip.Name == tableInfo.TableInfo.PrimaryKey.Column);
+                if (key != null)
+                {
+                    object value = key.GetValue(instance);
+
+                    Type keyType = key.PropertyType;
+                    if (keyType == typeof(string))
+                        if (string.IsNullOrEmpty(value.ToString()))
+                            value = Table.CreateStringId();
+
+
+                    if (keyType == typeof(Guid))
+                        if (Guid.Empty == Guid.Parse(value.ToString()))
+                            value = Table.CreateGuidId();
+
+                    key.SetValue(instance, value);
+
+                }
 
                 string columns = string.Join(",", relasedColumns.Select(tc => $"[{tc.Column}]").ToList());
 
@@ -71,7 +93,6 @@ namespace FTeam.Orm.DataBase.Commands
                 string query = $"INSERT INTO [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] ({columns})VALUES({values})";
 
                 SqlCommand cmd = new(query);
-
                 foreach (var item in relasedColumns)
                     cmd.Parameters.AddWithValue($"@{item.Column}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
 

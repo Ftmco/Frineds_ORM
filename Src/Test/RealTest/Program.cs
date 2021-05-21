@@ -18,7 +18,7 @@ namespace FriendsOrmStarter
             TableInfoResult table = _dbConnectionInfo.Table("UserSessions", typeof(UserSessions));
             List<UserSessions> sessions = new();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 2; i++)
             {
                 sessions.Add(new()
                 {
@@ -30,11 +30,9 @@ namespace FriendsOrmStarter
                     LocalIp = "127.0.0.0",
                     LocalPort = 2020,
                     RemoteIp = "127.0.0.0",
-                    RemotePort = 2020,
-                    Id = Guid.NewGuid(),
+                    RemotePort = 2020
                 });
             }
-
             
             Console.WriteLine(DateTime.Now);
             Console.WriteLine($"{table.InsertRange(sessions).Where(s=> s == QueryStatus.Success).Count()}");
