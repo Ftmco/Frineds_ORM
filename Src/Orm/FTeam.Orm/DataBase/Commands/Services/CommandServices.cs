@@ -1,18 +1,38 @@
-﻿using FTeam.Orm.Attributes;
+﻿using FTeam.Orm.Cosmos.QueryBase;
 using FTeam.Orm.DataBase.Extentions;
+using FTeam.Orm.Mapper.Impelement;
+using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
+using FTeam.Orm.Models.QueryBase;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using static FTeam.Orm.Domains.CashVarabiles.CacheVariables;
+
 
 namespace FTeam.Orm.DataBase.Commands
 {
     public class CommandServices : ICommandRules
     {
+        #region -- Dependency --
+
+        private readonly IQueryBase _queryBase;
+
+        private readonly IDataTableMapper _tableMapper;
+
+        public CommandServices()
+        {
+            _queryBase = new QueryBase();
+            _tableMapper = new DataTableMapper();
+        }
+
+        #endregion
+
         public CreateCommandStatus TryGenerateUpdateCommand<T>(TableInfoResult tableInfo, T instance, out SqlCommand sqlCommand)
         {
             try
@@ -68,22 +88,7 @@ namespace FTeam.Orm.DataBase.Commands
 
                 PropertyInfo key = instanceProperties.FirstOrDefault(ip => ip.Name == tableInfo.TableInfo.PrimaryKey.Column);
                 if (key != null)
-                {
-                    object value = key.GetValue(instance);
-
-                    Type keyType = key.PropertyType;
-                    if (keyType == typeof(string))
-                        if (string.IsNullOrEmpty(value.ToString()))
-                            value = Table.CreateStringId();
-
-
-                    if (keyType == typeof(Guid))
-                        if (Guid.Empty == Guid.Parse(value.ToString()))
-                            value = Table.CreateGuidId();
-
-                    key.SetValue(instance, value);
-
-                }
+                    SetValueForPrimaryKey(ref key, instance, tableInfo);
 
                 string columns = string.Join(",", relasedColumns.Select(tc => $"[{tc.Column}]").ToList());
 
@@ -92,8 +97,9 @@ namespace FTeam.Orm.DataBase.Commands
 
                 string query = $"INSERT INTO [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] ({columns})VALUES({values})";
 
+                ReleaseQuery(ref query, tableInfo);
                 SqlCommand cmd = new(query);
-                foreach (var item in relasedColumns)
+                foreach (TableColumns item in relasedColumns)
                     cmd.Parameters.AddWithValue($"@{item.Column}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
 
                 sqlCommand = cmd;
@@ -250,6 +256,57 @@ namespace FTeam.Orm.DataBase.Commands
             }
             sqlCommand = sqlCommands;
             return statuses;
+        }
+
+        public void SetValueForPrimaryKey<T>(ref PropertyInfo key, T instance, TableInfoResult tableInfo)
+        {
+            object value = key.GetValue(instance);
+
+            Type keyType = key.PropertyType;
+
+            if (keyType == typeof(string) && string.IsNullOrEmpty(value.ToString()))
+                value = Table.CreateStringId();
+
+            if (keyType == typeof(Guid) && Guid.Empty == Guid.Parse(value.ToString()))
+                value = Table.CreateGuidId();
+
+            if (keyType == typeof(int))
+                value = GetPrimaryKeyInt(tableInfo);
+
+            key.SetValue(instance, value);
+        }
+
+        public int GetPrimaryKeyInt(TableInfoResult tableInfo)
+        {
+            try
+            {
+                string tableName = $"[{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}]";
+                string query = $"SELECT TOP 1 [{tableInfo.TableInfo.PrimaryKey.Column}] FROM " + tableName +
+                    $"ORDER BY {tableInfo.TableInfo.PrimaryKey.Column} DESC";
+
+                if (CacheKeys.Keys.Any(s => s == tableName))
+                    return int.Parse(CacheKeys[tableName].ToString()) + 1;
+
+                RunQueryResult queryResult = _queryBase.RunQuery(tableInfo.DbConnectionInfo.GetConnectionString(), query);
+                TableLastId existId = new() { Id = 0 };
+                if (queryResult.DataTable.Columns.Count != 0)
+                    existId = _tableMapper.Map<TableLastId>(queryResult.DataTable);
+
+                int newId = existId != null ? existId.Id + 2 : +1;
+                CacheKeys.Add(tableName, newId);
+                return newId;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void ReleaseQuery(ref string query, TableInfoResult tableInfo)
+        {
+            string onIdentity = $"  IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} ON  ";
+            string offIdentity = $" IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} OFF  ";
+            query = onIdentity + query + offIdentity;
         }
     }
 }

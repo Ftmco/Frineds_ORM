@@ -33,4 +33,9 @@ namespace FTeam.Orm.Models
 
         public string Column { get; set; }
     }
+
+    public record TableLastId
+    {
+        public int Id { get; set; }
+    }
 }

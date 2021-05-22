@@ -11,31 +11,25 @@ namespace FriendsOrmStarter
 {
     class Program
     {
-        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "FStore_db", Authentication.WindowsAuthentication);
+        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "Orm_Test", Authentication.WindowsAuthentication);
 
         static void Main(string[] args)
         {
-            TableInfoResult table = _dbConnectionInfo.Table("UserSessions", typeof(UserSessions));
-            List<UserSessions> sessions = new();
+            TableInfoResult table = _dbConnectionInfo.Table("Entity", typeof(Entity));
+            List<Entity> sessions = new();
 
             for (int i = 0; i < 2; i++)
             {
                 sessions.Add(new()
                 {
-                    Key = "Authorization",
-                    SetDate = DateTime.Now,
-                    ExpireDate = DateTime.Now.AddDays(10),
-                    Token = Guid.NewGuid().ToString(),
-                    UserId = Guid.Parse("16E405BA-E002-4D7F-9D00-0BCD6BB27EBF"),
-                    LocalIp = "127.0.0.0",
-                    LocalPort = 2020,
-                    RemoteIp = "127.0.0.0",
-                    RemotePort = 2020
+                    Age = 10,
+                    Family = "TEst",
+                    Name = "test"
                 });
             }
-            
+
             Console.WriteLine(DateTime.Now);
-            Console.WriteLine($"{table.InsertRange(sessions).Where(s=> s == QueryStatus.Success).Count()}");
+            Console.WriteLine($"{table.InsertRange(sessions).Where(s => s == QueryStatus.Success).Count()}");
             Console.WriteLine(DateTime.Now);
         }
 
@@ -49,7 +43,7 @@ namespace FriendsOrmStarter
         }
 
         [FKey]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

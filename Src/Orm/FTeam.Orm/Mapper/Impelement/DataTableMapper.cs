@@ -13,7 +13,6 @@ namespace FTeam.Orm.Mapper.Impelement
     {
         public T Map<T>(DataTable dataTable)
         {
-
             IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
 
             PropertyInfo[] properties = typeof(T).GetProperties();
