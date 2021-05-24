@@ -19,14 +19,14 @@ namespace FriendsOrmStarter
             TableInfoResult table = _dbConnectionInfo.Table("Groups", typeof(Groups));
             Groups groups = new()
             {
-                Id = Guid.Parse("02998f8e-b8c6-454a-8aa9-0346e0880b9b"),
-                Name = "Name",
-                Title = "Title",
-                Icon = "Icon.jpg"
+                GroupId = Guid.Empty,
+                Icon = "",
+                Name = "createGroupViewModel.Name",
+                Title = "createGroupViewModel.Title"
             };
 
             Console.WriteLine(DateTime.Now);
-            Console.WriteLine($"{table.Update(groups)}");
+            Console.WriteLine($"{table.InsertAsync(groups).Result}");
             Console.WriteLine(groups.Id);
             Console.WriteLine(DateTime.Now);
         }
@@ -71,5 +71,6 @@ namespace FriendsOrmStarter
 
         public Guid? GroupId { get; set; }
 
+        public virtual ICollection<Groups> Group { get; set; }
     }
 }

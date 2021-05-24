@@ -120,7 +120,7 @@ namespace FTeam.Orm.DataBase.Commands
             try
             {
                 PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
-                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync<T>(tableInfo, instance).Result;
+                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync(tableInfo, instance).Result;
 
                 string columns = string.Join(",", relasedColumns.Select(tc => $"[{tc.Column}] = @{tc.Column.ToLower()}").ToList());
 
@@ -315,23 +315,27 @@ namespace FTeam.Orm.DataBase.Commands
             string offIdentity = $" IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} OFF  ";
 
             PropertyInfo[] properties = instance.GetType().GetProperties();
+            IEnumerable<TableColumns> columens = GetRelasedColumnsAsync(tableInfo, instance).Result;
             foreach (PropertyInfo property in properties)
             {
-                object value = property.GetValue(instance);
-                if (value == null)
+                if (columens.Any(c=> c.Column == property.Name))
                 {
-                    int index = query.ToUpper().IndexOf(property.Name.ToUpper());
-                    if (index != -1)
+                    object value = property.GetValue(instance);
+                    if (value == null)
                     {
-                        query = query.Remove(index, $"[{property.Name}]".Length);
-                        int valueIndex = query.ToUpper().IndexOf($"@{property.Name}".ToUpper());
-                        if (valueIndex != -1)
-                            query = query.Remove(valueIndex, $"@{property.Name}".Length);
+                        int index = query.ToUpper().IndexOf(property.Name.ToUpper());
+                        if (index != -1)
+                        {
+                            query = query.Remove(index, $"[{property.Name}]".Length);
+                            int valueIndex = query.ToUpper().IndexOf($"@{property.Name}".ToUpper());
+                            if (valueIndex != -1)
+                                query = query.Remove(valueIndex, $"@{property.Name}".Length);
+                        }
                     }
                 }
             }
             query = query
-                .Replace(",[=","")
+                .Replace(",[=", "")
                 .Replace(",,", ",")
                 .Replace("(,", "(")
                 .Replace(",)", ")")
