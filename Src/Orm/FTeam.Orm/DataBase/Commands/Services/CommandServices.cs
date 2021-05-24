@@ -97,10 +97,14 @@ namespace FTeam.Orm.DataBase.Commands
 
                 string query = $"INSERT INTO [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] ({columns})VALUES({values})";
 
-                ReleaseQuery(ref query, tableInfo);
+                ReleaseQuery(ref query, tableInfo, instance);
                 SqlCommand cmd = new(query);
                 foreach (TableColumns item in relasedColumns)
-                    cmd.Parameters.AddWithValue($"@{item.Column}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
+                {
+                    object value = instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance);
+                    if (value != null)
+                        cmd.Parameters.AddWithValue($"@{item.Column}", value);
+                }
 
                 sqlCommand = cmd;
                 return CreateCommandStatus.Success;
@@ -116,18 +120,21 @@ namespace FTeam.Orm.DataBase.Commands
             try
             {
                 PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
-                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync<T>(tableInfo, instance).Result;
+                IEnumerable<TableColumns> relasedColumns = GetRelasedColumnsAsync(tableInfo, instance).Result;
 
                 string columns = string.Join(",", relasedColumns.Select(tc => $"[{tc.Column}] = @{tc.Column.ToLower()}").ToList());
 
                 string query = $"UPDATE [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
 
+                ReleaseQuery(ref query, tableInfo, instance);
                 SqlCommand cmd = new(query);
                 cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
-
-
                 foreach (TableColumns item in relasedColumns)
-                    cmd.Parameters.AddWithValue($"@{item.Column.ToLower()}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
+                {
+                    object value = instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance);
+                    if (value != null)
+                        cmd.Parameters.AddWithValue($"@{item.Column}", value);
+                }
 
                 sqlCommand = cmd;
                 return CreateCommandStatus.Success;
@@ -302,10 +309,39 @@ namespace FTeam.Orm.DataBase.Commands
             }
         }
 
-        public void ReleaseQuery(ref string query, TableInfoResult tableInfo)
+        public void ReleaseQuery<T>(ref string query, TableInfoResult tableInfo, T instance)
         {
             string onIdentity = $"  IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} ON  ";
             string offIdentity = $" IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} OFF  ";
+
+            PropertyInfo[] properties = instance.GetType().GetProperties();
+            IEnumerable<TableColumns> columens = GetRelasedColumnsAsync(tableInfo, instance).Result;
+            foreach (PropertyInfo property in properties)
+            {
+                if (columens.Any(c=> c.Column == property.Name))
+                {
+                    object value = property.GetValue(instance);
+                    if (value == null)
+                    {
+                        int index = query.ToUpper().IndexOf(property.Name.ToUpper());
+                        if (index != -1)
+                        {
+                            query = query.Remove(index, $"[{property.Name}]".Length);
+                            int valueIndex = query.ToUpper().IndexOf($"@{property.Name}".ToUpper());
+                            if (valueIndex != -1)
+                                query = query.Remove(valueIndex, $"@{property.Name}".Length);
+                        }
+                    }
+                }
+            }
+            query = query
+                .Replace(",[=", "")
+                .Replace(",,", ",")
+                .Replace("(,", "(")
+                .Replace(",)", ")")
+                .Replace("[[", "[")
+                .Replace("]]", "]")
+                .Replace(",[VALUES", ")VALUES");
             query = onIdentity + query + offIdentity;
         }
     }
