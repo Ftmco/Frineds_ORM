@@ -126,12 +126,15 @@ namespace FTeam.Orm.DataBase.Commands
 
                 string query = $"UPDATE [{tableInfo.TableInfo.Catalog}].[{tableInfo.TableInfo.Schema}].[{tableInfo.TableInfo.TableName}] SET {columns} WHERE [{tableInfo.TableInfo.TableName}].[{tableInfo.TableInfo.PrimaryKey.Column}] = @primaryKey";
 
+                ReleaseQuery(ref query, tableInfo, instance);
                 SqlCommand cmd = new(query);
                 cmd.Parameters.AddWithValue($"@primaryKey", GetInstancePrimaryKey(tableInfo.TableInfo.PrimaryKey, instance));
-
-
                 foreach (TableColumns item in relasedColumns)
-                    cmd.Parameters.AddWithValue($"@{item.Column.ToLower()}", instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance));
+                {
+                    object value = instanceProperties.FirstOrDefault(ip => ip.Name == item.Column).GetValue(instance);
+                    if (value != null)
+                        cmd.Parameters.AddWithValue($"@{item.Column}", value);
+                }
 
                 sqlCommand = cmd;
                 return CreateCommandStatus.Success;
@@ -317,21 +320,24 @@ namespace FTeam.Orm.DataBase.Commands
                 object value = property.GetValue(instance);
                 if (value == null)
                 {
-                    int index = query.IndexOf(property.Name);
+                    int index = query.ToUpper().IndexOf(property.Name.ToUpper());
                     if (index != -1)
                     {
                         query = query.Remove(index, $"[{property.Name}]".Length);
-                        int valueIndex = query.IndexOf($"@{property.Name}");
-                        query = query.Remove(valueIndex, $"@{property.Name}".Length);
+                        int valueIndex = query.ToUpper().IndexOf($"@{property.Name}".ToUpper());
+                        if (valueIndex != -1)
+                            query = query.Remove(valueIndex, $"@{property.Name}".Length);
                     }
                 }
             }
             query = query
+                .Replace(",[=","")
                 .Replace(",,", ",")
                 .Replace("(,", "(")
                 .Replace(",)", ")")
                 .Replace("[[", "[")
-                .Replace("]]", "]");
+                .Replace("]]", "]")
+                .Replace(",[VALUES", ")VALUES");
             query = onIdentity + query + offIdentity;
         }
     }
