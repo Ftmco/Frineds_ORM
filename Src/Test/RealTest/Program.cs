@@ -23,8 +23,7 @@ namespace FriendsOrmStarter
                 sessions.Add(new()
                 {
                     Age = 10,
-                    Family = "TEst",
-                    Name = "test"
+                    Family = "TEst"
                 });
             }
 

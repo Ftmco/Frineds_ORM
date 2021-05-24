@@ -35,10 +35,10 @@ namespace FTeam.Orm.DataBase.Commands
 
         Task<IEnumerable<TableColumns>> GetRelasedColumnsAsync<T>(TableInfoResult tableInfo, T instance);
 
-        void SetValueForPrimaryKey<T>(ref PropertyInfo key, T instance,TableInfoResult tableInfo);
+        void SetValueForPrimaryKey<T>(ref PropertyInfo key, T instance, TableInfoResult tableInfo);
 
         int GetPrimaryKeyInt(TableInfoResult tableInfo);
 
-        void ReleaseQuery(ref string query,TableInfoResult tableInfo);
+        void ReleaseQuery<T>(ref string query, TableInfoResult tableInfo, T instance);
     }
 }
