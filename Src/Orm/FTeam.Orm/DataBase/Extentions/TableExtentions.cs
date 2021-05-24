@@ -4,14 +4,8 @@ namespace FTeam.Orm.DataBase.Extentions
 {
     public class Table
     {
-        public static Guid CreateGuidId()
-        {
-            return Guid.NewGuid();
-        }
+        public static Guid CreateGuidId() => Guid.NewGuid();
 
-        public static string CreateStringId()
-        {
-            return $"{CreateGuidId()}";
-        }
+        public static string CreateStringId() => $"{CreateGuidId()}";
     }
 }
