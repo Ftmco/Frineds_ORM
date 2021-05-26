@@ -37,6 +37,9 @@ SQL ORM for Cs and Fs
 Code :
      DbConnectionInfo _dbConnectionInfo = 
      new(server:"",dataBase:"",authentication:Authentication.SqlServerAuthentication,userId:"",password:"")
+     
+      DbConnectionInfo _dbConnectionInfo = 
+     new(server:"",dataBase:"",authentication:Authentication.WindowsAuthentication)
  ```
 If you are using Windows authentication, there is no need for username and password 
  
