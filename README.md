@@ -5,26 +5,26 @@ SQL ORM for Cs and Fs
   
   ```
     Package Manager : 
-       Install-Package FTeam.Orm -Version 2.1.2
+       Install-Package FTeam.Orm -Version v
     
     dotnet CLI :
-      dotnet add package FTeam.Orm --version 2.1.2
+      dotnet add package FTeam.Orm --version v
       
      Package Refrence : 
-      <PackageReference Include="FTeam.Orm" Version="2.1.2" />
+      <PackageReference Include="FTeam.Orm" Version="v" />
       
      Paket CLI :
-      paket add FTeam.Orm --version 2.1.2
+      paket add FTeam.Orm --version v
       
      Script & Interactive : 
-      #r "nuget: FTeam.Orm, 2.1.2"
+      #r "nuget: FTeam.Orm, v"
       
      Cake : 
       // Install FTeam.Orm as a Cake Addin
-      #addin nuget:?package=FTeam.Orm&version=2.1.2
+      #addin nuget:?package=FTeam.Orm&version=v
 
       // Install FTeam.Orm as a Cake Tool
-      #tool nuget:?package=FTeam.Orm&version=2.1.2
+      #tool nuget:?package=FTeam.Orm&version=v
    ```
     
    NuGet Url : https://www.nuget.org/packages/fteam.orm
