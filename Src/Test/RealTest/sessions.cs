@@ -58,6 +58,7 @@ namespace RealTest
 
         }
 
+        [FKey]
         [Key]
         public Guid Id { get; set; }
 

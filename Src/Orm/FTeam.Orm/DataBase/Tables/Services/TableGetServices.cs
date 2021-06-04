@@ -1,7 +1,4 @@
-﻿using FTeam.Orm.Cosmos.QueryBase;
-using FTeam.Orm.DataBase.Tables.Services;
-using FTeam.Orm.Mapper.Impelement;
-using FTeam.Orm.Mapper.Rules;
+﻿using FTeam.Orm.DataBase.Tables.Services;
 using FTeam.Orm.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,33 +10,14 @@ namespace FTeam.Orm.DataBase.Tables
         #region __Dependency__
 
         /// <summary>
-        /// Query Base Services
-        /// </summary>
-        private readonly IQueryBase _queryBase;
-
-        /// <summary>
-        /// Data Table Mapper
-        /// </summary>
-        private readonly IDataTableMapper _dataTableMapper;
-
-        /// <summary>
         /// Crud Base Services
         /// </summary>
         private readonly ITableCrudBase _crudBase;
 
-        /// <summary>
-        /// Table Comuns Services
-        /// </summary>
-        private readonly ITableColumnsRules _tableColumns;
-
         public TableGetServices()
         {
-            _dataTableMapper = new DataTableMapper();
             _crudBase = new TableCrudBaseServices();
-            _queryBase = new QueryBase();
-            _tableColumns = new TableColumnsServices();
         }
-
 
         #endregion
 
