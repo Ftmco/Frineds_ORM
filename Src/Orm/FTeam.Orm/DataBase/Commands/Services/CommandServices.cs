@@ -5,6 +5,7 @@ using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
 using FTeam.Orm.Models.QueryBase;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -168,10 +169,21 @@ namespace FTeam.Orm.DataBase.Commands
             {
                 PropertyInfo[] instanceProperties = instance.GetType().GetProperties();
                 List<TableColumns> relasedColumns = new();
-                relasedColumns.AddRange(from TableColumns column in tableInfo.TableInfo.TableColumns
-                                        let sumbitColumn = instanceProperties.Any(ip => ip.Name == column.Column)
-                                        where sumbitColumn
-                                        select column);
+                IEnumerable<TableColumns> collection()
+                {
+                    foreach (TableColumns column in tableInfo.TableInfo.TableColumns)
+                    {
+                        PropertyInfo submitColumn = instanceProperties.FirstOrDefault(ip => ip.Name == column.Column);
+                        if (submitColumn != null)
+                        {
+                            object value = submitColumn.GetValue(instance);
+                            if (value != null)
+                                yield return column;
+                        }
+                    }
+                }
+
+                relasedColumns.AddRange(collection());
                 return relasedColumns;
             });
 
@@ -314,34 +326,6 @@ namespace FTeam.Orm.DataBase.Commands
             string onIdentity = $"  IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} ON  ";
             string offIdentity = $" IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} OFF  ";
 
-            PropertyInfo[] properties = instance.GetType().GetProperties();
-            IEnumerable<TableColumns> columens = GetRelasedColumnsAsync(tableInfo, instance).Result;
-            foreach (PropertyInfo property in properties)
-            {
-                if (columens.Any(c=> c.Column == property.Name))
-                {
-                    object value = property.GetValue(instance);
-                    if (value == null)
-                    {
-                        int index = query.ToUpper().IndexOf(property.Name.ToUpper());
-                        if (index != -1)
-                        {
-                            query = query.Remove(index, $"[{property.Name}]".Length);
-                            int valueIndex = query.ToUpper().IndexOf($"@{property.Name}".ToUpper());
-                            if (valueIndex != -1)
-                                query = query.Remove(valueIndex, $"@{property.Name}".Length);
-                        }
-                    }
-                }
-            }
-            query = query
-                .Replace(",[=", "")
-                .Replace(",,", ",")
-                .Replace("(,", "(")
-                .Replace(",)", ")")
-                .Replace("[[", "[")
-                .Replace("]]", "]")
-                .Replace(",[VALUES", ")VALUES");
             query = onIdentity + query + offIdentity;
         }
     }
