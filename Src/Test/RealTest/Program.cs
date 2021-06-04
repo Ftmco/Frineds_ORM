@@ -19,8 +19,8 @@ namespace FriendsOrmStarter
             TableInfoResult table = _dbConnectionInfo.Table("Groups", typeof(Groups));
             Groups groups = new()
             {
-                GroupId = Guid.Empty,
-                Icon = "",
+                //GroupId = Guid.Empty,
+                //Icon = "",
                 Name = "createGroupViewModel.Name",
                 Title = "createGroupViewModel.Title"
             };
