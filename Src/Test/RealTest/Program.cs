@@ -1,8 +1,6 @@
 ﻿using FTeam.Orm.Attributes;
 using FTeam.Orm.Extentions;
 using FTeam.Orm.Models;
-using FTeam.Orm.Models.QueryBase;
-using RealTest;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,65 +10,79 @@ namespace FriendsOrmStarter
 {
     class Program
     {
-        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "Fstore_Db", Authentication.WindowsAuthentication);
+        static readonly DbConnectionInfo _dbConnectionInfo = new(".", "MCoin2_db", Authentication.WindowsAuthentication);
 
         static void Main(string[] args)
         {
-            TableInfoResult table = _dbConnectionInfo.Table("Groups", typeof(Groups));
-            Groups groups = new()
+            TableInfoResult table = _dbConnectionInfo.Table("News", typeof(News));
+            //IEnumerable<News> news = table.GetAll<News>(nameof(News.NewsId), 0, 10);
+            Console.WriteLine(table.Count());
+
+        }
+
+        static void InsertNews()
+        {
+            TableInfoResult table = _dbConnectionInfo.Table("News", typeof(News));
+            Console.WriteLine($"Start = {DateTime.Now}");
+            for (int i = 0; i < 2000000; i++)
             {
-                //GroupId = Guid.Empty,
-                //Icon = "",
-                Name = "createGroupViewModel.Name",
-                Title = "createGroupViewModel.Title"
-            };
+                bool isFalse = i % 2 == 0;
+                News news = new()
+                {
+                    NewsId = Guid.NewGuid(),
+                    CreateDate = DateTime.Now,
+                    ImageName = "null",
+                    IsPublic = isFalse,
+                    ShortDescription = "test",
+                    ShowInSlider = isFalse,
+                    Text = i + "Hello " + i,
+                    Title = "Title " + i
+                };
+                Console.WriteLine(table.Insert(news));
+            }
 
-            Console.WriteLine(DateTime.Now);
-            Console.WriteLine($"{table.InsertAsync(groups).Result}");
-            Console.WriteLine(groups.Id);
-            Console.WriteLine(DateTime.Now);
+
         }
 
-    }
-
-    public record Entity
-    {
-        public Entity()
+        public record Entity
         {
+            public Entity()
+            {
 
+            }
+
+            [FKey]
+            public int Id { get; set; }
+
+            public string Name { get; set; }
+
+            public string Family { get; set; }
+
+            public int Age { get; set; }
         }
 
-        [FKey]
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Family { get; set; }
-
-        public int Age { get; set; }
-    }
-
-    public record Groups
-    {
-        public Groups()
+        public record Groups
         {
+            public Groups()
+            {
 
+            }
+
+            [FKey]
+            [Key]
+            public Guid Id { get; set; }
+
+            [Required]
+            public string Name { get; set; }
+
+            [Required]
+            public string Title { get; set; }
+
+            public string Icon { get; set; }
+
+            public Guid? GroupId { get; set; }
+
+            public virtual ICollection<Groups> Group { get; set; }
         }
-
-        [FKey]
-        [Key]
-        public Guid Id { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string Title { get; set; }
-
-        public string Icon { get; set; }
-
-        public Guid? GroupId { get; set; }
-
-        public virtual ICollection<Groups> Group { get; set; }
     }
 }

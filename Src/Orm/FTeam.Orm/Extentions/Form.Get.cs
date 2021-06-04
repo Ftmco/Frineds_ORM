@@ -142,5 +142,21 @@ namespace FTeam.Orm.Extentions
           => _tableGet.Get<T>(tableInfo, query);
 
         #endregion
+
+        #region :: count ::
+
+        public static async Task<int> TryCountAsync(this TableInfoResult tableInfo)
+            => await Task.FromResult(await _tableCount.TryCountAsync(tableInfo));
+
+        public static async Task<int> CountAsync(this TableInfoResult tableInfo)
+                 => await Task.FromResult(await _tableCount.CountAsync(tableInfo));
+
+        public static int TryCount(this TableInfoResult tableInfo)
+            => _tableCount.TryCount(tableInfo);
+
+        public static int Count(this TableInfoResult tableInfo)
+             => _tableCount.Count(tableInfo);
+
+        #endregion
     }
 }

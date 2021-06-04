@@ -5,7 +5,6 @@ using FTeam.Orm.Mapper.Rules;
 using FTeam.Orm.Models;
 using FTeam.Orm.Models.DataBase;
 using FTeam.Orm.Models.QueryBase;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using static FTeam.Orm.Domains.CashVarabiles.CacheVariables;
-
 
 namespace FTeam.Orm.DataBase.Commands
 {
