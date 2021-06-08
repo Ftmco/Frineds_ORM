@@ -60,13 +60,13 @@ If you are using Windows authentication, there is no need for username and passw
  Note :
     There are four modes for operations 
   
-  ```
+ 
     Example : 
         _table.TryGetAll<Model>();
         _table.GetAll<Model>();
         _table.TryGetAllAsync<Model>();
         _table.GetAllAsync<Model>();
-  ```
+  
    Try modes run without Exceptions and show Exceptions with a status
   
     ```
