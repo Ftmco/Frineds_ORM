@@ -69,7 +69,7 @@ If you are using Windows authentication, there is no need for username and passw
   
    Try modes run without Exceptions and show Exceptions with a status
   
-    ```
+   
     Example : 
       QueryStatus status = await _table.TryInsertAsync<Model>(new(){});
       
@@ -80,4 +80,4 @@ If you are using Windows authentication, there is no need for username and passw
       cath(Exception ex){
         Debug.WriteLine(ex.Message);
       }
-      ```
+     
