@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTeam.Orm;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -33,32 +34,28 @@ namespace FTeam.Orm.Contrib.Extensions
                 GetQueries[type.TypeHandle] = sql;
             }
 
-            var dynParams = new DynamicParameters();
+            DynamicParameters dynParams = new();
             dynParams.Add("@id", id);
 
             if (!type.IsInterface)
                 return (await connection.QueryAsync<T>(sql, dynParams, transaction, commandTimeout).ConfigureAwait(false)).FirstOrDefault();
 
             if (!((await connection.QueryAsync<dynamic>(sql, dynParams).ConfigureAwait(false)).FirstOrDefault() is IDictionary<string, object> res))
-            {
                 return null;
-            }
 
-            var obj = ProxyGenerator.GetInterfaceProxy<T>();
+            T obj = ProxyGenerator.GetInterfaceProxy<T>();
 
-            foreach (var property in TypePropertiesCache(type))
+            foreach (PropertyInfo property in TypePropertiesCache(type))
             {
-                var val = res[property.Name];
+                object val = res[property.Name];
                 if (val == null) continue;
                 if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
-                    var genericType = Nullable.GetUnderlyingType(property.PropertyType);
+                    Type genericType = Nullable.GetUnderlyingType(property.PropertyType);
                     if (genericType != null) property.SetValue(obj, Convert.ChangeType(val, genericType), null);
                 }
                 else
-                {
                     property.SetValue(obj, Convert.ChangeType(val, property.PropertyType), null);
-                }
             }
 
             ((IProxy)obj).IsDirty = false;   //reset change tracking and return
@@ -79,23 +76,21 @@ namespace FTeam.Orm.Contrib.Extensions
         /// <returns>Entity of T</returns>
         public static Task<IEnumerable<T>> GetAllAsync<T>(this IDbConnection connection, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
-            var type = typeof(T);
-            var cacheType = typeof(List<T>);
+            Type type = typeof(T);
+            Type cacheType = typeof(List<T>);
 
             if (!GetQueries.TryGetValue(cacheType.TypeHandle, out string sql))
             {
                 GetSingleKey<T>(nameof(GetAll));
-                var name = GetTableName(type);
+                string name = GetTableName(type);
 
                 sql = "SELECT * FROM " + name;
                 GetQueries[cacheType.TypeHandle] = sql;
             }
 
-            if (!type.IsInterface)
-            {
-                return connection.QueryAsync<T>(sql, null, transaction, commandTimeout);
-            }
-            return GetAllAsyncImpl<T>(connection, transaction, commandTimeout, sql, type);
+            return !type.IsInterface
+                ? connection.QueryAsync<T>(sql, null, transaction, commandTimeout)
+                : GetAllAsyncImpl<T>(connection, transaction, commandTimeout, sql, type);
         }
 
         private static async Task<IEnumerable<T>> GetAllAsyncImpl<T>(IDbConnection connection, IDbTransaction transaction, int? commandTimeout, string sql, Type type) where T : class
@@ -161,12 +156,12 @@ namespace FTeam.Orm.Contrib.Extensions
                 }
             }
 
-            var name = GetTableName(type);
-            var sbColumnList = new StringBuilder(null);
-            var allProperties = TypePropertiesCache(type);
+            string name = GetTableName(type);
+            StringBuilder sbColumnList = new(null);
+            List<PropertyInfo> allProperties = TypePropertiesCache(type);
             var keyProperties = KeyPropertiesCache(type).ToList();
-            var computedProperties = ComputedPropertiesCache(type);
-            var allPropertiesExceptKeyAndComputed = allProperties.Except(keyProperties.Union(computedProperties)).ToList();
+            List<PropertyInfo> computedProperties = ComputedPropertiesCache(type);
+            List<PropertyInfo> allPropertiesExceptKeyAndComputed = allProperties.Except(keyProperties.Union(computedProperties)).ToList();
 
             for (var i = 0; i < allPropertiesExceptKeyAndComputed.Count; i++)
             {
@@ -334,9 +329,9 @@ namespace FTeam.Orm.Contrib.Extensions
         /// <returns>true if deleted, false if none found</returns>
         public static async Task<bool> DeleteAllAsync<T>(this IDbConnection connection, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
-            var type = typeof(T);
-            var statement = "DELETE FROM " + GetTableName(type);
-            var deleted = await connection.ExecuteAsync(statement, null, transaction, commandTimeout).ConfigureAwait(false);
+            Type type = typeof(T);
+            string statement = "DELETE FROM " + GetTableName(type);
+            int deleted = await connection.ExecuteAsync(statement, null, transaction, commandTimeout).ConfigureAwait(false);
             return deleted > 0;
         }
     }

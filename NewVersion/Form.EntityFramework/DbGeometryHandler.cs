@@ -8,37 +8,34 @@ using System.Data.SqlTypes;
 namespace FTeam.Orm.EntityFramework
 {
     /// <summary>
-    /// Type-handler for the DbGeography spatial type.
+    /// Type-handler for the DbGeometry spatial type.
     /// </summary>
-    public class DbGeographyHandler : SqlMapper.TypeHandler<DbGeography>
+    public class DbGeometryHandler : SqlMapper.TypeHandler<DbGeometry>
     {
         /// <summary>
         /// Create a new handler instance.
         /// </summary>
-        protected DbGeographyHandler() { /* create new */ }
+        protected DbGeometryHandler() { /* create new */ }
 
         /// <summary>
-        /// Default handler instance
+        /// Default handler instance.
         /// </summary>
-        public static readonly DbGeographyHandler Default = new DbGeographyHandler();
+        public static readonly DbGeometryHandler Default = new();
 
         /// <summary>
         /// Assign the value of a parameter before a command executes.
         /// </summary>
         /// <param name="parameter">The parameter to configure.</param>
         /// <param name="value">Parameter value.</param>
-        public override void SetValue(IDbDataParameter parameter, DbGeography value)
+        public override void SetValue(IDbDataParameter parameter, DbGeometry value)
         {
             object parsed = null;
             if (value != null)
-            {
-                parsed = SqlGeography.STGeomFromWKB(new SqlBytes(value.AsBinary()), value.CoordinateSystemId);
-            }
+                parsed = SqlGeometry.STGeomFromWKB(new SqlBytes(value.AsBinary()), value.CoordinateSystemId);
+
             parameter.Value = parsed ?? DBNull.Value;
-            if (parameter is SqlParameter sqlParameter)
-            {
-                sqlParameter.UdtTypeName = "geography";
-            }
+            if (parameter is SqlParameter sqlP)
+                sqlP.UdtTypeName = "geometry";
         }
 
         /// <summary>
@@ -46,14 +43,12 @@ namespace FTeam.Orm.EntityFramework
         /// </summary>
         /// <param name="value">The value from the database.</param>
         /// <returns>The typed value.</returns>
-        public override DbGeography Parse(object value)
+        public override DbGeometry Parse(object value)
         {
             if (value == null || value is DBNull) return null;
-            if (value is SqlGeography geo)
-            {
-                return DbGeography.FromBinary(geo.STAsBinary().Value, geo.STSrid.Value);
-            }
-            return DbGeography.FromText(value.ToString());
+            if (value is SqlGeometry geo)
+                return DbGeometry.FromBinary(geo.STAsBinary().Value, geo.STSrid.Value);
+            return DbGeometry.FromText(value.ToString());
         }
     }
 }

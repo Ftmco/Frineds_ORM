@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTeam.Orm.ProviderTools.Internal;
+using System;
 using System.Collections.Concurrent;
 using System.Data;
 using System.Data.Common;
@@ -6,7 +7,8 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Dapper.ProviderTools.Internal;
+
+
 
 namespace FTeam.Orm.ProviderTools
 {
@@ -21,11 +23,9 @@ namespace FTeam.Orm.ProviderTools
         public static BulkCopy? TryCreate(DbConnection connection)
         {
             if (connection == null) return null;
-            var type = connection.GetType();
-            if (!s_bcpFactory.TryGetValue(type, out var func))
-            {
+            Type type = connection.GetType();
+            if (!s_bcpFactory.TryGetValue(type, out Func<DbConnection, object> func))
                 s_bcpFactory[type] = func = CreateBcpFactory(type);
-            }
             var obj = func?.Invoke(connection);
             return DynamicBulkCopy.Create(obj);
         }
@@ -53,7 +53,7 @@ namespace FTeam.Orm.ProviderTools
         //}
 
         private static readonly ConcurrentDictionary<Type, Func<DbConnection, object>?> s_bcpFactory
-            = new ConcurrentDictionary<Type, Func<DbConnection, object>?>();
+            = new();
 
         internal static Func<DbConnection, object>? CreateBcpFactory(Type connectionType)
         {

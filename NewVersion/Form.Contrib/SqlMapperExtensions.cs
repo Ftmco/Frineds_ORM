@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTeam.Orm;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
@@ -49,16 +50,16 @@ namespace FTeam.Orm.Contrib.Extensions
         /// <param name="type">The <see cref="Type"/> to get a table name for.</param>
         public delegate string TableNameMapperDelegate(Type type);
 
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> KeyProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> ExplicitKeyProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> TypeProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> ComputedProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, string> GetQueries = new ConcurrentDictionary<RuntimeTypeHandle, string>();
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, string> TypeTableName = new ConcurrentDictionary<RuntimeTypeHandle, string>();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> KeyProperties = new();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> ExplicitKeyProperties = new();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> TypeProperties = new();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> ComputedProperties = new();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, string> GetQueries = new();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, string> TypeTableName = new();
 
         private static readonly ISqlAdapter DefaultAdapter = new SqlServerAdapter();
         private static readonly Dictionary<string, ISqlAdapter> AdapterDictionary
-            = new Dictionary<string, ISqlAdapter>(6)
+            = new(6)
             {
                 ["sqlconnection"] = new SqlServerAdapter(),
                 ["sqlceconnection"] = new SqlCeServerAdapter(),
@@ -166,18 +167,18 @@ namespace FTeam.Orm.Contrib.Extensions
         /// <returns>Entity of T</returns>
         public static T Get<T>(this IDbConnection connection, dynamic id, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
-            var type = typeof(T);
+            Type type = typeof(T);
 
             if (!GetQueries.TryGetValue(type.TypeHandle, out string sql))
             {
-                var key = GetSingleKey<T>(nameof(Get));
-                var name = GetTableName(type);
+                PropertyInfo key = GetSingleKey<T>(nameof(Get));
+                string name = GetTableName(type);
 
                 sql = $"select * from {name} where {key.Name} = @id";
                 GetQueries[type.TypeHandle] = sql;
             }
 
-            var dynParams = new DynamicParameters();
+            DynamicParameters dynParams = new DynamicParameters();
             dynParams.Add("@id", id);
 
             T obj;
@@ -185,33 +186,28 @@ namespace FTeam.Orm.Contrib.Extensions
             if (type.IsInterface)
             {
                 if (!(connection.Query(sql, dynParams).FirstOrDefault() is IDictionary<string, object> res))
-                {
                     return null;
-                }
 
                 obj = ProxyGenerator.GetInterfaceProxy<T>();
 
-                foreach (var property in TypePropertiesCache(type))
+                foreach (PropertyInfo property in TypePropertiesCache(type))
                 {
-                    var val = res[property.Name];
+                    object val = res[property.Name];
                     if (val == null) continue;
                     if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
-                        var genericType = Nullable.GetUnderlyingType(property.PropertyType);
+                        Type genericType = Nullable.GetUnderlyingType(property.PropertyType);
                         if (genericType != null) property.SetValue(obj, Convert.ChangeType(val, genericType), null);
                     }
                     else
-                    {
                         property.SetValue(obj, Convert.ChangeType(val, property.PropertyType), null);
-                    }
                 }
 
                 ((IProxy)obj).IsDirty = false;   //reset change tracking and return
             }
             else
-            {
                 obj = connection.Query<T>(sql, dynParams, transaction, commandTimeout: commandTimeout).FirstOrDefault();
-            }
+
             return obj;
         }
 
@@ -297,7 +293,7 @@ namespace FTeam.Orm.Contrib.Extensions
                 {
                     name = type.Name + "s";
                     if (type.IsInterface && name.StartsWith("I"))
-                        name = name.Substring(1);
+                        name = name[1..];
                 }
             }
 
@@ -549,7 +545,7 @@ namespace FTeam.Orm.Contrib.Extensions
 
         private static class ProxyGenerator
         {
-            private static readonly Dictionary<Type, Type> TypeCache = new Dictionary<Type, Type>();
+            private static readonly Dictionary<Type, Type> TypeCache = new();
 
             private static AssemblyBuilder GetAsmBuilder(string name)
             {

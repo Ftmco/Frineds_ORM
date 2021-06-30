@@ -20,7 +20,7 @@ namespace FTeam.Orm.EntityFramework
         /// <summary>
         /// Default handler instance
         /// </summary>
-        public static readonly DbGeographyHandler Default = new DbGeographyHandler();
+        public static readonly DbGeographyHandler Default = new();
 
         /// <summary>
         /// Assign the value of a parameter before a command executes.
@@ -31,14 +31,10 @@ namespace FTeam.Orm.EntityFramework
         {
             object parsed = null;
             if (value != null)
-            {
                 parsed = SqlGeography.STGeomFromWKB(new SqlBytes(value.AsBinary()), value.CoordinateSystemId);
-            }
             parameter.Value = parsed ?? DBNull.Value;
             if (parameter is SqlParameter sqlParameter)
-            {
                 sqlParameter.UdtTypeName = "geography";
-            }
         }
 
         /// <summary>
@@ -50,9 +46,7 @@ namespace FTeam.Orm.EntityFramework
         {
             if (value == null || value is DBNull) return null;
             if (value is SqlGeography geo)
-            {
                 return DbGeography.FromBinary(geo.STAsBinary().Value, geo.STSrid.Value);
-            }
             return DbGeography.FromText(value.ToString());
         }
     }
