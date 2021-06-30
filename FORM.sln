@@ -4,6 +4,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31423.177
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07D34D18-0DD8-4273-BB9F-6E64B3A526ED}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		appveyor.yml = appveyor.yml
+		build.ps1 = build.ps1
+		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+		index.md = index.md
+		Lincense.txt = Lincense.txt
+		nuget.config = nuget.config
+		Readme.md = Readme.md
+		version.json = version.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{460A7B4C-84BC-4D88-A439-2250CD22B72D}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,6 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{460A7B4C-84B
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B67B77CF-0B97-4674-8668-65B60A377ABA}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Buid.target = Directory.Buid.target
+		Directory.Build.props = Directory.Build.props
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EBBB21C2-C9B0-4EB4-BAAF-C01CECD6517E}"
 EndProject
