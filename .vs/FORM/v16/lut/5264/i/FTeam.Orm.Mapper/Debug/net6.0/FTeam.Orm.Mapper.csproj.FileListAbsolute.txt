@@ -1,0 +1,9 @@
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\b\FTeam.Orm.Mapper\Debug\net6.0\FTeam.Orm.Mapper.deps.json
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\b\FTeam.Orm.Mapper\Debug\net6.0\FTeam.Orm.Mapper.dll
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\b\FTeam.Orm.Mapper\Debug\net6.0\ref\FTeam.Orm.Mapper.dll
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm.Mapper\Debug\net6.0\FTeam.Orm.Mapper.GeneratedMSBuildEditorConfig.editorconfig
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm.Mapper\Debug\net6.0\FTeam.Orm.Mapper.AssemblyInfoInputs.cache
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm.Mapper\Debug\net6.0\FTeam.Orm.Mapper.AssemblyInfo.cs
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm.Mapper\Debug\net6.0\FTeam.Orm.Mapper.csproj.CopyComplete
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm.Mapper\Debug\net6.0\FTeam.Orm.Mapper.dll
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm.Mapper\Debug\net6.0\ref\FTeam.Orm.Mapper.dll

@@ -1,0 +1,9 @@
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\b\FTeam.Orm\Debug\net6.0\FTeam.Orm.deps.json
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\b\FTeam.Orm\Debug\net6.0\FTeam.Orm.dll
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\b\FTeam.Orm\Debug\net6.0\ref\FTeam.Orm.dll
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm\Debug\net6.0\FTeam.Orm.GeneratedMSBuildEditorConfig.editorconfig
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm\Debug\net6.0\FTeam.Orm.AssemblyInfoInputs.cache
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm\Debug\net6.0\FTeam.Orm.AssemblyInfo.cs
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm\Debug\net6.0\FTeam.Orm.csproj.CopyComplete
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm\Debug\net6.0\FTeam.Orm.dll
+E:\project\Teams\FTeam\Frineds_ORM\.vs\FORM\v16\lut\0\i\FTeam.Orm\Debug\net6.0\ref\FTeam.Orm.dll
