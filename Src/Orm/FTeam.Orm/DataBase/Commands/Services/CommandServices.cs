@@ -12,7 +12,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using static FTeam.Orm.Domains.CashVarabiles.CacheVariables;
 
 namespace FTeam.Orm.DataBase.Commands
 {
@@ -301,16 +300,12 @@ namespace FTeam.Orm.DataBase.Commands
                 string query = $"SELECT TOP 1 [{tableInfo.TableInfo.PrimaryKey.Column}] FROM " + tableName +
                     $"ORDER BY {tableInfo.TableInfo.PrimaryKey.Column} DESC";
 
-                if (CacheKeys.Keys.Any(s => s == tableName))
-                    return int.Parse(CacheKeys[tableName].ToString()) + 1;
-
                 RunQueryResult queryResult = _queryBase.RunQuery(tableInfo.DbConnectionInfo.GetConnectionString(), query);
                 TableLastId existId = new() { Id = 0 };
                 if (queryResult.DataTable.Columns.Count != 0)
                     existId = _tableMapper.Map<TableLastId>(queryResult.DataTable);
 
                 int newId = existId != null ? existId.Id + 2 : +1;
-                CacheKeys.Add(tableName, newId);
                 return newId;
             }
             catch
@@ -324,7 +319,7 @@ namespace FTeam.Orm.DataBase.Commands
             string onIdentity = $"  IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} ON  ";
             string offIdentity = $" IF (OBJECTPROPERTY(OBJECT_ID('{tableInfo.TableInfo.TableName}'), 'TableHasIdentity') = 1)SET identity_insert {tableInfo.TableInfo.TableName} OFF  ";
 
-            query = onIdentity + query + offIdentity;
+            query = $"{onIdentity} {query} {offIdentity}";
         }
     }
 }
